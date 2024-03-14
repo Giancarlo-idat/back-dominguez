@@ -14,7 +14,7 @@ public interface RolRepository extends BaseRepository<RolEntity, String>{
     @Query("SELECT r FROM RolEntity r WHERE r.estado = false")
     List<RolEntity> buscarRolInactivo();
 
-    @Query("SELECT r FROM RolEntity r WHERE r.nombre LIKE %:nombre%")
+    @Query("SELECT r FROM RolEntity r WHERE r.nombre = :nombre")
     List<RolEntity> buscarRol(String nombre);
 
     boolean existsByNombre(String nombre);

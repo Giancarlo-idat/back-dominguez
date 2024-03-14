@@ -19,43 +19,43 @@ import java.util.Set;
 public class ClienteEntity extends BaseEntity {
 
     @Id
-    @Column(name="id_cliente", nullable = false, unique = true,length = 50)
+    @Column(name = "id_cliente", nullable = false, unique = true, length = 50)
     private String id;
 
-    @Column(name="nombres", nullable = false, length = 30)
+    @Column(name = "nombres", nullable = false, length = 30)
     private String nombres;
 
-    @Column(name="apellidos", nullable = false, length = 30)
+    @Column(name = "apellidos", nullable = false, length = 30)
     private String apellidos;
 
-    @Column(name="direccion ", nullable = false, length = 50)
+    @Column(name = "direccion ", nullable = false, length = 50)
     private String direccion;
 
-    @Column(name="email", nullable = false, length = 50, unique = true)
+    @Column(name = "email", nullable = false, length = 50, unique = true)
     private String email;
 
-    @Column(name="contraseña", nullable = false, length = 100)
+    @Column(name = "contraseña", nullable = false, length = 100)
     private String password;
 
     // Rol
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "id_rol")
+    @ManyToOne
+    @JoinColumn(name = "id_rol", nullable = true)
     private RolEntity rol;
 
     @ManyToOne
     @JoinColumn(name = "id_tipo_documento_identidad")
     private TipoDocumentoIdentidadEntity tipoDocumento;
 
-    @Column(name="numero_documento", nullable = false, length = 11, unique = true)
+    @Column(name = "numero_documento", nullable = false, length = 11, unique = true)
     private String numeroDocumento;
 
     @Enumerated(EnumType.STRING)
     private TipoSexo sexo;
 
-    @Column(name="telefono", length = 9, unique = true)
+    @Column(name = "telefono", length = 9, unique = true)
     private String telefono;
 
-    @Column(name="estado", nullable = false)
+    @Column(name = "estado", nullable = false)
     private boolean estado = true;
 
 }

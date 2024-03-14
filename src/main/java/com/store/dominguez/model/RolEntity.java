@@ -35,13 +35,13 @@ public class RolEntity extends BaseEntity {
     @Column(name = "descripcion", length = 100)
     private String descripcion;
 
-    @OneToMany(mappedBy = "rol", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "rol")
     private Set<EmpleadoEntity> empleados = new HashSet<>();
 
-    @OneToMany(mappedBy = "rol", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "rol")
     private Set<ClienteEntity> clientes = new HashSet<>();
 
-    @OneToMany(mappedBy = "rol", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "rol")
     private Set<RolPermisoEntity> permisos = new HashSet<>();
 
 }

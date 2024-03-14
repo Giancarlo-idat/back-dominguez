@@ -35,67 +35,31 @@ public class DominguezApplication {
     RolPermisoRepository rolPermisoRepository;
 
 
-    @Bean
+    /*@Bean
     CommandLineRunner init() {
         return args -> {
 
             RolEntity rol = RolEntity.builder()
                     .id("ROL-ADM-MIP392")
-                    .nombre("ADMIN")
-                    .descripcion("Administrador")
-                    .estado(true)
-                    .build();
-
-            RolEntity rol2 = RolEntity.builder()
-                    .id("ROL-CLI-SDK192")
-                    .nombre("CLIENTE")
-                    .descripcion("Cliente")
-                    .estado(true)
-                    .build();
-
-            RolEntity rol3 = RolEntity.builder()
-                    .id("ROL-ALM-ESL913")
-                    .nombre("ALMACEN")
-                    .descripcion("Almacen")
+                    .nombre("Admin")
+                    .descripcion("Rol del administrador")
                     .estado(true)
                     .build();
 
             rol.setFechaCreacion(LocalDateTime.now());
-            rol2.setFechaCreacion(LocalDateTime.now());
-            rol3.setFechaCreacion(LocalDateTime.now());
             rolRepository.save(rol);
-            rolRepository.save(rol2);
-            rolRepository.save(rol3);
 
 
             RolPermisoEntity rolPermiso = RolPermisoEntity.builder()
                     .id("ROL-ADM-MIP392")
-                    .nombre("ADMIN")
+                    .nombre("Admin")
                     .estado(true)
                     .rol(rol)
                     .build();
 
-            RolPermisoEntity rolPermiso2 = RolPermisoEntity.builder()
-                    .id("ROL-CLI-SDK192")
-                    .nombre("CLIENTE")
-                    .estado(true)
-                    .rol(rol2)
-                    .build();
-
-            RolPermisoEntity rolPermiso3 = RolPermisoEntity.builder()
-                    .id("ROL-ALM-ESL911")
-                    .nombre("ALMACEN")
-                    .estado(true)
-                    .rol(rol3)
-                    .build();
 
             rolPermiso.setFechaCreacion(LocalDateTime.now());
-            rolPermiso2.setFechaCreacion(LocalDateTime.now());
-            rolPermiso3.setFechaCreacion(LocalDateTime.now());
             rolPermisoRepository.save(rolPermiso);
-            rolPermisoRepository.save(rolPermiso2);
-            rolPermisoRepository.save(rolPermiso3);
-
 
             TipoDocumentoIdentidadEntity tipoDocumento = TipoDocumentoIdentidadEntity.builder()
                     .id("TIP-DNI-SDK192")
@@ -132,4 +96,5 @@ public class DominguezApplication {
 
         };
     }
+*/
 }

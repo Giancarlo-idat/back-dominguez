@@ -2,6 +2,7 @@ package com.store.dominguez.util.validations;
 
 import com.store.dominguez.dto.ClienteDTO;
 import com.store.dominguez.dto.ProveedorDTO;
+import com.store.dominguez.model.ClienteEntity;
 import com.store.dominguez.model.RolEntity;
 import com.store.dominguez.model.TipoDocumentoIdentidadEntity;
 import com.store.dominguez.model.TipoSexo;
@@ -24,13 +25,13 @@ public class ClienteValidator {
         this.rolRepository = rolRepository;
     }
 
-    public void validarCliente(ClienteDTO clienteDTO) {
+    public void validarCliente(ClienteDTO cliente) {
 
-        validarCamposObligatorios(clienteDTO);
-        validarCamposValidos(clienteDTO);
-        validarDocumento(clienteDTO);
-        validarSexo(clienteDTO.getSexo().name());
-        validarRol(clienteDTO);
+        validarCamposObligatorios(cliente);
+        validarCamposValidos(cliente);
+        validarDocumento(cliente);
+        validarSexo(cliente.getSexo().name());
+       /* validarRol(cliente);*/
 
     }
 
@@ -62,15 +63,15 @@ public class ClienteValidator {
     }
 
     public void validarCamposValidos(ClienteDTO clienteDTO) {
-        if (Validations.isValidNames(clienteDTO.getNombres()))
+        if (!Validations.isValidNames(clienteDTO.getNombres()))
             throw new Exceptions.ValidarNombreApellidosException("El nombre no puede contener números");
-        if (Validations.isValidNames(clienteDTO.getApellidos()))
+        if (!Validations.isValidNames(clienteDTO.getApellidos()))
             throw new Exceptions.ValidarNombreApellidosException("El apellido no puede contener números");
-        if (Validations.isValidEmail(clienteDTO.getEmail()))
+        if (!Validations.isValidEmail(clienteDTO.getEmail()))
             throw new Exceptions.EmailInvalidoException("El email debe tener un formato válido");
         if (Validations.isValidTelephone(clienteDTO.getTelefono()))
             throw new Exceptions.ValidarTelefonoException("El teléfono debe tener 9 dígitos");
-        if (Validations.isValidPassword(clienteDTO.getPassword()))
+        if (!Validations.isValidPassword(clienteDTO.getPassword()))
             throw new Exceptions.ValidarPasswordException("La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula y un número");
     }
 
@@ -96,18 +97,21 @@ public class ClienteValidator {
             throw new Exceptions.TipoDocumentoInvalidoException("El nombre del tipo de documento no coincide con el tipo de documento seleccionado");
     }
 
-    public void validarRol(ClienteDTO clienteDTO) {
-        Optional<RolEntity> roles = rolRepository.findById(clienteDTO.getRol().getId());
+    /*public void validarRol(ClienteDTO cliente) {
+        Optional<RolEntity> roles = rolRepository.findById(cliente.getRol().getId());
+
+        if(cliente.getRol() == null) throw new Exceptions.ValidarRolException("El rol del clienteno puede ser vacio");
+
         if (roles.isEmpty()) throw new Exceptions.ValidarRolException("El rol no existe");
 
         if (roles.get().getId().isBlank()) throw new Exceptions.ValidarRolException("El rol no puede estar vacio");
 
         if (!roles.get().isEstado()) throw new Exceptions.ValidarRolException("El rol no esta habilitado");
 
-        if (!roles.get().getNombre().trim().equalsIgnoreCase(clienteDTO.getRol().getNombre().trim()))
+        if (!roles.get().getNombre().trim().equalsIgnoreCase(cliente.getRol().getNombre().trim()))
             throw new Exceptions.ValidarRolException("El nombre del rol no coincide con el rol seleccionado");
     }
-
+*/
     public static void validarId(String id) {
         if (Validations.isBlank(id))
             throw new IllegalArgumentException("El id no puede ser vacío");

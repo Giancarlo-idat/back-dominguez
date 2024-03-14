@@ -5,8 +5,8 @@ import com.store.dominguez.dto.ClienteDTO;
 import com.store.dominguez.service.gestion.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
@@ -21,7 +21,7 @@ public class ClienteController {
     private ClienteService clienteService;
 
     @GetMapping
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('Admin')")
     public ResponseEntity<List<ClienteDTO>> buscarTodos() {
         try {
             return ResponseEntity.ok(clienteService.buscarTodos());
@@ -31,7 +31,7 @@ public class ClienteController {
     }
 
     @GetMapping("/activos")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('Admin')")
     public ResponseEntity<List<ClienteDTO>> buscarActivos() {
         try {
             return ResponseEntity.ok(clienteService.buscarActivo());
@@ -41,7 +41,7 @@ public class ClienteController {
     }
 
     @GetMapping("/inactivos")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('Admin')")
     public ResponseEntity<List<ClienteDTO>> buscarInactivos() {
         try {
             return ResponseEntity.ok(clienteService.buscarInactivo());
@@ -51,7 +51,7 @@ public class ClienteController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('Admin')")
     public ResponseEntity<Optional<?>> buscarId(@PathVariable String id) {
         try {
             return ResponseEntity.ok(clienteService.buscarId(id));
@@ -61,7 +61,7 @@ public class ClienteController {
     }
 
     @GetMapping("/buscar")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('Admin')")
     public ResponseEntity<List<?>> buscarPorDatos(@RequestParam String cliente) {
 
         try {
@@ -76,22 +76,24 @@ public class ClienteController {
     }
 
     @PostMapping
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> agregar(@RequestBody List<ClienteDTO> clienteDTO) {
+    @PreAuthorize("hasRole('Admin')")
+    public ResponseEntity<?> agregar(@RequestBody List<ClienteDTO> ClienteEntity) {
         try {
-            return ResponseEntity.status(201).body(clienteService.agregar(clienteDTO));
+            return ResponseEntity.status(201).body(clienteService.agregar(ClienteEntity));
         } catch (IllegalArgumentException | NullPointerException e) {
             return ResponseEntity.status(400).body(e.getMessage());
+        } catch (AccessDeniedException e) {
+            return ResponseEntity.status(403).body(e.getMessage());
         } catch (Exception e) {
             return ResponseEntity.status(500).body(Collections.singletonList(e.getMessage()));
         }
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> actualizar(@RequestBody ClienteDTO clienteDTO, @PathVariable String id) {
+    @PreAuthorize("hasRole('Admin')")
+    public ResponseEntity<?> actualizar(@RequestBody ClienteDTO ClienteEntity, @PathVariable String id) {
         try {
-            return ResponseEntity.ok(clienteService.actualizar(clienteDTO, id));
+            return ResponseEntity.ok(clienteService.actualizar(ClienteEntity, id));
         } catch (NullPointerException | IllegalArgumentException e) {
             return ResponseEntity.status(400).body(e.getMessage());
         } catch (Exception e) {
@@ -100,7 +102,7 @@ public class ClienteController {
     }
 
     @PutMapping("/habilitar/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('Admin')")
     public ResponseEntity<?> habilitar(@PathVariable String id) {
         try {
             return ResponseEntity.ok(clienteService.habilitar(id));
@@ -112,7 +114,7 @@ public class ClienteController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('Admin')")
     public ResponseEntity<?> eliminar(@PathVariable String id) {
         try {
             clienteService.eliminar(id);

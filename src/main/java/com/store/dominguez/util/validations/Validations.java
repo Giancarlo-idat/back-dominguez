@@ -5,8 +5,8 @@ import java.math.BigDecimal;
 public class Validations {
 
     public static boolean isBlank(String value) { return value == null || value.trim().isEmpty();}
-    public static boolean isValidNames(String value) {return value != null && value.matches("^[0-9]+$");}
-    public static boolean isValidEmail(String email) { return email != null && !email.matches("^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$");}
+    public static boolean isValidNames(String value) {return value != null && !value.matches(".*\\d.*");}
+    public static boolean isValidEmail(String email) { return email != null && email.matches("^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$");}
     public static boolean isValidTelephone(String value) { return value != null && !value.matches("^[0-9]{9}$");}
     public static boolean isValidBigDecimal(BigDecimal  value) { return value != null && value.compareTo(BigDecimal.ZERO) > 0 && isBigDecimalFormatValid(value.toString()); }
     public static boolean isValidNumber(int value ) { return String.valueOf(value).matches("^[0-9]+$");}
