@@ -80,25 +80,22 @@ public class ProveedorServiceImpl implements ProveedorService {
     }
 
     @Override
-    public List<ProveedorDTO> agregar(List<ProveedorDTO> proveedoresDTO) {
+    public ProveedorDTO agregar(ProveedorDTO proveedorDTO) {
 
-        List<ProveedorDTO> proveedoresAgregados = new ArrayList<>();
-        for (ProveedorDTO proveedorDTO : proveedoresDTO) {
-            proveedorValidator.validarProveedor(proveedorDTO);
-            try {
-                String idProveedor = IdGenerator.generarID("PROV", (proveedorDTO.getNombres() + proveedorDTO.getEmail()));
-                proveedorDTO.setId(idProveedor);
-                ProveedorEntity proveedor = modelMapper.map(proveedorDTO, ProveedorEntity.class);
-                proveedor = proveedorRepository.save(proveedor);
+        proveedorValidator.validarProveedor(proveedorDTO);
 
-                proveedoresAgregados.add(modelMapper.map(proveedor, ProveedorDTO.class));
-            } catch (Exception e) {
-                throw new RuntimeException("Error al guardar el proveedor" + e.getMessage());
-            }
+        try {
+            String idProveedor = IdGenerator.generarID("PROV", (proveedorDTO.getNombres() + proveedorDTO.getEmail()));
+            proveedorDTO.setId(idProveedor);
+            ProveedorEntity proveedor = modelMapper.map(proveedorDTO, ProveedorEntity.class);
+            proveedor = proveedorRepository.save(proveedor);
+
+            return modelMapper.map(proveedor, ProveedorDTO.class);
+        } catch (Exception e) {
+            throw new RuntimeException("Error al guardar el proveedor" + e.getMessage());
         }
-
-        return proveedoresAgregados;
     }
+
 
     @Override
     public ProveedorDTO actualizar(ProveedorDTO proveedorDTO, String id) {

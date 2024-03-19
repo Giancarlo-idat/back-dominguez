@@ -22,7 +22,7 @@ public class RolController {
     }
 
     @GetMapping
-    @PreAuthorize("hasRole('ADMIN')")
+    /*@PreAuthorize("hasRole('ADMIN')")*/
     public ResponseEntity<List<RolDTO>> buscarRoles() {
         try {
             return ResponseEntity.ok(rolService.buscarTodos());
@@ -32,7 +32,7 @@ public class RolController {
     }
 
     @GetMapping("/activos")
-    @PreAuthorize("hasRole('ADMIN')")
+    /*@PreAuthorize("hasRole('ADMIN')")*/
     public ResponseEntity<List<RolDTO>> buscarRolesActivos() {
         try {
             return ResponseEntity.ok(rolService.buscarActivo());
@@ -42,7 +42,7 @@ public class RolController {
     }
 
     @GetMapping("/inactivos")
-    @PreAuthorize("hasRole('ADMIN')")
+    /*@PreAuthorize("hasRole('ADMIN')")*/
     public ResponseEntity<List<RolDTO>> buscarRolesInactivos() {
         try {
             return ResponseEntity.ok(rolService.buscarInactivo());
@@ -52,7 +52,7 @@ public class RolController {
     }
 
     @GetMapping("/buscar")
-    @PreAuthorize("hasRole('ADMIN')")
+    /*@PreAuthorize("hasRole('ADMIN')")*/
     public ResponseEntity<List<?>> buscarPorDatos(@RequestParam String datos) {
         try {
             return ResponseEntity.ok(rolService.buscarRoles(datos));
@@ -64,7 +64,7 @@ public class RolController {
     }
 
     @GetMapping("/rolId")
-    @PreAuthorize("hasRole('ADMIN')")
+    /*@PreAuthorize("hasRole('ADMIN')")*/
     public ResponseEntity<?> buscarId(@RequestParam String id) {
         try {
             return ResponseEntity.status(200).body(rolService.buscarId(id));
@@ -76,8 +76,8 @@ public class RolController {
     }
 
     @PostMapping
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> agregar(@RequestBody List<RolDTO> rolDTO) {
+    /*@PreAuthorize("hasRole('ADMIN')")*/
+    public ResponseEntity<?> agregar(@RequestBody RolDTO rolDTO) {
         try {
             return ResponseEntity.status(201).body(rolService.agregar(rolDTO));
         } catch (IllegalArgumentException | NullPointerException e) {
@@ -88,7 +88,7 @@ public class RolController {
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    /*@PreAuthorize("hasRole('ADMIN')")*/
     public ResponseEntity<?> actualizar(@PathVariable String id, @RequestBody RolDTO rolDTO) {
         try {
             return ResponseEntity.status(200).body(rolService.actualizar(rolDTO, id));
@@ -100,7 +100,7 @@ public class RolController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    /*@PreAuthorize("hasRole('ADMIN')")*/
     public ResponseEntity<?> eliminar(@PathVariable String id) {
         try {
             rolService.eliminar(id);
@@ -113,7 +113,7 @@ public class RolController {
     }
 
     @PutMapping("/habilitar/rolId")
-    @PreAuthorize("hasRole('ADMIN')")
+    /*@PreAuthorize("hasRole('ADMIN')")*/
     public ResponseEntity<?> habilitar(@RequestParam String id) {
         try {
             return ResponseEntity.status(200).body(rolService.habilitar(id));

@@ -79,7 +79,7 @@ public class ProveedorController {
 
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> agregar(@RequestBody List<ProveedorDTO> proveedorDTO) {
+    public ResponseEntity<?> agregar(@RequestBody ProveedorDTO proveedorDTO) {
         try {
             return ResponseEntity.status(201).body(proveedorService.agregar(proveedorDTO));
         } catch (IllegalArgumentException | NullPointerException e) {

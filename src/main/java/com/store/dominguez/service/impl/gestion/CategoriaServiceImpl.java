@@ -81,25 +81,19 @@ public class CategoriaServiceImpl implements CategoriaService {
     }
 
     @Override
-    public List<CategoriaDTO> agregar(List<CategoriaDTO> listaCategoriaDTO) {
+    public CategoriaDTO agregar(CategoriaDTO categoriaDTO) {
 
-        List<CategoriaDTO> categoriaAgregada = new ArrayList<>();
+        categoriaValidator.validarCategoria(categoriaDTO);
 
-        for (CategoriaDTO categoriaDTO : listaCategoriaDTO) {
-
-            categoriaValidator.validarCategoria(categoriaDTO);
-
-            try {
-                String id = IdGenerator.generarID("CAT", categoriaDTO.getNombre());
-                categoriaDTO.setId(id);
-                CategoriaEntity categoriaEntity = modelMapper.map(categoriaDTO, CategoriaEntity.class);
-                categoriaEntity = categoriaRepository.save(categoriaEntity);
-                categoriaAgregada.add(modelMapper.map(categoriaEntity, CategoriaDTO.class));
-            } catch (Exception e) {
-                throw new RuntimeException("Error al agregar la categoria" + e.getMessage());
-            }
+        try {
+            String id = IdGenerator.generarID("CAT", categoriaDTO.getNombre());
+            categoriaDTO.setId(id);
+            CategoriaEntity categoriaEntity = modelMapper.map(categoriaDTO, CategoriaEntity.class);
+            categoriaEntity = categoriaRepository.save(categoriaEntity);
+            return modelMapper.map(categoriaEntity, CategoriaDTO.class);
+        } catch (Exception e) {
+            throw new RuntimeException("Error al agregar la categoria" + e.getMessage());
         }
-        return categoriaAgregada;
     }
 
     @Override

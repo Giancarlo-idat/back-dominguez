@@ -9,6 +9,7 @@ import com.store.dominguez.service.impl.gestion.UserDetailServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -33,7 +34,7 @@ public class SecurityConfig {
     JwtUtils jwtUtils;
 
     @Autowired
-    UserDetailServiceImpl  userDetailService;
+    UserDetailServiceImpl userDetailService;
 
     @Autowired
     JwtAuthorizationFilter jwtAuthorizationFilter;
@@ -43,12 +44,15 @@ public class SecurityConfig {
 
         JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(jwtUtils);
         jwtAuthenticationFilter.setAuthenticationManager(authenticationManager);
-        jwtAuthenticationFilter.setFilterProcessesUrl("/login");
+        jwtAuthenticationFilter.setFilterProcessesUrl("/auth/login");
 
         return httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> {
-                    auth.requestMatchers("/productos").permitAll();
+                    auth.requestMatchers("/clientes").permitAll();
+                    auth.requestMatchers("/tipo-documento-identidad").permitAll();
+                    auth.requestMatchers("/roles").permitAll();
+                    auth.requestMatchers("/clientes/{id}").permitAll();
                     auth.requestMatchers("/productos/activos").hasRole("ADMIN");
                     auth.requestMatchers("/productos/inactivos").hasRole("ADMIN");
                     auth.anyRequest().authenticated();

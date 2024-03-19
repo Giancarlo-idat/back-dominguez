@@ -79,26 +79,22 @@ public class ProductoServiceImpl implements ProductoService {
     }
 
     @Override
-    public List<ProductoDTO> agregar(List<ProductoDTO> listaProductoDTO) {
+    public ProductoDTO agregar(ProductoDTO productoDTO) {
 
-        List<ProductoDTO> productoAgregado = new ArrayList<>();
-        for (ProductoDTO productoDTO : listaProductoDTO) {
-            productoValidator.validarCategoriaAsignada(productoDTO);
-            productoValidator.validarProducto(productoDTO);
-            try {
-                String id = IdGenerator.generarID("PROD", productoDTO.getModelo());
-                productoDTO.setId(id);
-                ProductoEntity productoEntity = modelMapper.map(productoDTO, ProductoEntity.class);
-                productoRepository.save(productoEntity);
-                productoAgregado.add(modelMapper.map(productoEntity, ProductoDTO.class));
+        productoValidator.validarCategoriaAsignada(productoDTO);
+        productoValidator.validarProducto(productoDTO);
 
-            } catch (Exception e) {
-                throw new RuntimeException("Error al agregar el producto" + e.getMessage());
-            }
+        try {
+            String id = IdGenerator.generarID("PROD", productoDTO.getModelo());
+            productoDTO.setId(id);
+            ProductoEntity productoEntity = modelMapper.map(productoDTO, ProductoEntity.class);
+            productoRepository.save(productoEntity);
+            return modelMapper.map(productoEntity, ProductoDTO.class);
+        } catch (Exception e) {
+            throw new RuntimeException("Error al agregar el producto" + e.getMessage());
         }
-
-        return productoAgregado;
     }
+
 
     @Override
     public ProductoDTO actualizar(ProductoDTO productoDTO, String id) {

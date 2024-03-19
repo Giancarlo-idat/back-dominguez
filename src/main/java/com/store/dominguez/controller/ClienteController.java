@@ -4,6 +4,7 @@ package com.store.dominguez.controller;
 import com.store.dominguez.dto.ClienteDTO;
 import com.store.dominguez.service.gestion.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -21,7 +22,6 @@ public class ClienteController {
     private ClienteService clienteService;
 
     @GetMapping
-    @PreAuthorize("hasRole('Admin')")
     public ResponseEntity<List<ClienteDTO>> buscarTodos() {
         try {
             return ResponseEntity.ok(clienteService.buscarTodos());
@@ -31,7 +31,6 @@ public class ClienteController {
     }
 
     @GetMapping("/activos")
-    @PreAuthorize("hasRole('Admin')")
     public ResponseEntity<List<ClienteDTO>> buscarActivos() {
         try {
             return ResponseEntity.ok(clienteService.buscarActivo());
@@ -41,7 +40,6 @@ public class ClienteController {
     }
 
     @GetMapping("/inactivos")
-    @PreAuthorize("hasRole('Admin')")
     public ResponseEntity<List<ClienteDTO>> buscarInactivos() {
         try {
             return ResponseEntity.ok(clienteService.buscarInactivo());
@@ -51,7 +49,6 @@ public class ClienteController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('Admin')")
     public ResponseEntity<Optional<?>> buscarId(@PathVariable String id) {
         try {
             return ResponseEntity.ok(clienteService.buscarId(id));
@@ -61,7 +58,6 @@ public class ClienteController {
     }
 
     @GetMapping("/buscar")
-    @PreAuthorize("hasRole('Admin')")
     public ResponseEntity<List<?>> buscarPorDatos(@RequestParam String cliente) {
 
         try {
@@ -76,11 +72,13 @@ public class ClienteController {
     }
 
     @PostMapping
-    @PreAuthorize("hasRole('Admin')")
-    public ResponseEntity<?> agregar(@RequestBody List<ClienteDTO> ClienteEntity) {
+    public ResponseEntity<?> agregar(@RequestBody ClienteDTO ClienteEntity) {
         try {
             return ResponseEntity.status(201).body(clienteService.agregar(ClienteEntity));
-        } catch (IllegalArgumentException | NullPointerException e) {
+        } catch (DataIntegrityViolationException e) {
+            // Maneja la excepción de clave duplicada
+            return ResponseEntity.status(400).body("Error al guardar el cliente: ya existe un cliente con el mismo correo electrónico.");
+        }catch (IllegalArgumentException | NullPointerException e) {
             return ResponseEntity.status(400).body(e.getMessage());
         } catch (AccessDeniedException e) {
             return ResponseEntity.status(403).body(e.getMessage());

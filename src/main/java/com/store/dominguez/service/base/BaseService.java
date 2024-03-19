@@ -8,7 +8,7 @@ public interface BaseService<T> {
     List<T> buscarActivo();
     List<T> buscarInactivo();
     Optional<T> buscarId(String id);
-    List<T> agregar (List<T> t);
+    T agregar (T t);
     T actualizar (T t, String id);
     void eliminar (String id);
     T habilitar (String id);

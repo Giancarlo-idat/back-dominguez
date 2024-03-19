@@ -75,25 +75,20 @@ public class TipoDocumentoIdentidadServiceImpl implements TipoDocumentoIdentidad
     }
 
     @Override
-    public List<TipoDocumentoIdentidadDTO> agregar(List<TipoDocumentoIdentidadDTO> tipoDocumento) {
-        List<TipoDocumentoIdentidadDTO> documentoAgregado = new ArrayList<>();
-
-        for (TipoDocumentoIdentidadDTO documentoDTO : tipoDocumento) {
-
-            if (Validations.isBlank(documentoDTO.getNombre()))
-                throw new NullPointerException("El nombre no puede estar vacio");
-
-            try {
-                String id = IdGenerator.generarID("TDI", documentoDTO.getNombre());
-                documentoDTO.setId(id);
-                TipoDocumentoIdentidadEntity tipoDocumentoIdentidadEntity = modelMapper.map(documentoDTO, TipoDocumentoIdentidadEntity.class);
-                tdiRepository.save(tipoDocumentoIdentidadEntity);
-                documentoAgregado.add(modelMapper.map(tipoDocumentoIdentidadEntity, TipoDocumentoIdentidadDTO.class));
-            } catch (Exception e) {
-                throw new RuntimeException("Error al agregar el tipo de documento de identidad" + e.getMessage());
-            }
+    public TipoDocumentoIdentidadDTO agregar(TipoDocumentoIdentidadDTO tipoDocumento) {
+        if (Validations.isBlank(tipoDocumento.getNombre())) {
+            throw new NullPointerException("El nombre no puede estar vacío");
         }
-        return documentoAgregado;
+
+        try {
+            String id = IdGenerator.generarID("TDI", tipoDocumento.getNombre());
+            tipoDocumento.setId(id);
+            TipoDocumentoIdentidadEntity tipoDocumentoIdentidadEntity = modelMapper.map(tipoDocumento, TipoDocumentoIdentidadEntity.class);
+            tipoDocumentoIdentidadEntity = tdiRepository.save(tipoDocumentoIdentidadEntity);
+            return modelMapper.map(tipoDocumentoIdentidadEntity, TipoDocumentoIdentidadDTO.class);
+        } catch (Exception e) {
+            throw new RuntimeException("Error al agregar el tipo de documento de identidad" + e.getMessage());
+        }
     }
 
     @Override

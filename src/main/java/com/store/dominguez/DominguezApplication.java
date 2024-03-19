@@ -35,7 +35,8 @@ public class DominguezApplication {
     RolPermisoRepository rolPermisoRepository;
 
 
-    /*@Bean
+    /*
+    @Bean
     CommandLineRunner init() {
         return args -> {
 

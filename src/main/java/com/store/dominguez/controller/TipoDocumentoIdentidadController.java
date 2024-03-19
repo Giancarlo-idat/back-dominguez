@@ -66,7 +66,7 @@ public class TipoDocumentoIdentidadController {
     }
 
     @PostMapping
-    public ResponseEntity<?> agregar(@RequestBody List<TipoDocumentoIdentidadDTO> tipoDocumentoIdentidad) {
+    public ResponseEntity<?> agregar(@RequestBody TipoDocumentoIdentidadDTO tipoDocumentoIdentidad) {
         try {
             return ResponseEntity.ok(tipoDocumentoIdentidadService.agregar(tipoDocumentoIdentidad));
         } catch (IllegalArgumentException | NullPointerException e) {

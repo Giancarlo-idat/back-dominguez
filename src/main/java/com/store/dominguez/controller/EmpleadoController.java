@@ -79,7 +79,7 @@ public class EmpleadoController {
 
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> guardarEmpleado(@RequestBody List<EmpleadoDTO> empleado) {
+    public ResponseEntity<?> guardarEmpleado(@RequestBody EmpleadoDTO empleado) {
         try {
             return ResponseEntity.status(201).body(empleadoService.agregar(empleado));
         } catch (IllegalArgumentException | NullPointerException e) {

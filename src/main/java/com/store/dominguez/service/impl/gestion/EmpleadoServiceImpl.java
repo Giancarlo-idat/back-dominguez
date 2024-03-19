@@ -83,26 +83,22 @@ public class EmpleadoServiceImpl implements EmpleadoService {
     }
 
     @Override
-    public List<EmpleadoDTO> agregar(List<EmpleadoDTO> listaEmpleado) {
+    public EmpleadoDTO agregar(EmpleadoDTO empleadoDTO) {
 
-        List<EmpleadoDTO> empleadoAgregados = new ArrayList<>();
+        empleadoValidator.validarEmpleado(empleadoDTO);
 
-        for (EmpleadoDTO empleadoDTO : listaEmpleado) {
-            empleadoValidator.validarEmpleado(empleadoDTO);
-            try {
-                String id = IdGenerator.generarID("EMP", (empleadoDTO.getNombres().trim() + empleadoDTO.getApellidos()));
-                empleadoDTO.setId(id);
-                empleadoDTO.setPassword(passwordEncoder.encode(empleadoDTO.getPassword()));
-                EmpleadoEntity empleado = modelMapper.map(empleadoDTO, EmpleadoEntity.class);
-                empleado = empleadoRepository.save(empleado);
-                empleadoAgregados.add(modelMapper.map(empleado, EmpleadoDTO.class));
-            } catch (Exception e) {
-                throw new RuntimeException("Error al agregar el empleado: " + e.getMessage());
-            }
+        try {
+            String id = IdGenerator.generarID("EMP", (empleadoDTO.getNombres().trim() + empleadoDTO.getApellidos()));
+            empleadoDTO.setId(id);
+            empleadoDTO.setPassword(passwordEncoder.encode(empleadoDTO.getPassword()));
+            EmpleadoEntity empleado = modelMapper.map(empleadoDTO, EmpleadoEntity.class);
+            empleado = empleadoRepository.save(empleado);
+            return modelMapper.map(empleado, EmpleadoDTO.class);
+        } catch (Exception e) {
+            throw new RuntimeException("Error al agregar el empleado: " + e.getMessage());
         }
-
-        return empleadoAgregados;
     }
+
 
     @Override
     public EmpleadoDTO actualizar(EmpleadoDTO empleadoDTO, String id) {

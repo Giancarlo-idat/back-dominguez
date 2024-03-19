@@ -72,7 +72,7 @@ public class CategoriaController {
 
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> agregar(@RequestBody List<CategoriaDTO> categoriaDTO) {
+    public ResponseEntity<?> agregar(@RequestBody CategoriaDTO categoriaDTO) {
         try {
             return ResponseEntity.status(201).body(categoriaService.agregar(categoriaDTO));
         } catch (IllegalArgumentException | NullPointerException e) {

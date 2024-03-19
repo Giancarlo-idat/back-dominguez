@@ -102,11 +102,11 @@ public class ClienteServiceImpl implements ClienteService {
     }
 
     @Override
-    public List<ClienteDTO> agregar(List<ClienteDTO> listaClientes) {
+    public ClienteDTO agregar(ClienteDTO clienteDTO) {
 
-        List<ClienteDTO> clientesAgregados = new ArrayList<>();
         // Verificar si el rol de cliente predeterminado ya existe
         List<RolEntity> rolPredeterminado = rolRepository.buscarRol("Cliente");
+
         // Si no se encuentra el rol predeterminado, crear uno nuevo
         if (rolPredeterminado == null || rolPredeterminado.isEmpty()) {
             RolEntity rol = RolEntity.builder()
@@ -134,31 +134,27 @@ public class ClienteServiceImpl implements ClienteService {
             throw new RuntimeException("El rol 'Cliente' no se encontró en 'rolPredeterminado'");
         }
 
-        for (ClienteDTO clienteDTO : listaClientes) {
-            clienteValidator.validarCliente(clienteDTO);
-            try {
-                // Generar ID único para el cliente
-                String id = IdGenerator.generarID("CLI", clienteDTO.getNombres().trim() + clienteDTO.getApellidos());
+        try {
+            // Generar ID único para el cliente
+            String id = IdGenerator.generarID("CLI", clienteDTO.getNombres().trim() + clienteDTO.getApellidos());
 
-                clienteDTO.setId(id);
+            clienteDTO.setId(id);
 
-                // Codificar la contraseña del cliente
-                clienteDTO.setPassword(passwordEncoder.encode(clienteDTO.getPassword()));
+            // Codificar la contraseña del cliente
+            clienteDTO.setPassword(passwordEncoder.encode(clienteDTO.getPassword()));
 
-                ClienteEntity cliente = modelMapper.map(clienteDTO, ClienteEntity.class);
-                // Establecer el rol de cliente predeterminado
-                cliente.setRol(rolCliente);
+            ClienteEntity cliente = modelMapper.map(clienteDTO, ClienteEntity.class);
+            // Establecer el rol de cliente predeterminado
+            cliente.setRol(rolCliente);
 
-                // Guardar el cliente en la base de datos
-                cliente = clienteRepository.save(cliente);
-                clientesAgregados.add(modelMapper.map(cliente, ClienteDTO.class));
+            // Guardar el cliente en la base de datos
+            cliente = clienteRepository.save(cliente);
 
-            } catch (Exception e) {
-                System.err.println("Error al guardar el cliente: " + e.getMessage());
-            }
+            return modelMapper.map(cliente, ClienteDTO.class);
+        } catch (Exception e) {
+            System.err.println("Error al guardar el cliente: " + e.getMessage());
+            throw new RuntimeException("Error al guardar el cliente: " + e.getMessage());
         }
-
-        return clientesAgregados;
     }
 
     @Override

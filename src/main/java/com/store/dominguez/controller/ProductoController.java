@@ -109,7 +109,7 @@ public class ProductoController {
 
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> agregar(@RequestPart List<ProductoDTO> productoDTO, @RequestParam("imagen") MultipartFile imagen) {
+    public ResponseEntity<?> agregar(@RequestPart ProductoDTO productoDTO, @RequestParam("imagen") MultipartFile imagen) {
         try {
 
             if (!imagen.isEmpty()) {
@@ -132,7 +132,6 @@ public class ProductoController {
 
                 Path path = Paths.get("src/main/resources/images/" + newFileName);
                 Files.write(path, bytes);
-                productoDTO.get(0).setImagen(imagen.getOriginalFilename());
 
             }
             return ResponseEntity.status(201).body(productoService.agregar(productoDTO));

@@ -94,24 +94,21 @@ public class RolServiceImpl implements RolService {
     }
 
     @Override
-    public List<RolDTO> agregar(List<RolDTO> rol) {
+    public RolDTO agregar(RolDTO rolDTO) {
 
-        List<RolDTO> rolAgregado = new ArrayList<>();
+        rolValidator.validarRoles(rolDTO);
 
-        for (RolDTO rolDTO : rol) {
-            rolValidator.validarRoles(rolDTO);
-            try {
-                String id = IdGenerator.generarID("ROL", (rolDTO.getNombre().trim()));
-                rolDTO.setId(id);
-                RolEntity rolEntity = modelMapper.map(rolDTO, RolEntity.class);
-                rolEntity = rolRepository.save(rolEntity);
-                rolAgregado.add(modelMapper.map(rolEntity, RolDTO.class));
-            } catch (Exception e) {
-                throw new RuntimeException("Error al agregar el rol" + e.getMessage());
-            }
+        try {
+            String id = IdGenerator.generarID("ROL", (rolDTO.getNombre().trim()));
+            rolDTO.setId(id);
+            RolEntity rolEntity = modelMapper.map(rolDTO, RolEntity.class);
+            rolEntity = rolRepository.save(rolEntity);
+            return modelMapper.map(rolEntity, RolDTO.class);
+        } catch (Exception e) {
+            throw new RuntimeException("Error al agregar el rol" + e.getMessage());
         }
-        return rolAgregado;
     }
+
 
     @Override
     public RolDTO actualizar(RolDTO rolDTO, String id) {

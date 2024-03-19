@@ -39,6 +39,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         ClienteEntity clienteEntity = null;
         String email = "";
         String password = "";
+
         try {
             // Lee los datos de autenticación del cuerpo de la solicitud
             clienteEntity = new ObjectMapper().readValue(request.getInputStream(), ClienteEntity.class);
@@ -82,6 +83,9 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         httpResponse.put("token: ", token);
         httpResponse.put("Message: ", "Autenticación Correcta");
         httpResponse.put("Email: ", user.getUsername());
+        httpResponse.put("Roles: ", user.getAuthorities());
+        httpResponse.put("Status: ", HttpStatus.OK.value());
+
 
         // Se escribe el objeto JSON en el cuerpo de la respuesta
         response.getWriter().write(new ObjectMapper().writeValueAsString(httpResponse));
