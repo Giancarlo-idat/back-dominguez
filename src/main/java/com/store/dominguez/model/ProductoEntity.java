@@ -56,10 +56,6 @@ public class ProductoEntity extends BaseEntity {
     @Column(name="ficha_tecnica",columnDefinition = "TEXT", nullable = false)
     private JsonNode fichaTecnica;
 
-    @ManyToOne
-    @JoinColumn(name = "id_carrito_compra")
-    private CarritoComprasEntity carrito;
-
     @JsonIgnore
     public String toJson() throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();

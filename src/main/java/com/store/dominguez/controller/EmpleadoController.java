@@ -22,7 +22,6 @@ public class EmpleadoController {
     private EmpleadoService empleadoService;
 
     @GetMapping
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<?>> buscarTodos() {
         try {
             return ResponseEntity.ok(empleadoService.buscarTodos());
@@ -32,7 +31,7 @@ public class EmpleadoController {
     }
 
     @GetMapping("/activos")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('Admin')")
     public ResponseEntity<List<?>> buscarActivos() {
         try {
             return ResponseEntity.ok(empleadoService.buscarActivo());
@@ -42,7 +41,7 @@ public class EmpleadoController {
     }
 
     @GetMapping("/inactivos")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('Admin')")
     public ResponseEntity<List<?>> buscarInactivos() {
         try {
             return ResponseEntity.ok(empleadoService.buscarInactivo());
@@ -52,7 +51,7 @@ public class EmpleadoController {
     }
 
     @GetMapping("/buscar")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('Admin')")
     public ResponseEntity<List<?>> buscarPorDatos(@RequestParam String empleado) {
         try {
             List<EmpleadoDTO> empleados = empleadoService.buscarDatosEmpleado(empleado);
@@ -66,7 +65,7 @@ public class EmpleadoController {
 
 
     @GetMapping("/empleadoId")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('Admin')")
     public ResponseEntity<Optional<?>> buscarId(@RequestParam String empleadoId) {
         try {
             return ResponseEntity.ok(empleadoService.buscarId(empleadoId));
@@ -78,7 +77,7 @@ public class EmpleadoController {
     }
 
     @PostMapping
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('Admin')")
     public ResponseEntity<?> guardarEmpleado(@RequestBody EmpleadoDTO empleado) {
         try {
             return ResponseEntity.status(201).body(empleadoService.agregar(empleado));
@@ -95,7 +94,7 @@ public class EmpleadoController {
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('Admin')")
     public ResponseEntity<?> actualizarEmpleado(@PathVariable String id, @RequestBody EmpleadoDTO empleadoDTO) {
         try {
             return ResponseEntity.ok(empleadoService.actualizar(empleadoDTO, id));
@@ -109,7 +108,7 @@ public class EmpleadoController {
     }
 
     @DeleteMapping("/eliminar/empleado")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('Admin')")
     public ResponseEntity<?> eliminarEmpleado(@RequestParam String id) {
         try {
             empleadoService.eliminar(id);
@@ -122,7 +121,7 @@ public class EmpleadoController {
     }
 
     @PutMapping("/habilitar/empleado")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('Admin')")
     public ResponseEntity<?> habilitarEmpleado(@RequestParam String id) {
         try {
             empleadoService.habilitar(id);

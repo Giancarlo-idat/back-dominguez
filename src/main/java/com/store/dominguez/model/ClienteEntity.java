@@ -4,8 +4,13 @@ import com.store.dominguez.model.base.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @SuperBuilder
@@ -16,7 +21,7 @@ import java.util.Set;
 @EqualsAndHashCode(callSuper = false)
 @Entity(name = "ClienteEntity")
 @Table(name = "cliente")
-public class ClienteEntity extends BaseEntity {
+public class ClienteEntity extends BaseEntity implements UserDetails {
 
     @Id
     @Column(name = "id_cliente", nullable = false, unique = true, length = 50)
@@ -58,4 +63,34 @@ public class ClienteEntity extends BaseEntity {
     @Column(name = "estado", nullable = false)
     private boolean estado = true;
 
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(rol.getNombre()));
+    }
+
+    @Override
+    public String getUsername() {
+        return nombres + apellidos;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }

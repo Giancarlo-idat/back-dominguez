@@ -1,7 +1,8 @@
 package com.store.dominguez.security.filters;
 
+import com.store.dominguez.model.ClienteEntity;
+import com.store.dominguez.repository.gestion.ClienteRepository;
 import com.store.dominguez.security.jwt.JwtUtils;
-import com.store.dominguez.service.impl.gestion.ClienteServiceImpl;
 import com.store.dominguez.service.impl.gestion.UserDetailServiceImpl;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -10,12 +11,15 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Collection;
+import java.util.Optional;
 
 @Component
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
@@ -24,41 +28,43 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
     private JwtUtils jwtUtils;
 
     @Autowired
+    private ClienteRepository clienteRepository;
+
+    @Autowired
     private UserDetailServiceImpl userDetailsService;
 
     @Override
-    // Método que se ejecutará en cada solicitud que se haga al servidor
     protected void doFilterInternal(@NonNull HttpServletRequest request,
                                     @NonNull HttpServletResponse response,
                                     @NonNull FilterChain filterChain) throws ServletException, IOException {
 
-        // Se obtiene el token JWT del encabezado Authorization de la solicitud
         String tokenHeader = request.getHeader("Authorization");
 
-        // Se verifica si el token existe y si comienza con "Bearer "
-        if(tokenHeader != null && tokenHeader.startsWith("Bearer ")){
-
-            // Se extrae el token de la cabecera eliminando el prefijo "Bearer "
+        if (tokenHeader != null && tokenHeader.startsWith("Bearer ")) {
             String token = tokenHeader.substring(7);
 
-            // Se verifica si el token es válido
-            if(jwtUtils.isTokenValid(token)){
-
-                // Se obtiene el nombre de usuario del token JWT
+            if (jwtUtils.isTokenValid(token)) {
                 String username = jwtUtils.getUsernameFromToken(token);
-
-                // Se obtienen los detalles del usuario
                 UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
-                // Se crea un objeto de autenticación con el nombre de usuario y los roles del usuario
-                UsernamePasswordAuthenticationToken authenticationToken =
-                        new UsernamePasswordAuthenticationToken(username, null, userDetails.getAuthorities());
+                Optional<ClienteEntity> clienteEntityOptional = clienteRepository.findByEmail(username);
+                if (clienteEntityOptional.isPresent()) {
+                    ClienteEntity clienteEntity = clienteEntityOptional.get();
+                    Collection<? extends GrantedAuthority> authorities = clienteEntity.getAuthorities();
 
-                // Se establece la autenticación en el contexto de seguridad
-                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                    UsernamePasswordAuthenticationToken authenticationToken =
+                            new UsernamePasswordAuthenticationToken(userDetails, null, authorities);
+                    SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                } else {
+                    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                    return;
+                }
+            } else {
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                return;
             }
         }
-        // Se continúa con la cadena de filtros de seguridad
+
         filterChain.doFilter(request, response);
     }
 }

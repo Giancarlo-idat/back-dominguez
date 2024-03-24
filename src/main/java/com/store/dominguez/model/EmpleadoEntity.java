@@ -43,6 +43,9 @@ public class EmpleadoEntity  extends BaseEntity {
     @JoinColumn(name = "id_tipo_documento_identidad")
     private TipoDocumentoIdentidadEntity tipoDocumento;
 
+    @Column(name="numero_documento", nullable = false, length = 11, unique = true)
+    private String numeroDocumento;
+
     @Enumerated(EnumType.STRING)
     private TipoSexo sexo;
 

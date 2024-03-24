@@ -31,6 +31,7 @@ public class ClienteValidator {
         validarCamposValidos(cliente);
         validarDocumento(cliente);
         validarSexo(cliente.getSexo().name());
+        validarTipoDocumento(cliente);
        /* validarRol(cliente);*/
 
     }

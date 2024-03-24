@@ -1,12 +1,9 @@
 package com.store.dominguez.dto;
 
 import com.store.dominguez.dto.base.BaseDTO;
-import com.store.dominguez.model.TipoDocumentoIdentidadEntity;
 import com.store.dominguez.model.TipoSexo;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-
-import java.util.Set;
 
 @SuperBuilder
 @Data

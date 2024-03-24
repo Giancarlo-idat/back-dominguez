@@ -13,6 +13,8 @@ import org.springframework.stereotype.Component;
 import java.security.Key;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -28,9 +30,9 @@ public class JwtUtils {
 
 
     // Generar token de acceso
-    public String generateAccessToken(String username, Collection<? extends GrantedAuthority> authorities) {
+    public String generateAccessToken(String email, Collection<? extends GrantedAuthority> authorities) {
         return Jwts.builder()
-                .setSubject(username)
+                .setSubject(email)
                 .claim("roles", authorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + Long.parseLong(timeExpiration)))

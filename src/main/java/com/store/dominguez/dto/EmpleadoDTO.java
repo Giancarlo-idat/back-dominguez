@@ -19,6 +19,7 @@ public class EmpleadoDTO extends BaseDTO {
     private String email;
     private String password;
     private TipoDocumentoIdentidadDTO tipoDocumento;
+    private String numeroDocumento;
     private TipoSexo sexo;
     private String telefono;
     @Builder.Default

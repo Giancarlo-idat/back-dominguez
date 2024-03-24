@@ -29,10 +29,25 @@ public class DetalleDocVentaEntity extends BaseEntity {
     @Column(name = "cantidad")
     private int cantidad;
 
-    @Column(name = "precio")
-    private BigDecimal precio;
+    // Precio unitario del producto
+    @Column(name = "precio_unitario")
+    private BigDecimal precio_unitario;
 
+    // Precio total de la venta
+    @Column(name = "precio_total")
+    private BigDecimal precio_total;
+
+    // Referencia a la venta que le corresponde
     @ManyToOne
     @JoinColumn(name = "id_doc_venta")
     private DocVentaEntity docVenta;
+
+    @PrePersist
+    @PreUpdate
+    public void validar() {
+        if(cantidad <= 0  || precio_unitario.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new IllegalArgumentException("La cantidad y el precio unitario deben ser mayores a 0");
+        }
+    }
+
 }

@@ -2,11 +2,15 @@ package com.store.dominguez.dto;
 
 
 import com.store.dominguez.dto.base.BaseDTO;
+import com.store.dominguez.model.EstadoEnvio;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+
+import java.math.BigDecimal;
+import java.util.Set;
 
 @SuperBuilder
 @Data
@@ -15,12 +19,14 @@ import lombok.experimental.SuperBuilder;
 @EqualsAndHashCode(callSuper = false)
 public class DocVentaDTO extends BaseDTO {
 
-    private String fechaPedido;
+    private String id;
+    private String fechaVenta;
     private ClienteDTO cliente;
-    private String tipoDoc;
     private MetodoPagoDTO metodoPago;
-    private String subtotal;
-    private String IGV;
-    private String montoTotal;
-    private Boolean estado = true;
+    private TipoTransaccionDTO tipoTransaccion;
+    private EstadoEnvio estadoEnvio;
+    private String numeroSeguimiento;
+    private BigDecimal precio_total;
+    private Set<DetalleDocVentaDTO> detalleVenta;
+
 }

@@ -15,39 +15,46 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 @Service
 public class UserDetailServiceImpl implements UserDetailsService {
 
-    @Autowired
-    private EmpleadoRepository empleadoRepository;
+    private final ClienteRepository clienteRepository;
+    private final EmpleadoRepository empleadoRepository;
 
+    @Autowired
+    public UserDetailServiceImpl(ClienteRepository clienteRepository, EmpleadoRepository empleadoRepository) {
+        this.clienteRepository = clienteRepository;
+        this.empleadoRepository = empleadoRepository;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Optional<ClienteEntity> clienteEntityOptional = clienteRepository.findByEmail(username);
+        if (clienteEntityOptional.isPresent()) {
+            ClienteEntity clienteEntity = clienteEntityOptional.get();
+            return buildUserDetails(clienteEntity.getEmail(), clienteEntity.getPassword(), clienteEntity.getRol().getNombre(), clienteEntity.getNombres(), clienteEntity.getApellidos());
+        }
 
-        // Busca al usuario por su email en la base de datos, si no lo encuentra lanza una excepción
-        EmpleadoEntity empleadoEntity = empleadoRepository.findByEmail(username)
-                .orElseThrow(() -> new UsernameNotFoundException("El Usuario " + username + " no existe"));
+        Optional<EmpleadoEntity> empleadoEntityOptional = empleadoRepository.findByEmail(username);
+        if (empleadoEntityOptional.isPresent()) {
+            EmpleadoEntity empleadoEntity = empleadoEntityOptional.get();
+            return buildUserDetails(empleadoEntity.getEmail(), empleadoEntity.getPassword(), empleadoEntity.getRol().getNombre(), empleadoEntity.getNombres(), empleadoEntity.getApellidos());
+        }
 
-        String rolNombre = empleadoEntity.getRol().getNombre();
+        throw new UsernameNotFoundException("Usuario no encontrado: " + username);
+    }
 
-        // Crea una colección de roles para el usuario y obtiene el rol del usuario
+    private UserDetails buildUserDetails(String username, String password, String rolNombre, String nombre, String apellido) {
         Collection<? extends GrantedAuthority> authorities = Collections.singleton(new SimpleGrantedAuthority("ROLE_" + rolNombre));
-
-
-        // devuelve un objeto UserDetails con la información del usuario y sus roles
-        // User obtiene el email y el password del usuario, y los roles que tiene
-        // Indicará si la cuenta del usuario está habilitada (true en este caso)
-        // Indicará si las credenciales del usuario (contraseña) están habilitadas (true en este caso)
-        // Indicará si la cuenta del usuario no ha expirado (true en este caso)
-        // Indicará si las credenciales del usuario no han expirado (true en este caso)
-        return new User(empleadoEntity.getEmail(), empleadoEntity.getPassword(),
-                true,
-                true,
-                true,
-                true,
-                authorities); // Colección de roles/permisos del usuario
+        return User.withUsername(username)
+                .password(password)
+                .authorities(authorities)
+                .accountExpired(false)
+                .accountLocked(false)
+                .credentialsExpired(false)
+                .disabled(false)
+                .build();
     }
 }

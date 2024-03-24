@@ -7,17 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.IOException;
 import java.math.BigDecimal;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/productos")
@@ -36,7 +29,7 @@ public class ProductoController {
     }
 
     @GetMapping("/activos")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('Admin')")
     public ResponseEntity<List<?>> buscarActivos() {
         try {
             return ResponseEntity.ok(productoService.buscarActivo());
@@ -46,7 +39,7 @@ public class ProductoController {
     }
 
     @GetMapping("/inactivos")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('Admin')")
     public ResponseEntity<List<?>> buscarInactivos() {
         try {
             return ResponseEntity.ok(productoService.buscarInactivo());
@@ -56,7 +49,7 @@ public class ProductoController {
     }
 
     @GetMapping("/modelo")
-    @PreAuthorize("hasRole('CLIENTE') or hasRole('ALMACEN') or hasRole('ADMIN')")
+    @PreAuthorize("hasRole('CLIENTE') or hasRole('ALMACEN') or hasRole('Admin')")
     public ResponseEntity<List<?>> buscarPorModelo(@RequestParam String modelo) {
         try {
             return ResponseEntity.ok(productoService.buscarModelo(modelo));
@@ -66,7 +59,7 @@ public class ProductoController {
     }
 
     @GetMapping("/marca")
-    @PreAuthorize("hasRole('CLIENTE') or hasRole('ALMACEN') or hasRole('ADMIN')")
+    @PreAuthorize("hasRole('CLIENTE') or hasRole('ALMACEN') or hasRole('Admin')")
     public ResponseEntity<List<?>> buscarPorMarca(@RequestParam String marca) {
         try {
             return ResponseEntity.ok(productoService.buscarPorMarca(marca));
@@ -76,7 +69,7 @@ public class ProductoController {
     }
 
     @GetMapping("/categoria")
-    @PreAuthorize("hasRole('CLIENTE') or hasRole('ALMACEN') or hasRole('ADMIN')")
+    @PreAuthorize("hasRole('CLIENTE') or hasRole('ALMACEN') or hasRole('Admin')")
     public ResponseEntity<List<?>> buscarPorCategoria(@RequestParam String categoria) {
         try {
             return ResponseEntity.ok(productoService.buscarPorCategoria(categoria));
@@ -86,7 +79,7 @@ public class ProductoController {
     }
 
     @GetMapping("/precio")
-    @PreAuthorize("hasRole('CLIENTE') or hasRole('ALMACEN') or hasRole('ADMIN')")
+    @PreAuthorize("hasRole('CLIENTE') or hasRole('ALMACEN') or hasRole('Admin')")
     public ResponseEntity<List<?>> buscarPorRangoPrecio(@RequestParam BigDecimal precioMin, @RequestParam BigDecimal precioMax) {
         try {
             return ResponseEntity.ok(productoService.buscarPorRangoPrecio(precioMin, precioMax));
@@ -98,7 +91,7 @@ public class ProductoController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('CLIENTE') or hasRole('ALMACEN') or hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ALMACEN') or hasRole('Admin')")
     public ResponseEntity<?> buscarId(@PathVariable String id) {
         try {
             return ResponseEntity.ok(productoService.buscarId(id));
@@ -108,32 +101,9 @@ public class ProductoController {
     }
 
     @PostMapping
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> agregar(@RequestPart ProductoDTO productoDTO, @RequestParam("imagen") MultipartFile imagen) {
+    @PreAuthorize("hasRole('Admin')")
+    public ResponseEntity<?> agregar(@RequestBody ProductoDTO productoDTO) {
         try {
-
-            if (!imagen.isEmpty()) {
-                String fileName = UUID.randomUUID().toString();
-                byte[] bytes = imagen.getBytes();
-                long fileSize = imagen.getSize();
-                long maxFileSize = 5 * 1024 * 1024;
-                String fileOriginalName = imagen.getOriginalFilename();
-                if (fileSize > maxFileSize) {
-                    throw new Exception("El archivo es demasiado grande");
-                }
-                String fileExtension = fileOriginalName.substring(fileOriginalName.lastIndexOf("."));
-                String newFileName = fileName + fileExtension;
-                Path directorioImagenes = Paths.get("src/main/resources/images");
-                String rutaAbsoluta = directorioImagenes.toFile().getAbsolutePath();
-                File folder = new File("src/main/resources/images");
-                if (!folder.exists()) {
-                    folder.mkdirs();
-                }
-
-                Path path = Paths.get("src/main/resources/images/" + newFileName);
-                Files.write(path, bytes);
-
-            }
             return ResponseEntity.status(201).body(productoService.agregar(productoDTO));
         } catch (IllegalArgumentException | NullPointerException e) {
             return ResponseEntity.status(400).body(e.getMessage());
@@ -143,7 +113,7 @@ public class ProductoController {
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('Admin')")
     public ResponseEntity<?> actualizar(@PathVariable String id, @RequestBody ProductoDTO productoDTO) {
         try {
             return ResponseEntity.ok(productoService.actualizar(productoDTO, id));
@@ -155,7 +125,7 @@ public class ProductoController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('Admin')")
     public ResponseEntity<?> eliminar(@PathVariable String id) {
         try {
             productoService.eliminar(id);
@@ -168,7 +138,7 @@ public class ProductoController {
     }
 
     @PutMapping("/habilitar/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('Admin')")
     public ResponseEntity<?> habilitar(@PathVariable String id) {
         try {
             productoService.habilitar(id);

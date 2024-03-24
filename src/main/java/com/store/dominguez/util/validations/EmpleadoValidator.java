@@ -30,6 +30,7 @@ public class EmpleadoValidator {
         validarDocumento(empleadoDTO);
         validarSexo(empleadoDTO.getSexo().name());
         validarRol(empleadoDTO);
+        validarTipoDocumento(empleadoDTO);
 
     }
 
@@ -46,6 +47,18 @@ public class EmpleadoValidator {
             throw new IllegalArgumentException("El email no puede ser vacío");
         if (Validations.isBlank(empleadoDTO.getTipoDocumento().getId()))
             throw new Exceptions.TipoDocumentoInvalidoException("El tipo de documento no puede estar vacio ");
+    }
+
+    public static void validarTipoDocumento(EmpleadoDTO empleadoDTO) {
+        if(empleadoDTO.getTipoDocumento().getNombre().equals("DNI")) {
+            if (!Validations.isValidDNI(empleadoDTO.getNumeroDocumento()))
+                throw new IllegalArgumentException("El DNI no es válido");
+        } else if(empleadoDTO.getTipoDocumento().getNombre().equals("RUC")) {
+            if (!Validations.isValidRUC(empleadoDTO.getNumeroDocumento()))
+                throw new IllegalArgumentException("El RUC no es válido");
+        } else {
+            throw new IllegalArgumentException("El tipo de documento no es válido");
+        }
     }
 
     public void validarCamposValidos(EmpleadoDTO empleadoDTO) {

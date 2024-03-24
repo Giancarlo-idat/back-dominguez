@@ -26,6 +26,9 @@ public class DominguezApplication {
     EmpleadoRepository empleadoRepository;
 
     @Autowired
+    ClienteRepository clienteRepository;
+
+    @Autowired
     TipoDocumentoIdentidadRepository tipoDocumentoIdentidadRepository;
 
     @Autowired
@@ -35,8 +38,7 @@ public class DominguezApplication {
     RolPermisoRepository rolPermisoRepository;
 
 
-    /*
-    @Bean
+    /*@Bean
     CommandLineRunner init() {
         return args -> {
 
@@ -80,7 +82,7 @@ public class DominguezApplication {
             tipoDocumentoIdentidadRepository.save(tipoDocumento2);
 
             EmpleadoEntity empleado = EmpleadoEntity.builder()
-                    .id("EMP-SUP-OJT512")
+                    .id("ADM-SUP-OJT512")
                     .nombres("super")
                     .apellidos("admin")
                     .direccion("Calle 100 # 50 - 56")
@@ -88,6 +90,7 @@ public class DominguezApplication {
                     .email("importacionesDominguez2024@gmail.com")
                     .password(passwordEncoder.encode("superadmin123"))
                     .tipoDocumento(tipoDocumento)
+                    .numeroDocumento("12345678")
                     .rol(rol)
                     .estado(true)
                     .sexo(TipoSexo.MASCULINO)
@@ -95,7 +98,23 @@ public class DominguezApplication {
             empleado.setFechaCreacion(LocalDateTime.now());
             empleadoRepository.save(empleado);
 
+            ClienteEntity cliente = ClienteEntity.builder()
+                    .id("ADM-SUP-OJT512")
+                    .nombres("super")
+                    .apellidos("admin")
+                    .direccion("Calle 100 # 50 - 56")
+                    .telefono("122234567")
+                    .email("importacionesDominguez2024@gmail.com")
+                    .password(passwordEncoder.encode("superadmin123"))
+                    .tipoDocumento(tipoDocumento)
+                    .numeroDocumento("12345678")
+                    .rol(rol)
+                    .estado(true)
+                    .sexo(TipoSexo.MASCULINO)
+                    .build();
+            cliente.setFechaCreacion(LocalDateTime.now());
+            clienteRepository.save(cliente);
+
         };
-    }
-*/
+    }*/
 }
