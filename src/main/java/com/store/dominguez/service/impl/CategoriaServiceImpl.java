@@ -1,4 +1,4 @@
-package com.store.dominguez.service.impl.gestion;
+package com.store.dominguez.service.impl;
 
 import com.store.dominguez.dto.CategoriaDTO;
 import com.store.dominguez.model.CategoriaEntity;
@@ -45,7 +45,9 @@ public class CategoriaServiceImpl implements CategoriaService {
     public List<CategoriaDTO> buscarActivo() {
         try {
             List<CategoriaEntity> list = categoriaRepository.buscarCategoriaActivo();
-            return list.stream().map(cat -> modelMapper.map(cat, CategoriaDTO.class)).collect(Collectors.toList());
+            return list.stream()
+                    .map(cat -> modelMapper.map(cat, CategoriaDTO.class))
+                    .collect(Collectors.toList());
         } catch (Exception e) {
             throw new RuntimeException("Error al buscar la categoria" + e.getMessage());
         }
@@ -55,7 +57,9 @@ public class CategoriaServiceImpl implements CategoriaService {
     public List<CategoriaDTO> buscarInactivo() {
         try {
             List<CategoriaEntity> list = categoriaRepository.buscarCategoriaInactivo();
-            return list.stream().map(cat -> modelMapper.map(cat, CategoriaDTO.class)).collect(Collectors.toList());
+            return list.stream()
+                    .map(cat -> modelMapper.map(cat, CategoriaDTO.class))
+                    .collect(Collectors.toList());
         } catch (Exception e) {
             throw new RuntimeException("Error al buscar la categoria" + e.getMessage());
         }
@@ -114,8 +118,6 @@ public class CategoriaServiceImpl implements CategoriaService {
         } catch (Exception e) {
             throw new RuntimeException("Error al actualizar la categoria" + e.getMessage());
         }
-
-
     }
 
     @Override

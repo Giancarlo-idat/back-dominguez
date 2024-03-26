@@ -3,7 +3,7 @@ package com.store.dominguez.security.filters;
 import com.store.dominguez.model.ClienteEntity;
 import com.store.dominguez.repository.gestion.ClienteRepository;
 import com.store.dominguez.security.jwt.JwtUtils;
-import com.store.dominguez.service.impl.gestion.UserDetailServiceImpl;
+import com.store.dominguez.service.impl.UserDetailServiceImpl;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

@@ -1,4 +1,4 @@
-package com.store.dominguez.service.impl.gestion;
+package com.store.dominguez.service.impl;
 
 import com.store.dominguez.dto.RolDTO;
 import com.store.dominguez.model.RolEntity;
