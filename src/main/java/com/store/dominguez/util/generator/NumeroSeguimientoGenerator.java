@@ -14,14 +14,13 @@ public class NumeroSeguimientoGenerator {
         Random random = new Random();
         String numeroSeguimiento;
 
-        do {
-            StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < 10; i++) {
-                sb.append(random.nextInt(20));
-            }
-            numeroSeguimiento = sb.toString();
-        } while (!numeroSeguimientoExistente.add(numeroSeguimiento));
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < 10; i++) {
+            sb.append(random.nextInt(20));
+        }
+        numeroSeguimiento = sb.toString();
 
         return numeroSeguimiento;
     }
+
 }

@@ -22,15 +22,17 @@ public class ClienteController {
     private ClienteService clienteService;
 
     @GetMapping
-    public ResponseEntity<List<ClienteDTO>> buscarTodos() {
+    @PreAuthorize("hasRole('Admin')")
+    public ResponseEntity<List<?>> buscarTodos() {
         try {
             return ResponseEntity.ok(clienteService.buscarTodos());
         } catch (Exception e) {
-            return ResponseEntity.status(500).build();
+            return ResponseEntity.status(500).body(Collections.singletonList(e.getMessage()));
         }
     }
 
     @GetMapping("/activos")
+    @PreAuthorize("hasRole('Admin')")
     public ResponseEntity<List<ClienteDTO>> buscarActivos() {
         try {
             return ResponseEntity.ok(clienteService.buscarActivo());
@@ -40,6 +42,7 @@ public class ClienteController {
     }
 
     @GetMapping("/inactivos")
+    @PreAuthorize("hasRole('Admin')")
     public ResponseEntity<List<ClienteDTO>> buscarInactivos() {
         try {
             return ResponseEntity.ok(clienteService.buscarInactivo());
@@ -49,6 +52,7 @@ public class ClienteController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('Admin')")
     public ResponseEntity<Optional<?>> buscarId(@PathVariable String id) {
         try {
             return ResponseEntity.ok(clienteService.buscarId(id));
@@ -58,6 +62,7 @@ public class ClienteController {
     }
 
     @GetMapping("/buscar")
+    @PreAuthorize("hasRole('Admin')")
     public ResponseEntity<List<?>> buscarPorDatos(@RequestParam String cliente) {
 
         try {
@@ -72,13 +77,14 @@ public class ClienteController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('Admin')")
     public ResponseEntity<?> agregar(@RequestBody ClienteDTO ClienteEntity) {
         try {
             return ResponseEntity.status(201).body(clienteService.agregar(ClienteEntity));
         } catch (DataIntegrityViolationException e) {
             // Maneja la excepción de clave duplicada
             return ResponseEntity.status(400).body("Error al guardar el cliente: ya existe un cliente con el mismo correo electrónico.");
-        }catch (IllegalArgumentException | NullPointerException e) {
+        } catch (IllegalArgumentException | NullPointerException e) {
             return ResponseEntity.status(400).body(e.getMessage());
         } catch (AccessDeniedException e) {
             return ResponseEntity.status(403).body(e.getMessage());

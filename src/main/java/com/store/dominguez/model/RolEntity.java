@@ -8,6 +8,7 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 
@@ -35,13 +36,10 @@ public class RolEntity extends BaseEntity {
     @Column(name = "descripcion", length = 100)
     private String descripcion;
 
-    @OneToMany(mappedBy = "rol")
-    private Set<EmpleadoEntity> empleados = new HashSet<>();
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "rol")
+    private List<EmpleadoEntity> empleados;
 
-    @OneToMany(mappedBy = "rol")
-    private Set<ClienteEntity> clientes = new HashSet<>();
-
-    @OneToMany(mappedBy = "rol")
-    private Set<RolPermisoEntity> permisos = new HashSet<>();
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "rol")
+    private List<ClienteEntity> clientes;
 
 }

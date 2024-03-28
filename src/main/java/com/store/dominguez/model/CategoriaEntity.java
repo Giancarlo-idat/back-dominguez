@@ -22,10 +22,10 @@ public class CategoriaEntity  extends BaseEntity {
     @Column(name="id_categoria", nullable = false, unique = true,length = 50)
     private String id;
 
-    @Column(name="nombre", nullable = false,unique = true, length = 60)
+    @Column(name="nombre", nullable = false,unique = true, length = 100)
     private String nombre;
 
-    @Column(name="descripcion", length = 60)
+    @Column(name="descripcion", length = 150)
     private String descripcion;
 
     @Column(name="estado", nullable = false)

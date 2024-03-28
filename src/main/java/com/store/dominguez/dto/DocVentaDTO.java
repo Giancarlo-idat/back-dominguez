@@ -18,15 +18,18 @@ import java.util.Set;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 public class DocVentaDTO extends BaseDTO {
-
     private String id;
     private String fechaVenta;
     private ClienteDTO cliente;
     private MetodoPagoDTO metodoPago;
     private TipoTransaccionDTO tipoTransaccion;
+    private String direccionEnvio;
+    private String fechaEnvio;
+    private String fechaEntrega;
     private EstadoEnvio estadoEnvio;
     private String numeroSeguimiento;
     private BigDecimal precio_total;
-    private Set<DetalleDocVentaDTO> detalleVenta;
+    private Set<DocDetalleVentaDTO> detalleVenta;
+    private boolean estado = true;
 
 }

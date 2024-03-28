@@ -21,4 +21,6 @@ public interface ClienteRepository extends BaseRepository<ClienteEntity, String>
 
     Optional<ClienteEntity> findByEmail(String email);
 
+    boolean existsByEmail(String email);
+
 }

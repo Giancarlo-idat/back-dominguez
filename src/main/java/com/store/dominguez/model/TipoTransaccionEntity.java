@@ -14,9 +14,9 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-@Entity(name = "TipoTransaccion")
+@Entity(name = "TipoTransaccionEntity")
 @Table(name = "tipo_transaccion")
-public class TipoTransaccion extends BaseEntity {
+public class TipoTransaccionEntity extends BaseEntity {
 
     @Id
     @Column(name = "id_tipo_transaccion", nullable = false, unique = true, length = 20)

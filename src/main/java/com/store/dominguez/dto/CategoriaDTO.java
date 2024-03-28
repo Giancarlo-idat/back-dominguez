@@ -10,7 +10,6 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 public class CategoriaDTO extends BaseDTO {
-
     private String nombre;
     private String descripcion;
     @Builder.Default

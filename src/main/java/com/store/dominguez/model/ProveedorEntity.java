@@ -20,13 +20,13 @@ public class ProveedorEntity extends BaseEntity {
     @Column(name="id_proveedor", nullable = false, unique = true,length = 50)
     private String id;
 
-    @Column(name="nombres", nullable = false, length = 50)
+    @Column(name="nombres", nullable = false, length = 80)
     private String nombres;
 
-    @Column(name="direccion", length = 50)
+    @Column(name="direccion", length = 100)
     private String direccion;
 
-    @Column(name="email", nullable = false, length = 30)
+    @Column(name="email", nullable = false, length = 50)
     private String email;
 
     @ManyToOne

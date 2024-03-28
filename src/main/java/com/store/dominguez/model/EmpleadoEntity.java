@@ -5,6 +5,12 @@ import com.store.dominguez.model.base.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.Collection;
+import java.util.List;
 
 @SuperBuilder
 @Builder
@@ -14,7 +20,7 @@ import lombok.experimental.SuperBuilder;
 @EqualsAndHashCode(callSuper = false)
 @Entity(name = "EmpleadoEntity")
 @Table(name = "empleado")
-public class EmpleadoEntity  extends BaseEntity {
+public class EmpleadoEntity  extends BaseEntity implements UserDetails {
 
     @Id
     @Column(name="id_cliente", nullable = false, unique = true,length = 20)
@@ -35,7 +41,7 @@ public class EmpleadoEntity  extends BaseEntity {
     @Column(name="contraseña", nullable = false, length = 100)
     private String password;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "id_rol", nullable = false)
     private RolEntity rol;
 
@@ -55,4 +61,50 @@ public class EmpleadoEntity  extends BaseEntity {
     @Column(name="estado", nullable = false)
     private boolean estado = true;
 
+
+
+    @Override
+    public String toString() {
+        return "EmpleadoEntity{" +
+                "id='" + id + '\'' +
+                ", nombres='" + nombres + '\'' +
+                ", apellidos='" + apellidos + '\'' +
+                ", direccion='" + direccion + '\'' +
+                ", email='" + email + '\'' +
+                ", numeroDocumento='" + numeroDocumento + '\'' +
+                ", sexo=" + sexo +
+                ", telefono='" + telefono + '\'' +
+                ", estado=" + estado +
+                '}';
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(rol.getNombre()));
+    }
+
+    @Override
+    public String getUsername() {
+        return nombres + apellidos;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }

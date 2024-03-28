@@ -41,6 +41,7 @@ public class ProfileController {
         String email = userDetails.getUsername();
         ClienteEntity cliente = clienteRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("Cliente no encontrado con email: " + email));
+        System.out.println("Cliente: " + cliente);
         ClienteDTO clienteDTO = new ClienteDTO();
         ClienteEntity clientFor = new ClienteEntity();
         TipoDocumentoIdentidadDTO tipoDocumentoIdentidadDTO = new TipoDocumentoIdentidadDTO();

@@ -12,6 +12,8 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.math.BigDecimal;
+import java.util.HashSet;
+import java.util.Set;
 
 @SuperBuilder
 @Builder
@@ -45,16 +47,20 @@ public class ProductoEntity extends BaseEntity {
     @Column(name = "imagen")
     private String imagen;
 
-    @Column(name="estado", nullable = false)
+    @Column(name = "estado", nullable = false)
     private boolean estado = true;
 
     @ManyToOne
     @JoinColumn(name = "id_categoria", nullable = false)
     private CategoriaEntity categoria;
 
+    @OneToMany(mappedBy = "productos")
+    private Set<DocDetalleVentaEntity> detallesVenta = new HashSet<>();
+
     @Convert(converter = JsonConverter.class)
-    @Column(name="ficha_tecnica",columnDefinition = "TEXT", nullable = false)
+    @Column(name = "ficha_tecnica", columnDefinition = "TEXT", nullable = false)
     private JsonNode fichaTecnica;
+
 
     @JsonIgnore
     public String toJson() throws JsonProcessingException {

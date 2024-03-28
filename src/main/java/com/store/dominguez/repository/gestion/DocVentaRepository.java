@@ -14,9 +14,17 @@ public interface DocVentaRepository extends BaseRepository<DocVentaEntity, Strin
     @Query("SELECT docVenta FROM DocVentaEntity docVenta WHERE docVenta.estadoEnvio = :estadoEnvio")
     List<DocVentaEntity> buscarDocVentaPorEstadoEnvio(@Param("estadoEnvio") EstadoEnvio estadoEnvio);
 
-    @Query("SELECT docVenta FROM DocVentaEntity docVenta WHERE docVenta.numeroSeguimiento = :numeroSeguimiento")
+    @Query("SELECT docVenta FROM DocVentaEntity docVenta WHERE docVenta.estado = true")
+    List<DocVentaEntity> buscarDocVentaActivo();
+
+    @Query("SELECT docVenta FROM DocVentaEntity docVenta WHERE docVenta.estado = false")
+    List<DocVentaEntity> buscarDocVentaInactivo();
+
+
+    @Query("SELECT docVenta FROM DocVentaEntity docVenta WHERE docVenta.numeroSeguimiento LIKE %:numeroSeguimiento%")
     List<DocVentaEntity> buscarDocVentaPorNumeroSeguimiento(@Param("numeroSeguimiento") String numeroSeguimiento);
 
     boolean existsClienteById(String idCliente);
+
     boolean existsMetodoPagoById(String idMetodoPago);
 }

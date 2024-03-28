@@ -13,9 +13,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class UserDetailServiceImpl implements UserDetailsService {
@@ -38,12 +36,14 @@ public class UserDetailServiceImpl implements UserDetailsService {
         }
 
         Optional<EmpleadoEntity> empleadoEntityOptional = empleadoRepository.findByEmail(username);
+
         if (empleadoEntityOptional.isPresent()) {
             EmpleadoEntity empleadoEntity = empleadoEntityOptional.get();
             return buildUserDetails(empleadoEntity.getEmail(), empleadoEntity.getPassword(), empleadoEntity.getRol().getNombre(), empleadoEntity.getNombres(), empleadoEntity.getApellidos());
         }
 
         throw new UsernameNotFoundException("Usuario no encontrado: " + username);
+
     }
 
     private UserDetails buildUserDetails(String username, String password, String rolNombre, String nombre, String apellido) {

@@ -42,12 +42,7 @@ public class SecurityConfig {
         return httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> {
-                    auth.requestMatchers("/clientes").permitAll();
-                    auth.requestMatchers("/tipo-documento-identidad").permitAll();
-                    auth.requestMatchers("/roles").permitAll();
-                    auth.requestMatchers("/clientes/{id}").permitAll();
-                    auth.requestMatchers("/productos/activos").hasRole("ADMIN");
-                    auth.requestMatchers("/productos/inactivos").hasRole("ADMIN");
+                    auth.requestMatchers("/clientes/**").authenticated();
                     auth.anyRequest().authenticated();
                 })
                 .sessionManagement(session -> {

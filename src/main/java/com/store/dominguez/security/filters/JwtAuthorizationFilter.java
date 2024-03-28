@@ -44,21 +44,16 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             String token = tokenHeader.substring(7);
 
             if (jwtUtils.isTokenValid(token)) {
-                String username = jwtUtils.getUsernameFromToken(token);
-                UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+                String email = jwtUtils.getUsernameFromToken(token);
 
-                Optional<ClienteEntity> clienteEntityOptional = clienteRepository.findByEmail(username);
-                if (clienteEntityOptional.isPresent()) {
-                    ClienteEntity clienteEntity = clienteEntityOptional.get();
-                    Collection<? extends GrantedAuthority> authorities = clienteEntity.getAuthorities();
 
-                    UsernamePasswordAuthenticationToken authenticationToken =
-                            new UsernamePasswordAuthenticationToken(userDetails, null, authorities);
-                    SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-                } else {
-                    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                    return;
-                }
+                UserDetails userDetails = userDetailsService.loadUserByUsername(email);
+
+                UsernamePasswordAuthenticationToken authenticationToken =
+                        new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+
+                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+
             } else {
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 return;

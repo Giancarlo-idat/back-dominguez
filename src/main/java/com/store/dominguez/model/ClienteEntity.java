@@ -43,9 +43,10 @@ public class ClienteEntity extends BaseEntity implements UserDetails {
     private String password;
 
     // Rol
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "id_rol", nullable = true)
     private RolEntity rol;
+
 
     @ManyToOne
     @JoinColumn(name = "id_tipo_documento_identidad")

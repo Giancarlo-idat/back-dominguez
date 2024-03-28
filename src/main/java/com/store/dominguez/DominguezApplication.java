@@ -1,6 +1,7 @@
 package com.store.dominguez;
 
 
+import com.store.dominguez.mock.MockDataConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import com.store.dominguez.model.*;
@@ -13,10 +14,21 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import java.time.LocalDateTime;
 
 @SpringBootApplication
-public class DominguezApplication {
+public class DominguezApplication implements CommandLineRunner {
+
+    private final MockDataConfig mockDataConfig;
+
+    public DominguezApplication(MockDataConfig mockDataConfig) {
+        this.mockDataConfig = mockDataConfig;
+    }
 
     public static void main(String[] args) {
         SpringApplication.run(DominguezApplication.class, args);
+    }
+
+    @Override
+    public void run(String... args) throws Exception {
+        mockDataConfig.run(args);
     }
 
     @Autowired
@@ -34,11 +46,8 @@ public class DominguezApplication {
     @Autowired
     RolRepository rolRepository;
 
-    @Autowired
-    RolPermisoRepository rolPermisoRepository;
 
-
-    /*@Bean
+    @Bean
     CommandLineRunner init() {
         return args -> {
 
@@ -51,18 +60,6 @@ public class DominguezApplication {
 
             rol.setFechaCreacion(LocalDateTime.now());
             rolRepository.save(rol);
-
-
-            RolPermisoEntity rolPermiso = RolPermisoEntity.builder()
-                    .id("ROL-ADM-MIP392")
-                    .nombre("Admin")
-                    .estado(true)
-                    .rol(rol)
-                    .build();
-
-
-            rolPermiso.setFechaCreacion(LocalDateTime.now());
-            rolPermisoRepository.save(rolPermiso);
 
             TipoDocumentoIdentidadEntity tipoDocumento = TipoDocumentoIdentidadEntity.builder()
                     .id("TIP-DNI-SDK192")
@@ -97,24 +94,6 @@ public class DominguezApplication {
                     .build();
             empleado.setFechaCreacion(LocalDateTime.now());
             empleadoRepository.save(empleado);
-
-            ClienteEntity cliente = ClienteEntity.builder()
-                    .id("ADM-SUP-OJT512")
-                    .nombres("super")
-                    .apellidos("admin")
-                    .direccion("Calle 100 # 50 - 56")
-                    .telefono("122234567")
-                    .email("importacionesDominguez2024@gmail.com")
-                    .password(passwordEncoder.encode("superadmin123"))
-                    .tipoDocumento(tipoDocumento)
-                    .numeroDocumento("12345678")
-                    .rol(rol)
-                    .estado(true)
-                    .sexo(TipoSexo.MASCULINO)
-                    .build();
-            cliente.setFechaCreacion(LocalDateTime.now());
-            clienteRepository.save(cliente);
-
         };
-    }*/
+    }
 }
