@@ -5,6 +5,7 @@ import com.store.dominguez.dto.TipoDocumentoIdentidadDTO;
 import com.store.dominguez.service.gestion.TipoDocumentoIdentidadService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
@@ -28,6 +29,7 @@ public class TipoDocumentoIdentidadController {
     }
 
     @GetMapping("/activos")
+    @PreAuthorize("hasRole('Administrador')")
     public ResponseEntity<List<?>> buscarActivos() {
         try {
             return ResponseEntity.ok(tipoDocumentoIdentidadService.buscarActivo());
@@ -37,6 +39,7 @@ public class TipoDocumentoIdentidadController {
     }
 
     @GetMapping("/inactivos")
+    @PreAuthorize("hasRole('Administrador')")
     public ResponseEntity<List<?>> buscarInactivos() {
         try {
             return ResponseEntity.ok(tipoDocumentoIdentidadService.buscarInactivo());
@@ -46,6 +49,7 @@ public class TipoDocumentoIdentidadController {
     }
 
     @GetMapping("/buscar")
+    @PreAuthorize("hasRole('Administrador')")
     public ResponseEntity<List<?>> buscarPorDatos(@RequestParam String tipoDocumentoIdentidad) {
         try {
             return ResponseEntity.ok(tipoDocumentoIdentidadService.buscarTipoDocumentoIdentidad(tipoDocumentoIdentidad));
@@ -55,6 +59,7 @@ public class TipoDocumentoIdentidadController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('Administrador')")
     public ResponseEntity<Optional<?>> buscarId(@RequestParam String id) {
         try {
             return ResponseEntity.ok(tipoDocumentoIdentidadService.buscarId(id));
@@ -66,6 +71,7 @@ public class TipoDocumentoIdentidadController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('Administrador')")
     public ResponseEntity<?> agregar(@RequestBody TipoDocumentoIdentidadDTO tipoDocumentoIdentidad) {
         try {
             return ResponseEntity.ok(tipoDocumentoIdentidadService.agregar(tipoDocumentoIdentidad));
@@ -77,6 +83,7 @@ public class TipoDocumentoIdentidadController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('Administrador')")
     public ResponseEntity<?> actualizar(@PathVariable String id, @RequestBody TipoDocumentoIdentidadDTO tipoDocumentoIdentidadDTO) {
         try {
             return ResponseEntity.ok(tipoDocumentoIdentidadService.actualizar(tipoDocumentoIdentidadDTO, id));
@@ -88,6 +95,7 @@ public class TipoDocumentoIdentidadController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('Administrador')")
     public ResponseEntity<?> eliminar(@PathVariable String id) {
         try {
             tipoDocumentoIdentidadService.eliminar(id);
@@ -100,6 +108,7 @@ public class TipoDocumentoIdentidadController {
     }
 
     @PutMapping("/habilitar/{id}")
+    @PreAuthorize("hasRole('Administrador')")
     public ResponseEntity<?> habilitar(@PathVariable String id) {
         try {
             tipoDocumentoIdentidadService.habilitar(id);

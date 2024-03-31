@@ -20,7 +20,6 @@ public class OrdenCompraDTO extends BaseDTO {
     private ProveedorDTO proveedor;
     private String fechaOrden;
     private String estadoOrden;
-    private MetodoPagoDTO metodoPago;
     private BigDecimal subtotal;
     private BigDecimal IGV;
     private BigDecimal montoTotal;

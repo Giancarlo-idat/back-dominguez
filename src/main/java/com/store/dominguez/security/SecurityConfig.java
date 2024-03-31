@@ -42,7 +42,10 @@ public class SecurityConfig {
         return httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> {
-                    auth.requestMatchers("/clientes/**").authenticated();
+                    auth.requestMatchers("/clientes/*").authenticated();
+                    auth.requestMatchers("/stripe/payment/create").permitAll();
+                    auth.requestMatchers("/tipo-documento-identidad").permitAll();
+                    auth.requestMatchers("/myorders/document/docventa").authenticated();
                     auth.anyRequest().authenticated();
                 })
                 .sessionManagement(session -> {

@@ -24,7 +24,7 @@ public class ProveedorController {
     }
 
     @GetMapping
-    @PreAuthorize("hasRole('Admin')")
+    @PreAuthorize("hasRole('Administrador')")
     public ResponseEntity<List<ProveedorDTO>> buscarTodos() {
         try {
             return ResponseEntity.ok(proveedorService.buscarTodos());
@@ -34,7 +34,7 @@ public class ProveedorController {
     }
 
     @GetMapping("/activos")
-    @PreAuthorize("hasRole('Admin')")
+    @PreAuthorize("hasRole('Administrador')")
     public ResponseEntity<List<ProveedorDTO>> buscarActivos() {
         try {
             return ResponseEntity.ok(proveedorService.buscarActivo());
@@ -44,7 +44,7 @@ public class ProveedorController {
     }
 
     @GetMapping("/inactivos")
-    @PreAuthorize("hasRole('Admin')")
+    @PreAuthorize("hasRole('Administrador')")
     public ResponseEntity<List<ProveedorDTO>> buscarInactivos() {
         try {
             return ResponseEntity.ok(proveedorService.buscarInactivo());
@@ -54,7 +54,7 @@ public class ProveedorController {
     }
 
     @GetMapping("/buscar")
-    @PreAuthorize("hasRole('Admin')")
+    @PreAuthorize("hasRole('Administrador')")
     public ResponseEntity<List<?>> buscarPorDatos(@RequestParam String datos) {
         try {
             return ResponseEntity.ok(proveedorService.buscarDatosProveedor(datos));
@@ -66,7 +66,7 @@ public class ProveedorController {
     }
 
     @GetMapping("/proveedorId")
-    @PreAuthorize("hasRole('Admin')")
+    @PreAuthorize("hasRole('Administrador')")
     public ResponseEntity<Optional<?>> buscarId(@RequestParam String id) {
         try {
             return ResponseEntity.status(200).body(proveedorService.buscarId(id));
@@ -78,7 +78,7 @@ public class ProveedorController {
     }
 
     @PostMapping
-    @PreAuthorize("hasRole('Admin')")
+    @PreAuthorize("hasRole('Administrador')")
     public ResponseEntity<?> agregar(@RequestBody ProveedorDTO proveedorDTO) {
         try {
             return ResponseEntity.status(201).body(proveedorService.agregar(proveedorDTO));
@@ -90,7 +90,7 @@ public class ProveedorController {
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasRole('Admin')")
+    @PreAuthorize("hasRole('Administrador')")
     public ResponseEntity<?> actualizar(@RequestBody ProveedorDTO proveedorDTO, @PathVariable String id) {
         try {
             return ResponseEntity.status(200).body(proveedorService.actualizar(proveedorDTO, id));
@@ -102,7 +102,7 @@ public class ProveedorController {
     }
 
     @PutMapping("/habilitar/{id}")
-    @PreAuthorize("hasRole('Admin')")
+    @PreAuthorize("hasRole('Administrador')")
     public ResponseEntity<?> habilitar(@PathVariable String id) {
         try {
             return ResponseEntity.status(200).body(proveedorService.habilitar(id));
@@ -114,7 +114,7 @@ public class ProveedorController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('Admin')")
+    @PreAuthorize("hasRole('Administrador')")
     public ResponseEntity<?> eliminar(@PathVariable String id) {
         try {
             proveedorService.eliminar(id);

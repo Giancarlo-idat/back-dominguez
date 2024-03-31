@@ -18,7 +18,7 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = true)
 @Entity(name = "ClienteEntity")
 @Table(name = "cliente")
 public class ClienteEntity extends BaseEntity implements UserDetails {
@@ -27,19 +27,19 @@ public class ClienteEntity extends BaseEntity implements UserDetails {
     @Column(name = "id_cliente", nullable = false, unique = true, length = 50)
     private String id;
 
-    @Column(name = "nombres", nullable = false, length = 30)
+    @Column(name = "nombres", nullable = false, length = 50)
     private String nombres;
 
-    @Column(name = "apellidos", nullable = false, length = 30)
+    @Column(name = "apellidos", nullable = false, length = 50)
     private String apellidos;
 
-    @Column(name = "direccion ", nullable = false, length = 50)
+    @Column(name = "direccion ", nullable = false, length = 100)
     private String direccion;
 
     @Column(name = "email", nullable = false, length = 50, unique = true)
     private String email;
 
-    @Column(name = "contraseña", nullable = false, length = 100)
+    @Column(name = "contraseña", nullable = false, length = 120)
     private String password;
 
     // Rol
@@ -93,5 +93,23 @@ public class ClienteEntity extends BaseEntity implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    @Override
+    public String toString() {
+        return "ClienteEntity{" +
+                "id='" + id + '\'' +
+                ", nombres='" + nombres + '\'' +
+                ", apellidos='" + apellidos + '\'' +
+                ", direccion='" + direccion + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", rol=" + rol +
+                ", tipoDocumento=" + tipoDocumento +
+                ", numeroDocumento='" + numeroDocumento + '\'' +
+                ", sexo=" + sexo +
+                ", telefono='" + telefono + '\'' +
+                ", estado=" + estado +
+                '}';
     }
 }

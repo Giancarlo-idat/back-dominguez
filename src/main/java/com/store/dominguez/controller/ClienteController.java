@@ -22,7 +22,7 @@ public class ClienteController {
     private ClienteService clienteService;
 
     @GetMapping
-    @PreAuthorize("hasRole('Admin')")
+    @PreAuthorize("hasRole('Administrador')")
     public ResponseEntity<List<?>> buscarTodos() {
         try {
             return ResponseEntity.ok(clienteService.buscarTodos());
@@ -32,7 +32,7 @@ public class ClienteController {
     }
 
     @GetMapping("/activos")
-    @PreAuthorize("hasRole('Admin')")
+    @PreAuthorize("hasRole('Administrador')")
     public ResponseEntity<List<ClienteDTO>> buscarActivos() {
         try {
             return ResponseEntity.ok(clienteService.buscarActivo());
@@ -42,7 +42,7 @@ public class ClienteController {
     }
 
     @GetMapping("/inactivos")
-    @PreAuthorize("hasRole('Admin')")
+    @PreAuthorize("hasRole('Administrador')")
     public ResponseEntity<List<ClienteDTO>> buscarInactivos() {
         try {
             return ResponseEntity.ok(clienteService.buscarInactivo());
@@ -52,7 +52,7 @@ public class ClienteController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('Admin')")
+    @PreAuthorize("hasRole('Administrador')")
     public ResponseEntity<Optional<?>> buscarId(@PathVariable String id) {
         try {
             return ResponseEntity.ok(clienteService.buscarId(id));
@@ -62,7 +62,7 @@ public class ClienteController {
     }
 
     @GetMapping("/buscar")
-    @PreAuthorize("hasRole('Admin')")
+    @PreAuthorize("hasRole('Administrador')")
     public ResponseEntity<List<?>> buscarPorDatos(@RequestParam String cliente) {
 
         try {
@@ -77,7 +77,7 @@ public class ClienteController {
     }
 
     @PostMapping
-    @PreAuthorize("hasRole('Admin')")
+    @PreAuthorize("hasRole('Administrador')")
     public ResponseEntity<?> agregar(@RequestBody ClienteDTO ClienteEntity) {
         try {
             return ResponseEntity.status(201).body(clienteService.agregar(ClienteEntity));
@@ -94,7 +94,7 @@ public class ClienteController {
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasRole('Admin')")
+    @PreAuthorize("hasRole('Administrador')")
     public ResponseEntity<?> actualizar(@RequestBody ClienteDTO ClienteEntity, @PathVariable String id) {
         try {
             return ResponseEntity.ok(clienteService.actualizar(ClienteEntity, id));
@@ -106,7 +106,7 @@ public class ClienteController {
     }
 
     @PutMapping("/habilitar/{id}")
-    @PreAuthorize("hasRole('Admin')")
+    @PreAuthorize("hasRole('Administrador')")
     public ResponseEntity<?> habilitar(@PathVariable String id) {
         try {
             return ResponseEntity.ok(clienteService.habilitar(id));
@@ -118,7 +118,7 @@ public class ClienteController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('Admin')")
+    @PreAuthorize("hasRole('Administrador')")
     public ResponseEntity<?> eliminar(@PathVariable String id) {
         try {
             clienteService.eliminar(id);

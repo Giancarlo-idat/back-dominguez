@@ -2,22 +2,25 @@ package com.store.dominguez.controller;
 
 
 import com.store.dominguez.dto.DocVentaDTO;
+import com.store.dominguez.model.DocVentaEntity;
 import com.store.dominguez.service.gestion.DocVentaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
 import java.util.List;
 
 @RestController
-@RequestMapping("/myorders/document/docventa")
+@RequestMapping("/myorders/document/docVenta")
 public class DocVentaController {
 
     @Autowired
     private DocVentaService docVentaService;
 
-    @GetMapping("/list")
+    @GetMapping()
+    @PreAuthorize("hasRole('Cliente') or hasRole('Administrador')")
     public ResponseEntity<List<?>> docVentaList() {
         try {
             return ResponseEntity.ok(docVentaService.buscarTodos());
@@ -27,6 +30,7 @@ public class DocVentaController {
     }
 
     @GetMapping("/list/activos")
+    /*@PreAuthorize("hasRole('Administrador')")*/
     public ResponseEntity<List<?>> docVentaListActivos() {
         try {
             return ResponseEntity.ok(docVentaService.buscarActivo());
@@ -36,6 +40,7 @@ public class DocVentaController {
     }
 
     @GetMapping("/list/inactivos")
+    /*@PreAuthorize("hasRole('Administrador')")*/
     public ResponseEntity<List<?>> docVentaListInactivos() {
         try {
             return ResponseEntity.ok(docVentaService.buscarInactivo());
@@ -46,6 +51,7 @@ public class DocVentaController {
 
 
     @PostMapping
+    @PreAuthorize("hasRole('Cliente') or hasRole('Administrador')")
     public ResponseEntity<?> agregarDocVenta(@RequestBody DocVentaDTO docVentaDTO) {
         try {
             return ResponseEntity.ok(docVentaService.agregar(docVentaDTO));
@@ -57,6 +63,7 @@ public class DocVentaController {
     }
 
     @PutMapping("/{id}")
+    /*@PreAuthorize("hasRole('Administrador')")*/
     public ResponseEntity<?> actualizarDocVenta(@PathVariable String id, @RequestBody DocVentaDTO docVentaDTO) {
         try {
             return ResponseEntity.ok(docVentaService.actualizar(docVentaDTO, id));
@@ -68,6 +75,7 @@ public class DocVentaController {
     }
 
     @DeleteMapping("/{id}")
+    /*@PreAuthorize("hasRole('Administrador')")*/
     public ResponseEntity<?> eliminarDocVenta(@PathVariable String id) {
         try {
             docVentaService.eliminar(id);
@@ -80,6 +88,7 @@ public class DocVentaController {
     }
 
     @PutMapping("/habilitar/{id}")
+    /*@PreAuthorize("hasRole('Administrador')")*/
     public ResponseEntity<?> habilitarDocVenta(@PathVariable String id) {
         try {
             docVentaService.habilitar(id);

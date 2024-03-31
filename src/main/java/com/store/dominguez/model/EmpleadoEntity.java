@@ -23,22 +23,22 @@ import java.util.List;
 public class EmpleadoEntity  extends BaseEntity implements UserDetails {
 
     @Id
-    @Column(name="id_cliente", nullable = false, unique = true,length = 20)
+    @Column(name="id_cliente", nullable = false, unique = true,length = 30)
     private String id;
 
-    @Column(name="nombres", nullable = false, length = 30)
+    @Column(name="nombres", nullable = false, length = 50)
     private String nombres;
 
-    @Column(name="apellidos", nullable = false, length = 30)
+    @Column(name="apellidos", nullable = false, length = 50)
     private String apellidos;
 
-    @Column(name="direccion ", nullable = false, length = 50)
+    @Column(name="direccion ", nullable = false, length = 100)
     private String direccion;
 
     @Column(name="email", nullable = false, length = 50, unique = true)
     private String email;
 
-    @Column(name="contraseña", nullable = false, length = 100)
+    @Column(name="contraseña", nullable = false, length = 120)
     private String password;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)

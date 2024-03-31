@@ -14,7 +14,7 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = true)
 @Entity(name = "TipoDocumentoIdentidadEntity")
 @Table(name = "tipo_documento_identidad")
 public class TipoDocumentoIdentidadEntity extends BaseEntity {

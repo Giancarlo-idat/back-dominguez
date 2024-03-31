@@ -20,6 +20,7 @@ public class ProductoController {
     private ProductoService productoService;
 
     @GetMapping
+    @PreAuthorize("hasRole('Cliente') or hasRole('Almacen') or hasRole('Administrador')")
     public ResponseEntity<List<?>> buscarTodos() {
         try {
             return ResponseEntity.ok(productoService.buscarTodos());
@@ -29,7 +30,7 @@ public class ProductoController {
     }
 
     @GetMapping("/activos")
-    @PreAuthorize("hasRole('Admin')")
+    @PreAuthorize("hasRole('Administrador')")
     public ResponseEntity<List<?>> buscarActivos() {
         try {
             return ResponseEntity.ok(productoService.buscarActivo());
@@ -39,7 +40,7 @@ public class ProductoController {
     }
 
     @GetMapping("/inactivos")
-    @PreAuthorize("hasRole('Admin')")
+    @PreAuthorize("hasRole('Administrador')")
     public ResponseEntity<List<?>> buscarInactivos() {
         try {
             return ResponseEntity.ok(productoService.buscarInactivo());
@@ -49,7 +50,7 @@ public class ProductoController {
     }
 
     @GetMapping("/modelo")
-    @PreAuthorize("hasRole('CLIENTE') or hasRole('ALMACEN') or hasRole('Admin')")
+    @PreAuthorize("hasRole('CLIENTE') or hasRole('ALMACEN') or hasRole('Administrador')")
     public ResponseEntity<List<?>> buscarPorModelo(@RequestParam String modelo) {
         try {
             return ResponseEntity.ok(productoService.buscarModelo(modelo));
@@ -59,7 +60,7 @@ public class ProductoController {
     }
 
     @GetMapping("/marca")
-    @PreAuthorize("hasRole('CLIENTE') or hasRole('ALMACEN') or hasRole('Admin')")
+    @PreAuthorize("hasRole('CLIENTE') or hasRole('ALMACEN') or hasRole('Administrador')")
     public ResponseEntity<List<?>> buscarPorMarca(@RequestParam String marca) {
         try {
             return ResponseEntity.ok(productoService.buscarPorMarca(marca));
@@ -69,7 +70,7 @@ public class ProductoController {
     }
 
     @GetMapping("/categoria")
-    @PreAuthorize("hasRole('CLIENTE') or hasRole('ALMACEN') or hasRole('Admin')")
+    @PreAuthorize("hasRole('CLIENTE') or hasRole('ALMACEN') or hasRole('Administrador')")
     public ResponseEntity<List<?>> buscarPorCategoria(@RequestParam String categoria) {
         try {
             return ResponseEntity.ok(productoService.buscarPorCategoria(categoria));
@@ -79,7 +80,7 @@ public class ProductoController {
     }
 
     @GetMapping("/precio")
-    @PreAuthorize("hasRole('CLIENTE') or hasRole('ALMACEN') or hasRole('Admin')")
+    @PreAuthorize("hasRole('CLIENTE') or hasRole('ALMACEN') or hasRole('Administrador')")
     public ResponseEntity<List<?>> buscarPorRangoPrecio(@RequestParam BigDecimal precioMin, @RequestParam BigDecimal precioMax) {
         try {
             return ResponseEntity.ok(productoService.buscarPorRangoPrecio(precioMin, precioMax));
@@ -91,7 +92,7 @@ public class ProductoController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('ALMACEN') or hasRole('Admin')")
+    @PreAuthorize("hasRole('ALMACEN') or hasRole('Administrador')")
     public ResponseEntity<?> buscarId(@PathVariable String id) {
         try {
             return ResponseEntity.ok(productoService.buscarId(id));
@@ -101,7 +102,7 @@ public class ProductoController {
     }
 
     @PostMapping
-    @PreAuthorize("hasRole('Admin')")
+    @PreAuthorize("hasRole('Administrador')")
     public ResponseEntity<?> agregar(@RequestBody ProductoDTO productoDTO) {
         try {
             return ResponseEntity.status(201).body(productoService.agregar(productoDTO));
@@ -113,7 +114,7 @@ public class ProductoController {
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasRole('Admin')")
+    @PreAuthorize("hasRole('Administrador')")
     public ResponseEntity<?> actualizar(@PathVariable String id, @RequestBody ProductoDTO productoDTO) {
         try {
             return ResponseEntity.ok(productoService.actualizar(productoDTO, id));
@@ -125,7 +126,7 @@ public class ProductoController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('Admin')")
+    @PreAuthorize("hasRole('Administrador')")
     public ResponseEntity<?> eliminar(@PathVariable String id) {
         try {
             productoService.eliminar(id);
@@ -138,7 +139,7 @@ public class ProductoController {
     }
 
     @PutMapping("/habilitar/{id}")
-    @PreAuthorize("hasRole('Admin')")
+    @PreAuthorize("hasRole('Administrador')")
     public ResponseEntity<?> habilitar(@PathVariable String id) {
         try {
             productoService.habilitar(id);

@@ -18,10 +18,10 @@ import java.time.LocalDateTime;
 @MappedSuperclass
 public class BaseEntity implements Serializable {
 
-    @Column(name="fecha_creacion", nullable = false)
+    @Column(name="fecha_creacion")
     private LocalDateTime fechaCreacion = LocalDateTime.now();
 
-    @Column(name="fecha_actualizacion", nullable = false)
+    @Column(name="fecha_actualizacion")
     private LocalDateTime fechaActualizacion = LocalDateTime.now();
 
     @PrePersist

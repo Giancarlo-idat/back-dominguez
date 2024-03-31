@@ -19,7 +19,6 @@ import java.time.LocalDate;
 public class FacturaCompraDTO extends BaseDTO {
 
     private LocalDate fechaCompra;
-    private MetodoPagoDTO metodoPago;
     private BigDecimal subtotal;
     private BigDecimal IGV;
     private BigDecimal montoTotal;

@@ -2,6 +2,7 @@ package com.store.dominguez.service.impl;
 
 import com.store.dominguez.dto.DocDetalleVentaDTO;
 import com.store.dominguez.dto.DocVentaDTO;
+import com.store.dominguez.dto.ProductoDTO;
 import com.store.dominguez.model.*;
 import com.store.dominguez.repository.gestion.*;
 import com.store.dominguez.service.gestion.DocVentaService;
@@ -10,34 +11,41 @@ import com.store.dominguez.util.generator.NumeroCorrelativoGenerator;
 import com.store.dominguez.util.generator.NumeroSeguimientoGenerator;
 import com.store.dominguez.util.validations.DocVentaValidator;
 import com.store.dominguez.util.validations.Validations;
+import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class DocVentaServiceImpl implements DocVentaService {
 
     private final DocVentaRepository docVentaRepository;
+    private final DocDetalleVentaRepository docDetalleVentaRepository;
     private final ClienteRepository clienteRepository;
     private final ProductoRepository productoRepository;
     private final GuiaSalidaRepository guiaSalidaRepository;
     private final DetalleGuiaSalidaRepository detalleGuiaSalidaRepository;
+    private final TipoTransaccionRepository tipoTransaccionRepository;
     private final ModelMapper modelMapper;
     private final DocVentaValidator docVentaValidator;
 
     @Autowired
-    public DocVentaServiceImpl(DocVentaRepository docVentaRepository, ClienteRepository clienteRepository, ModelMapper modelMapper, DocVentaValidator docVentaValidator, NumeroSeguimientoGenerator numeroSeguimientoGenerator, ProductoRepository productoRepository, GuiaSalidaRepository guiaSalidaRepository, DetalleGuiaSalidaRepository detalleGuiaSalidaRepository) {
+    public DocVentaServiceImpl(DocVentaRepository docVentaRepository, ClienteRepository clienteRepository, ModelMapper modelMapper, DocVentaValidator docVentaValidator, NumeroSeguimientoGenerator numeroSeguimientoGenerator, DocDetalleVentaRepository docDetalleVentaRepository, ProductoRepository productoRepository, GuiaSalidaRepository guiaSalidaRepository, DetalleGuiaSalidaRepository detalleGuiaSalidaRepository, TipoTransaccionRepository tipoTransaccionRepository) {
         this.docVentaRepository = docVentaRepository;
         this.clienteRepository = clienteRepository;
         this.modelMapper = modelMapper;
         this.docVentaValidator = docVentaValidator;
+        this.docDetalleVentaRepository = docDetalleVentaRepository;
         this.productoRepository = productoRepository;
         this.guiaSalidaRepository = guiaSalidaRepository;
         this.detalleGuiaSalidaRepository = detalleGuiaSalidaRepository;
+        this.tipoTransaccionRepository = tipoTransaccionRepository;
     }
 
     @Override
@@ -73,7 +81,7 @@ public class DocVentaServiceImpl implements DocVentaService {
     @Override
     public Optional<DocVentaDTO> buscarId(String id) {
 
-        if (Validations.isBlank(id)) throw new NullPointerException("El id no puede ser nulo o vacio");
+      /*  if (Validations.isBlank(id)) throw new NullPointerException("El id no puede ser nulo o vacio");
 
         try {
             Optional<DocVentaEntity> docVentaEntity = docVentaRepository.findById(id);
@@ -84,87 +92,56 @@ public class DocVentaServiceImpl implements DocVentaService {
             }
         } catch (Exception e) {
             throw new RuntimeException("Error al buscar la categoria" + e.getMessage());
-        }
-
+        }*/
+        return Optional.empty();
     }
 
     @Override
     public DocVentaDTO agregar(DocVentaDTO docVentaDTO) {
         docVentaValidator.validarDocVenta(docVentaDTO);
+
         try {
-            Optional<ClienteEntity> idClienteOptional = clienteRepository.findById(docVentaDTO.getCliente().getId());
-            if (idClienteOptional.isEmpty()) {
-                throw new NoSuchElementException("Cliente no encontrado con el ID: " + docVentaDTO.getCliente().getId());
-            }
-            ClienteEntity idCliente = idClienteOptional.get();
+            // Tipo de transacción
+            TipoTransaccionEntity tipoTransaccionEntity = tipoTransaccionRepository.findById(docVentaDTO.getTipoTransaccion().getId())
+                    .orElseThrow(() -> new NoSuchElementException("Tipo de transacción no encontrado con el ID: " + docVentaDTO.getTipoTransaccion().getId()));
 
-            DocVentaEntity docVenta = new DocVentaEntity();
-            // ID del documento de venta
-            String id = IdGenerator.generarID("DV", docVentaDTO.getCliente().getId());
-            // Numero de seguimiento
-            String numeroSeguimiento = NumeroSeguimientoGenerator.generarNumeroSeguimiento();
-            // Numero de correlativo
-            String correlativo = NumeroCorrelativoGenerator.generarNumeroCorrelativo();
-            // Setear los valores
-            docVenta.setId(id);
-            docVenta.setNumeroSeguimiento(numeroSeguimiento);
-            docVenta.setIdCliente(idCliente);
+            // Cliente
+            ClienteEntity clienteEntity = clienteRepository.findById(docVentaDTO.getCliente().getId())
+                    .orElseThrow(() -> new NoSuchElementException("Cliente no encontrado con el ID: " + docVentaDTO.getCliente().getId()));
 
-            Set<DocDetalleVentaEntity> detallesVenta = new HashSet<>();
+            // Crear la venta
+            DocVentaEntity docVentaEntity = modelMapper.map(docVentaDTO, DocVentaEntity.class);
+            docVentaEntity.setNumComprobante(NumeroCorrelativoGenerator.generarNumeroCorrelativo());
+            docVentaEntity.setFechaEnvio(docVentaDTO.getFechaEntrega());
+            docVentaEntity.setEstadoEnvio(EstadoEnvio.PENDIENTE);
+            docVentaEntity.setIdTipoTransaccion(tipoTransaccionEntity);
+            docVentaEntity.setIdCliente(clienteEntity);
+            DocVentaEntity docVentaSaved = docVentaRepository.save(docVentaEntity);
 
-            // Crear la guía de salida y su detalle
-            GuiaSalidaEntity guiaSalida = new GuiaSalidaEntity();
-            guiaSalida.setFechaSalida(LocalDate.now());
-            guiaSalida.setCliente(idCliente);
-            guiaSalida = guiaSalidaRepository.save(guiaSalida);
-
-            for (DocDetalleVentaDTO detalleVentaDTO : docVentaDTO.getDetalleVenta()) {
-                DocDetalleVentaEntity detalleVentaEntity = new DocDetalleVentaEntity();
-                Optional<ProductoEntity> idProductOptional = productoRepository.findById(detalleVentaDTO.getProducto().getId());
-                if (idProductOptional.isEmpty()) {
-                    throw new NoSuchElementException("Producto no encontrado con el ID: " + detalleVentaDTO.getProducto().getId());
-                }
-                ProductoEntity productoEntity = idProductOptional.get();
-
-                // Verificar si el producto tiene suficiente stock
-                if (productoEntity.getStock() < detalleVentaDTO.getCantidad())
-                    throw new IllegalArgumentException("El producto " + productoEntity.getModelo() + " no tiene suficiente stock");
-
-                // Reduce el stock del producto
-                productoEntity.setStock(productoEntity.getStock() - detalleVentaDTO.getCantidad());
-
-                detalleVentaEntity.setId(IdGenerator.generarID("DTV", NumeroCorrelativoGenerator.generarNumeroCorrelativo()));
-                detalleVentaEntity.setCantidad(detalleVentaDTO.getCantidad());
-                detalleVentaEntity.setProductos(productoEntity);
-                detalleVentaEntity.setPrecio_unitario(detalleVentaDTO.getPrecio_unitario());
-                detalleVentaEntity.setPrecio_total(detalleVentaDTO.getPrecio_total());
-                detalleVentaEntity.setDocVenta(docVenta);
-                detallesVenta.add(detalleVentaEntity);
-
-                // Crea guía de salida
-                DetalleGuiaSalidaEntity detalleGuiaSalida = new DetalleGuiaSalidaEntity();
-                detalleGuiaSalida.setGuiaSalida(guiaSalida);
-                detalleGuiaSalida.setProducto(productoEntity);
-                detalleGuiaSalida.setCantidad(detalleVentaDTO.getCantidad());
-                detalleGuiaSalidaRepository.save(detalleGuiaSalida);
+            // Crear los detalles de venta
+            for (DocDetalleVentaDTO detalle : docVentaDTO.getDetallesVenta()) {
+                DocDetalleVentaEntity detalleEntity = modelMapper.map(detalle, DocDetalleVentaEntity.class);
+                detalleEntity.setVenta(docVentaSaved); // Asignar la venta recién creada al detalle de venta
+                docDetalleVentaRepository.save(detalleEntity);
             }
 
-            docVenta.setDetalleVenta(detallesVenta);
-            docVenta.calcularPrecioTotal();
-
-            DocVentaEntity docVentaSave = docVentaRepository.save(docVenta);
-
-            return modelMapper.map(docVentaSave, DocVentaDTO.class);
-
-        } catch (NoSuchElementException | IllegalArgumentException e) {
-            throw new RuntimeException("Error al agregar el documento de venta: " + e.getMessage());
+            // Mapear la venta guardada a DTO y devolverla
+            return modelMapper.map(docVentaSaved, DocVentaDTO.class);
+        } catch (Exception e) {
+            throw new RuntimeException("Error: " + e.getMessage());
         }
+    }
+
+
+    private ProductoEntity obtenerProducto(String idProducto) {
+        return productoRepository.findById(idProducto)
+                .orElseThrow(() -> new NoSuchElementException("Producto no encontrado con el ID: " + idProducto));
     }
 
     @Override
     public DocVentaDTO actualizar(DocVentaDTO docVentaDTO, String id) {
 
-        if (Validations.isBlank(id)) throw new NullPointerException("El id no puede ser nulo o vacio");
+        /*if (Validations.isBlank(id)) throw new NullPointerException("El id no puede ser nulo o vacio");
 
         docVentaValidator.validarDocVenta(docVentaDTO);
         try {
@@ -179,13 +156,14 @@ public class DocVentaServiceImpl implements DocVentaService {
             }
         } catch (Exception e) {
             throw new RuntimeException("Error al buscar la categoria" + e.getMessage());
-        }
+        }*/
+        return null;
     }
 
     @Override
     public void eliminar(String id) {
 
-        if (Validations.isBlank(id)) throw new NullPointerException("El id no puede ser nulo o vacio");
+       /* if (Validations.isBlank(id)) throw new NullPointerException("El id no puede ser nulo o vacio");
         try {
             Optional<DocVentaEntity> docVentaEntity = docVentaRepository.findById(id);
             if (docVentaEntity.isEmpty()) throw new Error("El id no existe");
@@ -193,7 +171,8 @@ public class DocVentaServiceImpl implements DocVentaService {
 
         } catch (Exception e) {
             throw new RuntimeException("Error al buscar la categoria" + e.getMessage());
-        }
+        }*/
+
     }
 
     @Override

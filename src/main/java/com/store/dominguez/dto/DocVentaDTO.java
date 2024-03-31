@@ -10,26 +10,31 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 @SuperBuilder
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-public class DocVentaDTO extends BaseDTO {
-    private String id;
-    private String fechaVenta;
-    private ClienteDTO cliente;
-    private MetodoPagoDTO metodoPago;
-    private TipoTransaccionDTO tipoTransaccion;
-    private String direccionEnvio;
-    private String fechaEnvio;
-    private String fechaEntrega;
-    private EstadoEnvio estadoEnvio;
-    private String numeroSeguimiento;
-    private BigDecimal precio_total;
-    private Set<DocDetalleVentaDTO> detalleVenta;
-    private boolean estado = true;
+public class DocVentaDTO {
 
+    private UUID idVenta;
+    private ClienteDTO cliente;
+    private String numComprobante;
+    private LocalDate fechaEnvio;
+    private LocalDate fechaEntrega;
+    private TipoTransaccionDTO tipoTransaccion;
+    private double impuesto;
+    private BigDecimal precioTotal;
+    private EstadoEnvio estadoEnvio;
+    private List<DocDetalleVentaDTO> detallesVenta;
+    private boolean estado = true;
+    private LocalDateTime fechaCreacion = LocalDateTime.now();
+
+    private LocalDateTime fechaActualizacion = LocalDateTime.now();
 }

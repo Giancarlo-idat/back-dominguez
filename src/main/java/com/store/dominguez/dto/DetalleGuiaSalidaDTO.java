@@ -14,4 +14,5 @@ public class DetalleGuiaSalidaDTO extends BaseDTO {
     private String id;
     private ProductoDTO producto;
     private int cantidad;
+    private GuiaSalidaDTO guiaSalida;
 }

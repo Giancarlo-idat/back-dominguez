@@ -17,7 +17,7 @@ import lombok.experimental.SuperBuilder;
 public class DetalleGuiaEntradaEntity extends BaseEntity {
 
     @Id
-    @Column(name = "id_detalle_guia_entrada", nullable = false, unique = true, length = 20)
+    @Column(name = "id_detalle_guia_entrada", nullable = false, unique = true, length = 50)
     private String id;
 
     @ManyToOne

@@ -17,7 +17,7 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = true)
 @Entity(name = "RolEntity")
 @Table(name = "rol")
 public class RolEntity extends BaseEntity {
@@ -41,5 +41,16 @@ public class RolEntity extends BaseEntity {
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "rol")
     private List<ClienteEntity> clientes;
+
+
+    @Override
+    public String toString() {
+        return "RolEntity{" +
+                "id='" + id + '\'' +
+                ", nombre='" + nombre + '\'' +
+                ", estado=" + estado +
+                ", descripcion='" + descripcion + '\'' +
+                '}';
+    }
 
 }

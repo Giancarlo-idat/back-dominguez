@@ -8,7 +8,7 @@ import java.util.Set;
 public class NumeroCorrelativoGenerator {
 
     public static String generarNumeroCorrelativo() {
-        String prefijo = "BXC-" + LocalDate.now().getYear();
+        String prefijo = ("BXC-").toUpperCase() + LocalDate.now().getYear();
         Set<String> numeroCorrelativoExistente = new HashSet<>();
         Random random = new Random();
         String numeroCorrelativo;
@@ -19,7 +19,7 @@ public class NumeroCorrelativoGenerator {
         }
         numeroCorrelativo = sb.toString();
 
-        return numeroCorrelativo;
+        return numeroCorrelativo.toUpperCase();
     }
 
     public static void main(String[] args) {

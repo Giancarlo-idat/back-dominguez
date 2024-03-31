@@ -2,25 +2,23 @@ package com.store.dominguez.util.generator;
 
 import org.springframework.stereotype.Component;
 
-import java.util.HashSet;
 import java.util.Random;
-import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Component
 public class NumeroSeguimientoGenerator {
 
+    private static final AtomicInteger counter = new AtomicInteger(1);
+
     public static String generarNumeroSeguimiento() {
-        Set<String> numeroSeguimientoExistente = new HashSet<>();
-        Random random = new Random();
-        String numeroSeguimiento;
+        int numeroAleatorio = new Random().nextInt(1000000); // Número aleatorio entre 0 y 999999
+        String sufijoIncremental = String.format("%06d", counter.getAndIncrement()); // Sufijo incremental de 6 dígitos
 
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < 10; i++) {
-            sb.append(random.nextInt(20));
-        }
-        numeroSeguimiento = sb.toString();
-
-        return numeroSeguimiento;
+        return numeroAleatorio + sufijoIncremental;
     }
 
+    public static void main(String[] args) {
+        System.out.println(generarNumeroSeguimiento());
+    }
 }
+

@@ -19,7 +19,7 @@ public class CategoriaController {
     private CategoriaService categoriaService;
 
     @GetMapping
-    @PreAuthorize("hasRole('Admin')")
+    @PreAuthorize("hasRole('Administrador')")
     public ResponseEntity<List<?>> buscarTodos() {
         try {
             return ResponseEntity.ok(categoriaService.buscarTodos());
@@ -29,7 +29,7 @@ public class CategoriaController {
     }
 
     @GetMapping("/activos")
-    @PreAuthorize("hasRole('Admin')")
+    @PreAuthorize("hasRole('Administrador')")
     public ResponseEntity<List<?>> buscarActivos() {
         try {
             return ResponseEntity.ok(categoriaService.buscarActivo());
@@ -39,7 +39,7 @@ public class CategoriaController {
     }
 
     @GetMapping("/inactivos")
-    @PreAuthorize("hasRole('Admin')")
+    @PreAuthorize("hasRole('Administrador')")
     public ResponseEntity<List<?>> buscarInactivos() {
         try {
             return ResponseEntity.ok(categoriaService.buscarInactivo());
@@ -49,7 +49,7 @@ public class CategoriaController {
     }
 
     @GetMapping("/buscar")
-    @PreAuthorize("hasRole('Admin')")
+    @PreAuthorize("hasRole('Administrador')")
     public ResponseEntity<List<?>> buscarPorDatos(@RequestParam String categoria) {
         try {
             return ResponseEntity.ok(categoriaService.buscarCategoria(categoria));
@@ -59,7 +59,7 @@ public class CategoriaController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('Admin')")
+    @PreAuthorize("hasRole('Administrador')")
     public ResponseEntity<Optional<?>> buscarId(@PathVariable String id) {
         try {
             return ResponseEntity.ok(categoriaService.buscarId(id));
@@ -71,7 +71,7 @@ public class CategoriaController {
     }
 
     @PostMapping
-    @PreAuthorize("hasRole('Admin')")
+    @PreAuthorize("hasRole('Administrador')")
     public ResponseEntity<?> agregar(@RequestBody CategoriaDTO categoriaDTO) {
         try {
             return ResponseEntity.status(201).body(categoriaService.agregar(categoriaDTO));
@@ -83,7 +83,7 @@ public class CategoriaController {
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasRole('Admin')")
+    @PreAuthorize("hasRole('Administrador')")
     public ResponseEntity<?> actualizar(@PathVariable String id, @RequestBody CategoriaDTO categoriaDTO) {
         try {
             return ResponseEntity.ok(categoriaService.actualizar(categoriaDTO, id));
@@ -95,7 +95,7 @@ public class CategoriaController {
     }
 
     @PutMapping("/habilitar/{id}")
-    @PreAuthorize("hasRole('Admin')")
+    @PreAuthorize("hasRole('Administrador')")
     public ResponseEntity<?> habilitar(@PathVariable String id) {
         try {
             categoriaService.habilitar(id);
@@ -108,7 +108,7 @@ public class CategoriaController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('Admin')")
+    @PreAuthorize("hasRole('Administrador')")
     public ResponseEntity<?> eliminar(@PathVariable String id) {
         try {
             categoriaService.eliminar(id);

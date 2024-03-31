@@ -8,17 +8,23 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.UUID;
 
 @SuperBuilder
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-public class DocDetalleVentaDTO extends BaseDTO {
+public class DocDetalleVentaDTO {
 
-    private String id;
-    private ProductoDTO producto;
+    private UUID idDetalleVenta;
+    private DocVentaDTO idVenta;
+    private ProductoDTO productos;
     private int cantidad;
-    private BigDecimal precio_unitario;
-    private BigDecimal precio_total;
+    private BigDecimal precioUnitario;
+    private BigDecimal precioTotal;
+    private LocalDateTime fechaCreacion = LocalDateTime.now();
+
+    private LocalDateTime fechaActualizacion = LocalDateTime.now();
 }

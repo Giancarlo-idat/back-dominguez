@@ -1,6 +1,7 @@
 package com.store.dominguez.controller;
 
-import com.store.dominguez.service.gestion.DetalleGuiaSalidaService;
+
+import com.store.dominguez.service.gestion.TipoTransaccionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,19 +12,19 @@ import java.util.Collections;
 import java.util.List;
 
 @RestController
-@RequestMapping("/myorders/detalleGuia")
-public class DetalleGuiaController {
+@RequestMapping("/tipo-transaccion")
+public class TipoTransaccionController {
+
 
     @Autowired
-    private DetalleGuiaSalidaService detalleGuiaSalidaService;
+    private TipoTransaccionService tipoTransaccionService;
 
     @GetMapping
-    public ResponseEntity<List<?>> getDetallesGuiaSalida() {
+    public ResponseEntity<List<?>> getTransacciones() {
         try {
-            return ResponseEntity.ok(detalleGuiaSalidaService.buscarTodos());
+            return ResponseEntity.ok(tipoTransaccionService.buscarTodos());
         } catch (Exception e) {
             return ResponseEntity.status(500).body(Collections.singletonList(e.getMessage()));
         }
     }
-
 }

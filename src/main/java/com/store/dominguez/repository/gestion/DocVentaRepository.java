@@ -7,8 +7,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.UUID;
 
-public interface DocVentaRepository extends BaseRepository<DocVentaEntity, String> {
+public interface DocVentaRepository extends BaseRepository<DocVentaEntity, UUID> {
 
     // Buscar DocVentas por Estado de Envio - "PENDIENTE", "EN_CAMINO", "ENTREGADO"
     @Query("SELECT docVenta FROM DocVentaEntity docVenta WHERE docVenta.estadoEnvio = :estadoEnvio")
@@ -21,10 +22,7 @@ public interface DocVentaRepository extends BaseRepository<DocVentaEntity, Strin
     List<DocVentaEntity> buscarDocVentaInactivo();
 
 
-    @Query("SELECT docVenta FROM DocVentaEntity docVenta WHERE docVenta.numeroSeguimiento LIKE %:numeroSeguimiento%")
-    List<DocVentaEntity> buscarDocVentaPorNumeroSeguimiento(@Param("numeroSeguimiento") String numeroSeguimiento);
+    @Query("SELECT docVenta FROM DocVentaEntity docVenta WHERE docVenta.numComprobante LIKE %:numComprobante%")
+    List<DocVentaEntity> buscarDocVentaPorNumeroSeguimiento(@Param("numComprobante") String numComprobante);
 
-    boolean existsClienteById(String idCliente);
-
-    boolean existsMetodoPagoById(String idMetodoPago);
 }
