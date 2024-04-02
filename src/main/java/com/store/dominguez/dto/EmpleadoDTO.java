@@ -13,6 +13,7 @@ import lombok.experimental.SuperBuilder;
 @EqualsAndHashCode(callSuper = false)
 public class EmpleadoDTO extends BaseDTO {
 
+    private String id;
     private String nombres;
     private String apellidos;
     private String direccion;

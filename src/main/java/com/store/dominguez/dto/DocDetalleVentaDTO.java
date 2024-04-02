@@ -19,7 +19,7 @@ import java.util.UUID;
 public class DocDetalleVentaDTO {
 
     private UUID idDetalleVenta;
-    private DocVentaDTO idVenta;
+    private DocVentaDTO venta;
     private ProductoDTO productos;
     private int cantidad;
     private BigDecimal precioUnitario;

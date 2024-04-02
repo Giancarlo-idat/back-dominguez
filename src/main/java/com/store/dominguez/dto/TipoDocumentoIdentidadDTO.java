@@ -14,7 +14,7 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 public class TipoDocumentoIdentidadDTO extends BaseDTO {
-
+    private String id;
     private String nombre;
     private boolean estado = true;
 }

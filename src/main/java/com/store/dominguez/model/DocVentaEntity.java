@@ -1,5 +1,6 @@
 package com.store.dominguez.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.store.dominguez.model.base.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -25,7 +26,7 @@ public class DocVentaEntity extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "id_cliente")
-    private ClienteEntity idCliente;
+    private ClienteEntity cliente;
 
     private String numComprobante;
     private LocalDate fechaEnvio;
@@ -56,4 +57,21 @@ public class DocVentaEntity extends BaseEntity {
         this.precioTotal = total;
         this.impuesto = total.multiply(BigDecimal.valueOf(0.18)).doubleValue();
     }
+
+    @Override
+    public String toString() {
+        return "DocVentaEntity{" +
+                "idVenta=" + idVenta +
+                ", numComprobante='" + numComprobante + '\'' +
+                ", fechaEnvio=" + fechaEnvio +
+                ", fechaEntrega=" + fechaEntrega +
+                ", idTipoTransaccion=" + idTipoTransaccion +
+                ", impuesto=" + impuesto +
+                ", precioUnitario=" + precioUnitario +
+                ", precioTotal=" + precioTotal +
+                ", estadoEnvio=" + estadoEnvio +
+                ", estado=" + estado +
+                '}';
+    }
+
 }

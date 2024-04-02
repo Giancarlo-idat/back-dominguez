@@ -77,7 +77,6 @@ public class ClienteController {
     }
 
     @PostMapping
-    @PreAuthorize("hasRole('Administrador')")
     public ResponseEntity<?> agregar(@RequestBody ClienteDTO ClienteEntity) {
         try {
             return ResponseEntity.status(201).body(clienteService.agregar(ClienteEntity));

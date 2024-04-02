@@ -76,13 +76,15 @@ public class DocDetalleVentaServiceImpl implements DocDetalleVentaService {
     }
 
     @Override
-    public List<DocDetalleVentaDTO> findByDocVentaId(UUID idDocVenta) {
-        return null;
-    }
+    public Optional<DocDetalleVentaDTO> findByDocVentaId(UUID idDocVenta) {
+        try {
+            Optional<DocDetalleVentaEntity> docDetalleVentaEntity = docDetalleVentaRepository.findByVentaId(idDocVenta);
+            return docDetalleVentaEntity.map(docDetalleVentaEntity1 -> modelMapper
+                    .map(docDetalleVentaEntity1, DocDetalleVentaDTO.class));
 
-    @Override
-    public List<DocDetalleVentaDTO> findByDocVentaId(String idDocVenta) {
-        return null;
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Error al buscar los detalles de venta");
+        }
     }
 
     @Override

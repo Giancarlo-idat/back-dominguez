@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/myorders/detalleGuiaSalida")
@@ -23,6 +24,16 @@ public class DetalleGuiaSalidaController {
     public ResponseEntity<List<?>> getDetallesGuiaSalida() {
         try {
             return ResponseEntity.ok(detalleGuiaSalidaService.buscarTodos());
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(Collections.singletonList(e.getMessage()));
+        }
+    }
+
+    @GetMapping("/{id}")
+    @PreAuthorize("hasRole('Administrador')")
+    public ResponseEntity<?> buscarIdDetalleGuiaSalida(UUID id) {
+        try {
+            return ResponseEntity.ok(detalleGuiaSalidaService.buscarIdDetalleGuiaSalida(id));
         } catch (Exception e) {
             return ResponseEntity.status(500).body(Collections.singletonList(e.getMessage()));
         }

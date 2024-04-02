@@ -9,9 +9,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @SuperBuilder
 @Builder
@@ -103,11 +101,7 @@ public class ClienteEntity extends BaseEntity implements UserDetails {
                 ", apellidos='" + apellidos + '\'' +
                 ", direccion='" + direccion + '\'' +
                 ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", rol=" + rol +
-                ", tipoDocumento=" + tipoDocumento +
                 ", numeroDocumento='" + numeroDocumento + '\'' +
-                ", sexo=" + sexo +
                 ", telefono='" + telefono + '\'' +
                 ", estado=" + estado +
                 '}';

@@ -9,10 +9,13 @@ import com.store.dominguez.service.impl.UserDetailServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -20,7 +23,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableWebSecurity
 public class SecurityConfig {
 
     @Autowired
@@ -42,10 +45,11 @@ public class SecurityConfig {
         return httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> {
-                    auth.requestMatchers("/clientes/*").authenticated();
+                    auth.requestMatchers(HttpMethod.POST,"/clientes").permitAll();
+                    auth.requestMatchers(HttpMethod.GET, "/productos/**").permitAll();
+                    auth.requestMatchers(HttpMethod.GET, "/categorias").permitAll();
                     auth.requestMatchers("/stripe/payment/create").permitAll();
                     auth.requestMatchers("/tipo-documento-identidad").permitAll();
-                    auth.requestMatchers("/myorders/document/docventa").authenticated();
                     auth.anyRequest().authenticated();
                 })
                 .sessionManagement(session -> {

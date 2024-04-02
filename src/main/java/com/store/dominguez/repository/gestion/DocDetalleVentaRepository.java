@@ -16,7 +16,7 @@ public interface DocDetalleVentaRepository extends BaseRepository<DocDetalleVent
 
     // Buscar por el id del documento
     @Query("SELECT d FROM DocDetalleVentaEntity d WHERE d.venta.id = :ventaId")
-    List<DocDetalleVentaEntity> findByVentaId(@Param("ventaId") UUID ventaId);
+    Optional<DocDetalleVentaEntity> findByVentaId(@Param("ventaId") UUID ventaId);
 
     // BUscar por el id del producto
     @Query("SELECT d FROM DocDetalleVentaEntity d WHERE d.productos.id = :productId")

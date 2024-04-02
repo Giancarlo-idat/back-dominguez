@@ -25,11 +25,14 @@ public class DocVentaDTO {
 
     private UUID idVenta;
     private ClienteDTO cliente;
+
     private String numComprobante;
     private LocalDate fechaEnvio;
     private LocalDate fechaEntrega;
+
     private TipoTransaccionDTO tipoTransaccion;
     private double impuesto;
+    private BigDecimal precioUnitario;
     private BigDecimal precioTotal;
     private EstadoEnvio estadoEnvio;
     private List<DocDetalleVentaDTO> detallesVenta;

@@ -10,6 +10,7 @@ import org.springframework.ui.ModelMap;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -45,8 +46,26 @@ public class DetalleGuiaSalidaServiceImpl implements DetalleGuiaSalidaService {
 
     @Override
     public Optional<DetalleGuiaSalidaDTO> buscarId(String id) {
-        return Optional.empty();
+
+        Optional<DetalleGuiaSalidaEntity> detalleGuiaSalidaEntity = detalleGuiaSalidaRepository.findById(id);
+        try {
+            return detalleGuiaSalidaEntity.map(guiaSalidaEntity -> modelMapper.map(guiaSalidaEntity, DetalleGuiaSalidaDTO.class));
+        } catch (Exception e) {
+            throw new RuntimeException("Error al buscar la categoria" + e.getMessage());
+        }
+
     }
+
+    public Optional<DetalleGuiaSalidaDTO> buscarIdDetalleGuiaSalida(UUID id) {
+        try {
+            Optional<DetalleGuiaSalidaEntity> detalleGuiaSalidaEntity = detalleGuiaSalidaRepository.findByIdDetalleGuiaSalida(id);
+            return detalleGuiaSalidaEntity.map(detalleGuiaSalida -> modelMapper.map(detalleGuiaSalida, DetalleGuiaSalidaDTO.class));
+
+        } catch (Exception e) {
+            throw new RuntimeException("Error al buscar el detalle de la guía de salida" + e.getMessage());
+        }
+    }
+
 
     @Override
     public DetalleGuiaSalidaDTO agregar(DetalleGuiaSalidaDTO detalleGuiaSalidaDTO) {
@@ -65,7 +84,7 @@ public class DetalleGuiaSalidaServiceImpl implements DetalleGuiaSalidaService {
 
     @Override
     public DetalleGuiaSalidaDTO habilitar(String id) {
-        return null;
+          return null;
     }
 
     @Override

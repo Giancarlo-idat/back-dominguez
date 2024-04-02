@@ -1,10 +1,9 @@
 package com.store.dominguez.security.jwt;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.SignatureException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
@@ -49,6 +48,21 @@ public class JwtUtils {
                     .parseClaimsJws(token)
                     .getBody();
             return true;
+        } catch (SignatureException e) {
+            log.error("Invalid signature: {}", e.getMessage());
+            return false;
+        } catch (MalformedJwtException e) {
+            log.error("Invalid token: {}", e.getMessage());
+            return false;
+        } catch (ExpiredJwtException e) {
+            log.error("token is expired: {}", e.getMessage());
+            return false;
+        } catch (UnsupportedJwtException e) {
+            log.error("token is unsupported: {}", e.getMessage());
+            return false;
+        } catch (IllegalArgumentException e) {
+            log.error("claims string is empty: {}", e.getMessage());
+            return false;
         } catch (Exception e) {
             log.error("Token inválido, error: ".concat(e.getMessage()));
             return false;

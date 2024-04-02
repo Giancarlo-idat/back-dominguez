@@ -1,5 +1,6 @@
 package com.store.dominguez.repository.gestion;
 
+import com.store.dominguez.dto.DocVentaDTO;
 import com.store.dominguez.model.DocVentaEntity;
 import com.store.dominguez.model.EstadoEnvio;
 import com.store.dominguez.repository.base.BaseRepository;
@@ -7,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface DocVentaRepository extends BaseRepository<DocVentaEntity, UUID> {
@@ -24,5 +26,9 @@ public interface DocVentaRepository extends BaseRepository<DocVentaEntity, UUID>
 
     @Query("SELECT docVenta FROM DocVentaEntity docVenta WHERE docVenta.numComprobante LIKE %:numComprobante%")
     List<DocVentaEntity> buscarDocVentaPorNumeroSeguimiento(@Param("numComprobante") String numComprobante);
+
+    Optional<DocVentaEntity> findByIdVenta(UUID id);
+    boolean existsByIdVentaAndClienteEmail(UUID idDocumento, String emailCliente);
+
 
 }

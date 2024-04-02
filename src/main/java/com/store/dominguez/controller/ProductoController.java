@@ -20,7 +20,6 @@ public class ProductoController {
     private ProductoService productoService;
 
     @GetMapping
-    @PreAuthorize("hasRole('Cliente') or hasRole('Almacen') or hasRole('Administrador')")
     public ResponseEntity<List<?>> buscarTodos() {
         try {
             return ResponseEntity.ok(productoService.buscarTodos());
@@ -92,7 +91,6 @@ public class ProductoController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('ALMACEN') or hasRole('Administrador')")
     public ResponseEntity<?> buscarId(@PathVariable String id) {
         try {
             return ResponseEntity.ok(productoService.buscarId(id));

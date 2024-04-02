@@ -1,6 +1,7 @@
 package com.store.dominguez.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.store.dominguez.model.base.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -35,6 +36,14 @@ public class DocDetalleVentaEntity extends BaseEntity {
     private BigDecimal precioUnitario;
     private BigDecimal precioTotal;
 
-
+    @Override
+    public String toString() {
+        return "DocDetalleVentaEntity{" +
+                "idDetalleVenta=" + idDetalleVenta +
+                ", cantidad=" + cantidad +
+                ", precioUnitario=" + precioUnitario +
+                ", precioTotal=" + precioTotal +
+                '}';
+    }
 
 }
