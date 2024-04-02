@@ -1,12 +1,11 @@
 package com.store.dominguez.model;
 
 import com.store.dominguez.model.base.BaseEntity;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+
+import java.util.List;
 
 @SuperBuilder
 @Builder
@@ -27,5 +26,9 @@ public class TipoTransaccionEntity extends BaseEntity {
 
     @Column(name="estado")
     private Boolean estado = true;
+
+    @OneToMany(mappedBy = "tipoTransaccion", cascade = CascadeType.ALL)
+    private List<DocVentaEntity> ventas;
+
 
 }

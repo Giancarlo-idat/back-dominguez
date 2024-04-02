@@ -32,7 +32,6 @@ public class DocVentaDTO {
 
     private TipoTransaccionDTO tipoTransaccion;
     private double impuesto;
-    private BigDecimal precioUnitario;
     private BigDecimal precioTotal;
     private EstadoEnvio estadoEnvio;
     private List<DocDetalleVentaDTO> detallesVenta;

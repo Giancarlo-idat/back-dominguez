@@ -20,7 +20,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/myorders/document/docDetalleVenta")
+@RequestMapping("/document/docDetalleVenta")
 public class DocDetalleVentaController {
 
     private final DocDetalleVentaService docDetalleVentaService;

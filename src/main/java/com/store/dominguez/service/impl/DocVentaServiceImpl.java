@@ -2,12 +2,9 @@ package com.store.dominguez.service.impl;
 
 import com.store.dominguez.dto.DocDetalleVentaDTO;
 import com.store.dominguez.dto.DocVentaDTO;
-import com.store.dominguez.dto.ProductoDTO;
 import com.store.dominguez.model.*;
 import com.store.dominguez.repository.gestion.*;
-import com.store.dominguez.security.jwt.JwtUtils;
 import com.store.dominguez.service.gestion.DocVentaService;
-import com.store.dominguez.util.generator.IdGenerator;
 import com.store.dominguez.util.generator.NumeroCorrelativoGenerator;
 import com.store.dominguez.util.generator.NumeroGuiaGenerator;
 import com.store.dominguez.util.generator.NumeroSeguimientoGenerator;
@@ -16,12 +13,9 @@ import com.store.dominguez.util.validations.Validations;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
+
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -111,6 +105,7 @@ public class DocVentaServiceImpl implements DocVentaService {
 
 
     @Override
+    @Transactional
     public DocVentaDTO agregar(DocVentaDTO docVentaDTO) {
         docVentaValidator.validarDocVenta(docVentaDTO);
 
@@ -133,8 +128,9 @@ public class DocVentaServiceImpl implements DocVentaService {
 
     private DocVentaEntity guardarVenta(DocVentaDTO docVentaDTO) {
         // Tipo de transacción
-        TipoTransaccionEntity tipoTransaccionEntity = tipoTransaccionRepository.findById(docVentaDTO.getTipoTransaccion().getId())
-                .orElseThrow(() -> new NoSuchElementException("Tipo de transacción no encontrado con el ID: " + docVentaDTO.getTipoTransaccion().getId()));
+        // Obtener el TipoTransaccionEntity por su ID "TTR-VENTA-TOC201"
+        TipoTransaccionEntity tipoTransaccionEntity = tipoTransaccionRepository.findById("TTR-VENTA-TOC201")
+                .orElseThrow(() -> new NoSuchElementException("Tipo de transacción por defecto no encontrado"));
 
         // Cliente
         ClienteEntity clienteEntity = clienteRepository.findById(docVentaDTO.getCliente().getId())
@@ -145,8 +141,9 @@ public class DocVentaServiceImpl implements DocVentaService {
         docVentaEntity.setNumComprobante(NumeroCorrelativoGenerator.generarNumeroCorrelativo());
         docVentaEntity.setFechaEnvio(docVentaDTO.getFechaEntrega());
         docVentaEntity.setEstadoEnvio(EstadoEnvio.PENDIENTE);
-        docVentaEntity.setIdTipoTransaccion(tipoTransaccionEntity);
+        docVentaEntity.setTipoTransaccion(tipoTransaccionEntity);
         docVentaEntity.setCliente(clienteEntity);
+        docVentaEntity.calcularImpuestoYPrecioTotal();
         return docVentaRepository.save(docVentaEntity);
     }
 

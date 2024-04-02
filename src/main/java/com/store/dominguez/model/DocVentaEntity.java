@@ -34,16 +34,15 @@ public class DocVentaEntity extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "id_tipo_transaccion")
-    private TipoTransaccionEntity idTipoTransaccion;
+    private TipoTransaccionEntity tipoTransaccion;
 
 
     private double impuesto;
-    private BigDecimal precioUnitario;
     private BigDecimal precioTotal;
     private EstadoEnvio estadoEnvio;
     private boolean estado;
 
-    @OneToMany(mappedBy = "venta", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "venta", cascade = CascadeType.ALL)
     private List<DocDetalleVentaEntity> detallesVenta;
 
     public void calcularImpuestoYPrecioTotal() {
@@ -65,9 +64,7 @@ public class DocVentaEntity extends BaseEntity {
                 ", numComprobante='" + numComprobante + '\'' +
                 ", fechaEnvio=" + fechaEnvio +
                 ", fechaEntrega=" + fechaEntrega +
-                ", idTipoTransaccion=" + idTipoTransaccion +
                 ", impuesto=" + impuesto +
-                ", precioUnitario=" + precioUnitario +
                 ", precioTotal=" + precioTotal +
                 ", estadoEnvio=" + estadoEnvio +
                 ", estado=" + estado +

@@ -25,7 +25,7 @@ public class DocDetalleVentaEntity extends BaseEntity {
     private UUID idDetalleVenta;
 
     @ManyToOne
-    @JoinColumn(name = "id_venta")
+    @JoinColumn(name = "idVenta")
     private DocVentaEntity venta;
 
     @ManyToOne
