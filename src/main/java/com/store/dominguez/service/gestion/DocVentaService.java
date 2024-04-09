@@ -1,6 +1,7 @@
 package com.store.dominguez.service.gestion;
 
 import com.store.dominguez.dto.DocVentaDTO;
+import com.store.dominguez.model.DocVentaEntity;
 import com.store.dominguez.model.EstadoEnvio;
 import com.store.dominguez.repository.gestion.DocVentaRepository;
 import com.store.dominguez.service.base.BaseService;
@@ -17,7 +18,7 @@ public interface DocVentaService extends BaseService<DocVentaDTO> {
     List<DocVentaDTO> buscarDocVentaPorNumeroSeguimiento(String datos);
     List<DocVentaDTO> buscarDocVentaPorEstadoEnvio(EstadoEnvio estadoEnvio);
 
-    Optional<DocVentaDTO> buscarIdDocVenta(UUID id);
-    boolean existsByIdAndClienteEmail(UUID idDocumento, String emailCliente);
+    Optional<DocVentaDTO> buscarIdDocVenta(String id);
+    boolean existsByIdAndClienteEmail(String idDocumento, String emailCliente);
 
 }

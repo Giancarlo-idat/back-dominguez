@@ -1,6 +1,7 @@
 package com.store.dominguez.dto;
 
 
+import com.store.dominguez.dto.base.BaseDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -12,7 +13,7 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-public class TipoTransaccionDTO {
+public class TipoTransaccionDTO extends BaseDTO {
 
         private String id;
         private String nombre;

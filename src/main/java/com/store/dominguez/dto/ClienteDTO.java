@@ -1,5 +1,6 @@
 package com.store.dominguez.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.store.dominguez.dto.base.BaseDTO;
 import com.store.dominguez.model.TipoSexo;
 import lombok.*;

@@ -33,7 +33,7 @@ public class DocDetalleVentaController {
     }
 
     @GetMapping
-    @PreAuthorize("hasRole('Administrador')")
+    @PreAuthorize("hasRole('Administrador') or hasRole('Cliente')")
     public ResponseEntity<List<?>> docDetalleVentaList() {
         try {
             return ResponseEntity.ok(docDetalleVentaService.buscarTodos());
@@ -43,7 +43,7 @@ public class DocDetalleVentaController {
     }
 
     @GetMapping("/venta/{idVenta}/detalle/{idDetalle}")
-    public ResponseEntity<?> buscarIdDocDetalleVenta(@PathVariable UUID idVenta, @PathVariable UUID idDetalle, Authentication authentication) {
+    public ResponseEntity<?> buscarIdDocDetalleVenta(@PathVariable String idVenta, @PathVariable UUID idDetalle, Authentication authentication) {
         try {
 
             // Obtener detalle de la autenticacion
@@ -67,7 +67,7 @@ public class DocDetalleVentaController {
                 if (detalleVentaOptional.isPresent()) {
                     // Verificar si el detalle de venta pertenece a la venta especificada
                     DocDetalleVentaDTO detalleVenta = detalleVentaOptional.get();
-                    UUID ventaIdDelDetalle = detalleVenta.getVenta().getIdVenta();
+                    UUID ventaIdDelDetalle = UUID.fromString(detalleVenta.getVenta().getIdVenta());
 
                     if (!idVenta.equals(ventaIdDelDetalle)) {
                         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("El detalle de venta no pertenece a la venta especificada");

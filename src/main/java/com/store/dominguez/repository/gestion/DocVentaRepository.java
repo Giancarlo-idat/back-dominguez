@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface DocVentaRepository extends BaseRepository<DocVentaEntity, UUID> {
+public interface DocVentaRepository extends BaseRepository<DocVentaEntity, String> {
 
     // Buscar DocVentas por Estado de Envio - "PENDIENTE", "EN_CAMINO", "ENTREGADO"
     @Query("SELECT docVenta FROM DocVentaEntity docVenta WHERE docVenta.estadoEnvio = :estadoEnvio")
@@ -27,8 +27,8 @@ public interface DocVentaRepository extends BaseRepository<DocVentaEntity, UUID>
     @Query("SELECT docVenta FROM DocVentaEntity docVenta WHERE docVenta.numComprobante LIKE %:numComprobante%")
     List<DocVentaEntity> buscarDocVentaPorNumeroSeguimiento(@Param("numComprobante") String numComprobante);
 
-    Optional<DocVentaEntity> findByIdVenta(UUID id);
-    boolean existsByIdVentaAndClienteEmail(UUID idDocumento, String emailCliente);
+    Optional<DocVentaEntity> findByIdVenta(String id);
+    boolean existsByIdVentaAndClienteEmail(String idDocumento, String emailCliente);
 
 
 }

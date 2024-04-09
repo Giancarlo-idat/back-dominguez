@@ -1,6 +1,5 @@
 package com.store.dominguez.dto;
 
-import com.store.dominguez.dto.base.BaseDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -24,7 +23,7 @@ public class DocDetalleVentaDTO {
     private int cantidad;
     private BigDecimal precioUnitario;
     private BigDecimal precioTotal;
-    private LocalDateTime fechaCreacion = LocalDateTime.now();
 
+    private LocalDateTime fechaCreacion = LocalDateTime.now();
     private LocalDateTime fechaActualizacion = LocalDateTime.now();
 }

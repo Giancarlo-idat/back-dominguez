@@ -25,7 +25,7 @@ public class DocVentaValidator {
         validarCamposObligatorios(docVentaDTO);
         validarClienteExistente(docVentaDTO.getCliente().getId());
         validarEstadoEnvio(docVentaDTO.getEstadoEnvio());
-        validarPrecioTotal(docVentaDTO.getPrecioTotal());
+        /*validarPrecioTotal(docVentaDTO.getPrecioTotal());*/
         validarDetallesVenta(docVentaDTO);
     }
 

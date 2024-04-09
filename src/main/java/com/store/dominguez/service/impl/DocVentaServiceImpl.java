@@ -1,10 +1,13 @@
 package com.store.dominguez.service.impl;
 
+import com.store.dominguez.dto.ClienteDTO;
 import com.store.dominguez.dto.DocDetalleVentaDTO;
 import com.store.dominguez.dto.DocVentaDTO;
+import com.store.dominguez.dto.TipoTransaccionDTO;
 import com.store.dominguez.model.*;
 import com.store.dominguez.repository.gestion.*;
 import com.store.dominguez.service.gestion.DocVentaService;
+import com.store.dominguez.util.generator.IdGenerator;
 import com.store.dominguez.util.generator.NumeroCorrelativoGenerator;
 import com.store.dominguez.util.generator.NumeroGuiaGenerator;
 import com.store.dominguez.util.generator.NumeroSeguimientoGenerator;
@@ -16,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -51,9 +55,26 @@ public class DocVentaServiceImpl implements DocVentaService {
     public List<DocVentaDTO> buscarTodos() {
         try {
             List<DocVentaEntity> list = docVentaRepository.findAll();
-            System.out.println(list);
             return list.stream()
-                    .map(docVenta -> modelMapper.map(docVenta, DocVentaDTO.class))
+                    .map(docVenta -> {
+                        DocVentaDTO docVentaDTO = new DocVentaDTO();
+                        ClienteEntity clienteEntity = docVenta.getCliente();
+                        ClienteDTO clienteDTO = new ClienteDTO();
+
+                        docVentaDTO.setIdVenta(((docVenta.getIdVenta())));
+                        docVentaDTO.setFechaEntrega(docVenta.getFechaEntrega());
+                        docVentaDTO.setCliente(modelMapper.map(docVenta.getCliente(), ClienteDTO.class));
+                        docVentaDTO.setEstadoEnvio(docVenta.getEstadoEnvio());
+                        docVentaDTO.setNumComprobante(docVenta.getNumComprobante());
+                        docVentaDTO.setPrecioTotal(docVenta.getPrecioTotal());
+                        docVentaDTO.setOpGravadas(docVenta.getOpGravadas());
+                        docVentaDTO.setIgv(docVenta.getIgv());
+                        docVentaDTO.setEstado(docVenta.isEstado());
+                        docVentaDTO.setFechaEnvio(docVentaDTO.getFechaEntrega());
+                        docVentaDTO.setTipoTransaccion(modelMapper.map(docVenta.getTipoTransaccion(), TipoTransaccionDTO.class));
+                        docVentaDTO.setPrecioTotal(docVenta.getPrecioTotal());
+                        return docVentaDTO;
+                    })
                     .collect(Collectors.toList());
         } catch (Exception e) {
             throw new RuntimeException("Error al buscar: " + e.getMessage());
@@ -85,7 +106,7 @@ public class DocVentaServiceImpl implements DocVentaService {
         return Optional.empty();
     }
 
-    public Optional<DocVentaDTO> buscarIdDocVenta(UUID id) {
+    public Optional<DocVentaDTO> buscarIdDocVenta(String id) {
         try {
             Optional<DocVentaEntity> docVentaEntity = docVentaRepository.findByIdVenta(id);
             return docVentaEntity.map(docVenta -> modelMapper.map(docVenta, DocVentaDTO.class));
@@ -95,7 +116,7 @@ public class DocVentaServiceImpl implements DocVentaService {
     }
 
     @Override
-    public boolean existsByIdAndClienteEmail(UUID idDocumento, String emailCliente) {
+    public boolean existsByIdAndClienteEmail(String idDocumento, String emailCliente) {
         try {
             return docVentaRepository.existsByIdVentaAndClienteEmail(idDocumento, emailCliente);
         } catch (Exception e) {
@@ -108,27 +129,35 @@ public class DocVentaServiceImpl implements DocVentaService {
     @Transactional
     public DocVentaDTO agregar(DocVentaDTO docVentaDTO) {
         docVentaValidator.validarDocVenta(docVentaDTO);
-
         try {
             // Guardar la venta
             DocVentaEntity docVentaSaved = guardarVenta(docVentaDTO);
 
-            // Guardar los detalles de venta
-            guardarDetallesDeVenta(docVentaDTO.getDetallesVenta(), docVentaSaved);
+            // Guardar los detalles de venta y obtener el precio total de la venta
+            BigDecimal precioTotalVenta = guardarDetallesDeVenta(docVentaDTO.getDetallesVenta(), docVentaSaved);
+
+            // Actualizar el precio total y el IGV de la venta
+            docVentaSaved.setPrecioTotal(precioTotalVenta);
+            docVentaSaved.setIgv(precioTotalVenta.multiply(BigDecimal.valueOf(0.18)));
+
 
             // Crear y guardar la guía de salida
             GuiaSalidaEntity guiaSalidaEntity = crearGuiaSalida(docVentaSaved);
 
             // Mapear la venta guardada a DTO y devolverla
             return modelMapper.map(docVentaSaved, DocVentaDTO.class);
+        } catch (NoSuchElementException e) {
+            // Manejar la excepción de elemento no encontrado
+            throw new RuntimeException("Error al agregar la venta: " + e.getMessage());
         } catch (Exception e) {
-            throw new RuntimeException("Error: " + e.getMessage());
+            // Manejar otras excepciones
+            throw new RuntimeException("Error al agregar la venta.", e);
         }
     }
 
+
     private DocVentaEntity guardarVenta(DocVentaDTO docVentaDTO) {
         // Tipo de transacción
-        // Obtener el TipoTransaccionEntity por su ID "TTR-VENTA-TOC201"
         TipoTransaccionEntity tipoTransaccionEntity = tipoTransaccionRepository.findById("TTR-VENTA-TOC201")
                 .orElseThrow(() -> new NoSuchElementException("Tipo de transacción por defecto no encontrado"));
 
@@ -138,22 +167,43 @@ public class DocVentaServiceImpl implements DocVentaService {
 
         // Crear la venta
         DocVentaEntity docVentaEntity = modelMapper.map(docVentaDTO, DocVentaEntity.class);
+        docVentaEntity.setIdVenta(IdGenerator.generarID("BXV-", String.valueOf(UUID.randomUUID())));
         docVentaEntity.setNumComprobante(NumeroCorrelativoGenerator.generarNumeroCorrelativo());
         docVentaEntity.setFechaEnvio(docVentaDTO.getFechaEntrega());
         docVentaEntity.setEstadoEnvio(EstadoEnvio.PENDIENTE);
         docVentaEntity.setTipoTransaccion(tipoTransaccionEntity);
         docVentaEntity.setCliente(clienteEntity);
-        docVentaEntity.calcularImpuestoYPrecioTotal();
         return docVentaRepository.save(docVentaEntity);
     }
 
-    private void guardarDetallesDeVenta(List<DocDetalleVentaDTO> detallesVenta, DocVentaEntity docVentaEntity) {
-        // Crear los detalles de venta
+    private BigDecimal guardarDetallesDeVenta(List<DocDetalleVentaDTO> detallesVenta, DocVentaEntity docVentaEntity) {
+        BigDecimal precioTotalVenta = BigDecimal.ZERO; // Inicializamos el precio total de la venta
+
+        // Itera sobre los detalles de venta
         for (DocDetalleVentaDTO detalle : detallesVenta) {
             DocDetalleVentaEntity detalleEntity = modelMapper.map(detalle, DocDetalleVentaEntity.class);
-            detalleEntity.setVenta(docVentaEntity); // Asignar la venta recién creada al detalle de venta
-            docDetalleVentaRepository.save(detalleEntity);
+
+            // Buscar el precio unitario del producto y calcular el precio total del detalle
+            BigDecimal precioUnitario = obtenerProducto(detalle.getProductos().getId()).getPrecio();
+            BigDecimal precioTotalDetalle = precioUnitario.multiply(BigDecimal.valueOf(detalle.getCantidad()));
+
+            detalleEntity.setPrecioUnitario(precioUnitario);
+            detalleEntity.setPrecioTotal(precioTotalDetalle);
+            detalleEntity.setProductos(obtenerProducto(detalle.getProductos().getId()));
+
+            if(detallesVenta.indexOf(detalle) == 0) {
+                detalleEntity.setVenta(docVentaEntity); // Asignar la venta recién creada al detalle de venta
+                docDetalleVentaRepository.save(detalleEntity);
+            } else {
+                detalleEntity.setVenta(docVentaEntity); // Asignar la venta recién creada al detalle de venta
+                docDetalleVentaRepository.save(detalleEntity);
+            }
+
+            // Sumar el precio total del detalle al precio total de la venta
+            precioTotalVenta = precioTotalVenta.add(precioTotalDetalle);
         }
+
+        return precioTotalVenta;
     }
 
     private GuiaSalidaEntity crearGuiaSalida(DocVentaEntity docVentaEntity) {
@@ -177,7 +227,6 @@ public class DocVentaServiceImpl implements DocVentaService {
         }
         return guiaSalidaEntity;
     }
-
 
     private ProductoEntity obtenerProducto(String idProducto) {
         return productoRepository.findById(idProducto)

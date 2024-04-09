@@ -25,11 +25,11 @@ public class ProveedorController {
 
     @GetMapping
     @PreAuthorize("hasRole('Administrador')")
-    public ResponseEntity<List<ProveedorDTO>> buscarTodos() {
+    public ResponseEntity<List<?>> buscarTodos() {
         try {
             return ResponseEntity.ok(proveedorService.buscarTodos());
         } catch (Exception e) {
-            return ResponseEntity.status(500).build();
+            return ResponseEntity.status(500).body(Collections.singletonList(e.getMessage()));
         }
     }
 

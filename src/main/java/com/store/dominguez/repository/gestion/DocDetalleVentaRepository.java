@@ -15,7 +15,7 @@ import java.util.UUID;
 public interface DocDetalleVentaRepository extends BaseRepository<DocDetalleVentaEntity, UUID> {
 
     // Buscar por el id del documento
-    @Query("SELECT d FROM DocDetalleVentaEntity d WHERE d.venta.id = :ventaId")
+    @Query("SELECT d FROM DocDetalleVentaEntity d WHERE d.venta.idVenta = :ventaId")
     Optional<DocDetalleVentaEntity> findByVentaId(@Param("ventaId") UUID ventaId);
 
     // BUscar por el id del producto

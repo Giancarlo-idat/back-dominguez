@@ -49,7 +49,7 @@ public class ProductoController {
     }
 
     @GetMapping("/modelo")
-    @PreAuthorize("hasRole('CLIENTE') or hasRole('ALMACEN') or hasRole('Administrador')")
+    @PreAuthorize("hasRole('Cliente') or hasRole('Almacen') or hasRole('Administrador')")
     public ResponseEntity<List<?>> buscarPorModelo(@RequestParam String modelo) {
         try {
             return ResponseEntity.ok(productoService.buscarModelo(modelo));
@@ -59,7 +59,7 @@ public class ProductoController {
     }
 
     @GetMapping("/marca")
-    @PreAuthorize("hasRole('CLIENTE') or hasRole('ALMACEN') or hasRole('Administrador')")
+    @PreAuthorize("hasRole('Cliente') or hasRole('Almacen') or hasRole('Administrador')")
     public ResponseEntity<List<?>> buscarPorMarca(@RequestParam String marca) {
         try {
             return ResponseEntity.ok(productoService.buscarPorMarca(marca));
@@ -69,7 +69,7 @@ public class ProductoController {
     }
 
     @GetMapping("/categoria")
-    @PreAuthorize("hasRole('CLIENTE') or hasRole('ALMACEN') or hasRole('Administrador')")
+    @PreAuthorize("hasRole('Cliente') or hasRole('Almacen') or hasRole('Administrador')")
     public ResponseEntity<List<?>> buscarPorCategoria(@RequestParam String categoria) {
         try {
             return ResponseEntity.ok(productoService.buscarPorCategoria(categoria));
@@ -79,7 +79,7 @@ public class ProductoController {
     }
 
     @GetMapping("/precio")
-    @PreAuthorize("hasRole('CLIENTE') or hasRole('ALMACEN') or hasRole('Administrador')")
+    @PreAuthorize("hasRole('Cliente') or hasRole('Almacen') or hasRole('Administrador')")
     public ResponseEntity<List<?>> buscarPorRangoPrecio(@RequestParam BigDecimal precioMin, @RequestParam BigDecimal precioMax) {
         try {
             return ResponseEntity.ok(productoService.buscarPorRangoPrecio(precioMin, precioMax));
@@ -91,6 +91,7 @@ public class ProductoController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('Cliente') or hasRole('Almacen') or hasRole('Administrador')")
     public ResponseEntity<?> buscarId(@PathVariable String id) {
         try {
             return ResponseEntity.ok(productoService.buscarId(id));

@@ -44,9 +44,9 @@ public class ProveedorValidator {
     }
 
     private static void validarCamposValidos(ProveedorDTO proveedorDTO) {
-        if (Validations.isValidNames(proveedorDTO.getNombres()))
+        if (!Validations.isValidNames(proveedorDTO.getNombres()))
             throw new IllegalArgumentException("El nombre no es válido");
-        if (Validations.isValidEmail(proveedorDTO.getEmail()))
+        if (!Validations.isValidEmail(proveedorDTO.getEmail()))
             throw new IllegalArgumentException("El email no es válido");
         if (Validations.isValidTelephone(proveedorDTO.getTelefono()))
             throw new IllegalArgumentException("El teléfono no es válido");

@@ -2,6 +2,7 @@ package com.store.dominguez.model;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.store.dominguez.model.base.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -25,16 +26,28 @@ public class DocDetalleVentaEntity extends BaseEntity {
     private UUID idDetalleVenta;
 
     @ManyToOne
-    @JoinColumn(name = "idVenta")
+    @JoinColumn(name = "id_venta")
     private DocVentaEntity venta;
 
     @ManyToOne
     @JoinColumn(name = "id_producto")
     private ProductoEntity productos;
 
+    @Column(name = "cantidad", nullable = false)
     private int cantidad;
+
+    @Column(name = "precio_unitario", nullable = false)
     private BigDecimal precioUnitario;
+
+    @Column(name = "precio_total", nullable = false)
     private BigDecimal precioTotal;
+
+
+    // Método para calcular el subtotal del detalle
+    public void calcularPrecioTotal() {
+        this.precioUnitario = this.productos.getPrecio();
+        this.precioTotal = this.precioUnitario.multiply(BigDecimal.valueOf(this.cantidad));
+    }
 
     @Override
     public String toString() {

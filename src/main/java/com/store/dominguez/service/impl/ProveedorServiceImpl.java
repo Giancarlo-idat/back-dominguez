@@ -85,11 +85,10 @@ public class ProveedorServiceImpl implements ProveedorService {
         proveedorValidator.validarProveedor(proveedorDTO);
 
         try {
-            String idProveedor = IdGenerator.generarID("PROV", (proveedorDTO.getNombres() + proveedorDTO.getEmail()));
+            String idProveedor = IdGenerator.generarID("PROV", (proveedorDTO.getNombres() + proveedorDTO.getEmail()).toUpperCase());
             proveedorDTO.setId(idProveedor);
             ProveedorEntity proveedor = modelMapper.map(proveedorDTO, ProveedorEntity.class);
             proveedor = proveedorRepository.save(proveedor);
-
             return modelMapper.map(proveedor, ProveedorDTO.class);
         } catch (Exception e) {
             throw new RuntimeException("Error al guardar el proveedor" + e.getMessage());

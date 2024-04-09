@@ -88,7 +88,7 @@ public class CategoriaServiceImpl implements CategoriaService {
         categoriaValidator.validarCategoria(categoriaDTO);
 
         try {
-            String id = IdGenerator.generarID("CAT", categoriaDTO.getNombre());
+            String id = IdGenerator.generarID("CAT", categoriaDTO.getNombre().toUpperCase());
             categoriaDTO.setId(id);
             CategoriaEntity categoriaEntity = modelMapper.map(categoriaDTO, CategoriaEntity.class);
             categoriaEntity = categoriaRepository.save(categoriaEntity);

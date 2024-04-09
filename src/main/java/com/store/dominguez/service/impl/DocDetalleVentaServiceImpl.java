@@ -1,7 +1,11 @@
 package com.store.dominguez.service.impl;
 
 import com.store.dominguez.dto.DocDetalleVentaDTO;
+import com.store.dominguez.dto.DocVentaDTO;
+import com.store.dominguez.dto.ProductoDTO;
 import com.store.dominguez.model.DocDetalleVentaEntity;
+import com.store.dominguez.model.DocVentaEntity;
+import com.store.dominguez.model.ProductoEntity;
 import com.store.dominguez.repository.gestion.DocDetalleVentaRepository;
 import com.store.dominguez.service.gestion.DocDetalleVentaService;
 import org.modelmapper.ModelMapper;
@@ -28,10 +32,41 @@ public class DocDetalleVentaServiceImpl implements DocDetalleVentaService {
         try {
             List<DocDetalleVentaEntity> docDetalleVentaDTOS = docDetalleVentaRepository.findAll();
             return docDetalleVentaDTOS.stream()
-                    .map(docDetalleVentaEntity -> modelMapper.map(docDetalleVentaEntity, DocDetalleVentaDTO.class))
+                    .map(docDetalleVentaEntity -> {
+                        DocDetalleVentaDTO docDetalleVentaDTO = new DocDetalleVentaDTO();
+                        ProductoEntity productoEntity = docDetalleVentaEntity.getProductos();
+                        ProductoDTO productoDTO = new ProductoDTO();
+                        /*
+                         *   Se asigna el valor de los atributos de la entidad a los atributos del DTO
+                         * */
+                        docDetalleVentaDTO.setIdDetalleVenta(docDetalleVentaEntity.getIdDetalleVenta());
+                        docDetalleVentaDTO.setProductos(modelMapper.map(docDetalleVentaEntity.getProductos(), ProductoDTO.class));
+                        docDetalleVentaDTO.setCantidad(docDetalleVentaEntity.getCantidad());
+                        docDetalleVentaDTO.setPrecioUnitario(docDetalleVentaEntity.getPrecioUnitario());
+                        docDetalleVentaDTO.setPrecioTotal(docDetalleVentaEntity.getPrecioTotal());
+                        docDetalleVentaDTO.setFechaCreacion(docDetalleVentaEntity.getFechaCreacion());
+                        docDetalleVentaDTO.setFechaActualizacion(docDetalleVentaEntity.getFechaActualizacion());
+
+                        /*
+                         *
+                         * Establecer el ID  de la venta al DTO
+                         * */
+                        // Obtener la entidad DocVentaEntity
+                        DocVentaEntity docVentaEntity = docDetalleVentaEntity.getVenta();
+
+                        // Verificar si la entidad no es null antes de mapearla
+                        if (docVentaEntity != null) {
+                            // Crear un nuevo DTO para DocVentaEntity y asignarlo al campo idVenta
+                            DocVentaDTO docVentaDTO = new DocVentaDTO();
+                            docVentaDTO.setIdVenta((docVentaEntity.getIdVenta()));
+                            docDetalleVentaDTO.setVenta(docVentaDTO);
+                        }
+
+                        return docDetalleVentaDTO;
+                    })
                     .collect(Collectors.toList());
         } catch (Exception e) {
-            throw new IllegalArgumentException("Error al buscar los detalles de venta");
+            throw new IllegalArgumentException("Error al buscar los detalles de venta " + e.getMessage());
         }
     }
 

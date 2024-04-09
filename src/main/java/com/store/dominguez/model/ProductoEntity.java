@@ -34,7 +34,7 @@ public class ProductoEntity extends BaseEntity {
     @Column(name = "modelo", length = 100, nullable = false)
     private String modelo;
 
-    @Column(name = "descripcion", length = 150)
+    @Column(name = "descripcion")
     private String descripcion;
 
     @Column(name = "precio", nullable = false)
@@ -46,7 +46,7 @@ public class ProductoEntity extends BaseEntity {
     @Column(name = "stock", nullable = false)
     private int stock;
 
-    @Column(name = "imagen", length = 255)
+    @Column(name = "imagen")
     private String imagen;
 
     @Column(name = "estado", nullable = false)

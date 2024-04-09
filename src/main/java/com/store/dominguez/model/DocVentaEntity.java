@@ -1,6 +1,5 @@
 package com.store.dominguez.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.store.dominguez.model.base.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -10,7 +9,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.*;
 
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = false)
 @SuperBuilder
 @Builder
 @Data
@@ -21,41 +20,61 @@ import java.util.*;
 public class DocVentaEntity extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID idVenta;
+    @Column(name = "id_venta", length = 50, nullable = false, unique = true)
+    private String idVenta;
 
     @ManyToOne
     @JoinColumn(name = "id_cliente")
     private ClienteEntity cliente;
 
+    @Column(name = "numero_comprobante", length = 50, nullable = false)
     private String numComprobante;
+
+    @Column(name = "fecha_envio", nullable = false)
     private LocalDate fechaEnvio;
+
+    @Column(name = "fecha_entrega", nullable = false)
     private LocalDate fechaEntrega;
 
     @ManyToOne
     @JoinColumn(name = "id_tipo_transaccion")
     private TipoTransaccionEntity tipoTransaccion;
 
-
-    private double impuesto;
+    @Column(name = "precio_total")
     private BigDecimal precioTotal;
+
+    @Column(name = "op_gravadas")
+    private BigDecimal opGravadas;
+
+    @Column(name = "igv")
+    private BigDecimal igv;
+
     private EstadoEnvio estadoEnvio;
-    private boolean estado;
+
+    private boolean estado = true;
 
     @OneToMany(mappedBy = "venta", cascade = CascadeType.ALL)
-    private List<DocDetalleVentaEntity> detallesVenta;
+    private List<DocDetalleVentaEntity> detallesVenta = new ArrayList<>();
 
-    public void calcularImpuestoYPrecioTotal() {
-        BigDecimal total = BigDecimal.ZERO;
-        double impuestoTotal = 0.0;
+    public void calcularTotales() {
+        // Inicializar variables
+        BigDecimal totalOpGravadas = BigDecimal.ZERO;
 
+        // Calcular la suma de los precios totales de los detalles de venta
         for (DocDetalleVentaEntity detalle : detallesVenta) {
-            total = total.add(detalle.getPrecioTotal()); // Suma el precio total de cada detalle
+            totalOpGravadas = totalOpGravadas.add(detalle.getPrecioTotal());
         }
 
-        this.precioTotal = total;
-        this.impuesto = total.multiply(BigDecimal.valueOf(0.18)).doubleValue();
+        // Calcular el impuesto (18% del total gravado)
+        this.igv = totalOpGravadas.multiply(BigDecimal.valueOf(0.18));
+
+        // Calcular la OP. GRAVADAS (Precio total de los detalles de venta)
+        this.opGravadas = totalOpGravadas;
+
+        // Calcular el precio total (suma de OP. GRAVADAS e IGV)
+        this.precioTotal = this.opGravadas.add(this.igv);
     }
+
 
     @Override
     public String toString() {
@@ -64,7 +83,7 @@ public class DocVentaEntity extends BaseEntity {
                 ", numComprobante='" + numComprobante + '\'' +
                 ", fechaEnvio=" + fechaEnvio +
                 ", fechaEntrega=" + fechaEntrega +
-                ", impuesto=" + impuesto +
+                ", impuesto=" + igv +
                 ", precioTotal=" + precioTotal +
                 ", estadoEnvio=" + estadoEnvio +
                 ", estado=" + estado +
