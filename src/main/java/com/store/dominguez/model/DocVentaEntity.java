@@ -1,6 +1,7 @@
 package com.store.dominguez.model;
 
 import com.store.dominguez.model.base.BaseEntity;
+import com.store.dominguez.model.enums.EstadoEnvio;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -11,7 +12,6 @@ import java.util.*;
 
 @EqualsAndHashCode(callSuper = false)
 @SuperBuilder
-@Builder
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -21,7 +21,7 @@ public class DocVentaEntity extends BaseEntity {
 
     @Id
     @Column(name = "id_venta", length = 50, nullable = false, unique = true)
-    private String idVenta;
+    private String id;
 
     @ManyToOne
     @JoinColumn(name = "id_cliente")
@@ -53,7 +53,7 @@ public class DocVentaEntity extends BaseEntity {
 
     private boolean estado = true;
 
-    @OneToMany(mappedBy = "venta", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "venta")
     private List<DocDetalleVentaEntity> detallesVenta = new ArrayList<>();
 
     public void calcularTotales() {
@@ -79,7 +79,7 @@ public class DocVentaEntity extends BaseEntity {
     @Override
     public String toString() {
         return "DocVentaEntity{" +
-                "idVenta=" + idVenta +
+                "idVenta=" + id +
                 ", numComprobante='" + numComprobante + '\'' +
                 ", fechaEnvio=" + fechaEnvio +
                 ", fechaEntrega=" + fechaEntrega +

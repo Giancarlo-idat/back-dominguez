@@ -1,6 +1,7 @@
 package com.store.dominguez.model;
 
 import com.store.dominguez.model.base.BaseEntity;
+import com.store.dominguez.model.enums.TipoSexo;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -16,7 +17,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = false)
 @Entity(name = "ClienteEntity")
 @Table(name = "cliente")
 public class ClienteEntity extends BaseEntity implements UserDetails {
@@ -62,6 +63,8 @@ public class ClienteEntity extends BaseEntity implements UserDetails {
     @Column(name = "estado", nullable = false)
     private boolean estado = true;
 
+    @OneToMany(mappedBy = "cliente")
+    private List<DocVentaEntity> ventas;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

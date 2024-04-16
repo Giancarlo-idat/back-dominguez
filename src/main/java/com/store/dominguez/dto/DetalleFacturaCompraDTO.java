@@ -17,6 +17,7 @@ import java.math.BigDecimal;
 @EqualsAndHashCode(callSuper = false)
 public class DetalleFacturaCompraDTO extends BaseDTO {
 
+    private String id;
     private ProveedorDTO proveedor;
     private BigDecimal precio;
     private int cantidad;

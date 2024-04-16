@@ -6,6 +6,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+import java.util.UUID;
+
 @SuperBuilder
 @Builder
 @Data
@@ -17,8 +19,8 @@ import lombok.experimental.SuperBuilder;
 public class DetalleGuiaEntradaEntity extends BaseEntity {
 
     @Id
-    @Column(name = "id_detalle_guia_entrada", nullable = false, unique = true, length = 50)
-    private String id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private UUID id;
 
     @ManyToOne
     @JoinColumn(name = "id_guia_entrada")
@@ -27,8 +29,5 @@ public class DetalleGuiaEntradaEntity extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "id_producto")
     private ProductoEntity producto;
-
-    @Column(name = "cantidad_detalle_entrada")
-    private int cantidadDetalleEntrada;
 
 }

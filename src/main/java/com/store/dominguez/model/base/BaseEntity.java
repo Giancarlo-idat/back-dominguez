@@ -1,5 +1,8 @@
 package com.store.dominguez.model.base;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.store.dominguez.util.json.JsonLocalDateTimeSerializer;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,6 +13,7 @@ import org.modelmapper.internal.bytebuddy.implementation.bind.annotation.Super;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @SuperBuilder
 @Data
@@ -18,17 +22,35 @@ import java.time.LocalDateTime;
 @MappedSuperclass
 public class BaseEntity implements Serializable {
 
-    @Column(name="fecha_creacion")
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
+    @JsonSerialize(using = JsonLocalDateTimeSerializer.class)
+    @Column(name = "fecha_creacion")
     private LocalDateTime fechaCreacion = LocalDateTime.now();
 
-    @Column(name="fecha_actualizacion")
+    @JsonSerialize(using = JsonLocalDateTimeSerializer.class)
+    @Column(name = "fecha_actualizacion")
     private LocalDateTime fechaActualizacion = LocalDateTime.now();
+
+    public String getFormattedFechaCreacion() {
+        return fechaCreacion.format(formatter);
+    }
+
+    public String getFormattedFechaActualizacion() {
+        return fechaActualizacion.format(formatter);
+    }
+
 
     @PrePersist
     protected void prePersist() {
-        if (this.fechaCreacion == null) fechaCreacion = LocalDateTime.now();
-        if (this.fechaActualizacion == null) fechaActualizacion = LocalDateTime.now();
+        if (this.fechaCreacion == null) {
+            fechaCreacion = LocalDateTime.now();
+        }
+        if (this.fechaActualizacion == null) {
+            fechaActualizacion = LocalDateTime.now();
+        }
     }
+
 
     @PreUpdate
     protected void preUpdate() {

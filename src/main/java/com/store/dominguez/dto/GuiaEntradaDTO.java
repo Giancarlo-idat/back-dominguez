@@ -16,6 +16,7 @@ import java.time.LocalDate;
 @EqualsAndHashCode(callSuper = false)
 public class GuiaEntradaDTO extends BaseDTO {
 
-    private LocalDate fechaGuiaEntrada;
+    private String id;
+    private LocalDate fechaEntrada;
     private FacturaCompraDTO facturaCompra;
 }

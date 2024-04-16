@@ -21,7 +21,6 @@ public class PaymentController {
     private PaymentService paymentService;
 
     @PostMapping("/payment/create")
-    /*@PreAuthorize("hasRole('Cliente') OR hasRole('Administrador')")*/
     public ResponseEntity<PaymentResponse> createPaymentLink(@RequestBody PaymentIntentDTO paymentIntentDTO) {
         try {
             PaymentResponse paymentResponse = paymentService.createPaymentLink(paymentIntentDTO);

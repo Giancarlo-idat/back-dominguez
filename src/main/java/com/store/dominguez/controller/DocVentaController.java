@@ -3,6 +3,7 @@ package com.store.dominguez.controller;
 
 import com.store.dominguez.dto.DocVentaDTO;
 import com.store.dominguez.service.gestion.DocVentaService;
+import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
@@ -30,6 +31,16 @@ public class DocVentaController {
         }
     }
 
+
+    @GetMapping("/{id}")
+    @PreAuthorize("hasRole('Administrador') or hasRole('Cliente)")
+    public ResponseEntity<?> obtenerDocVenta(@PathVariable String id) {
+        try {
+            return ResponseEntity.ok(docVentaService.buscarId(id));
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(Collections.singletonList(e.getMessage()));
+        }
+    }
 
     @PostMapping
     public ResponseEntity<?> crearDocVenta(@RequestBody DocVentaDTO docVentaDTO) {

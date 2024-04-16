@@ -2,6 +2,7 @@ package com.store.dominguez.model;
 
 
 import com.store.dominguez.model.base.BaseEntity;
+import com.store.dominguez.model.enums.TipoSexo;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;

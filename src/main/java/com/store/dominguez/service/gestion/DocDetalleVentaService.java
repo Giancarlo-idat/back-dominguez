@@ -11,8 +11,10 @@ public interface DocDetalleVentaService extends BaseService<DocDetalleVentaDTO> 
 
     List<DocDetalleVentaDTO> buscarDocDetalleVenta(String datos);
 
-    Optional<DocDetalleVentaDTO> findByDocVentaId(UUID idDocVenta);
+    Optional<DocDetalleVentaDTO> findByDocVentaId(String idDocVenta);
 
     List<DocDetalleVentaDTO> findByIdProduct(String idProducto);
 
+
+    Optional<DocDetalleVentaDTO> findById(UUID id);
 }

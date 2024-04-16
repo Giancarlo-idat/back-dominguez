@@ -1,9 +1,10 @@
 package com.store.dominguez.util.validations;
 
 import com.store.dominguez.dto.DocVentaDTO;
-import com.store.dominguez.model.EstadoEnvio;
+import com.store.dominguez.model.enums.EstadoEnvio;
 import com.store.dominguez.repository.gestion.ClienteRepository;
 import com.store.dominguez.repository.gestion.DocVentaRepository;
+import com.store.dominguez.repository.gestion.EmpleadoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -14,18 +15,19 @@ public class DocVentaValidator {
 
     private final DocVentaRepository docVentaRepository;
     private final ClienteRepository clienteRepository;
+    private final EmpleadoRepository empleadoRepository;
 
     @Autowired
-    public DocVentaValidator(DocVentaRepository docVentaRepository, ClienteRepository clienteRepository) {
+    public DocVentaValidator(DocVentaRepository docVentaRepository, ClienteRepository clienteRepository, EmpleadoRepository empleadoRepository) {
         this.docVentaRepository = docVentaRepository;
         this.clienteRepository = clienteRepository;
+        this.empleadoRepository = empleadoRepository;
     }
 
     public void validarDocVenta(DocVentaDTO docVentaDTO) {
         validarCamposObligatorios(docVentaDTO);
-        validarClienteExistente(docVentaDTO.getCliente().getId());
         validarEstadoEnvio(docVentaDTO.getEstadoEnvio());
-        /*validarPrecioTotal(docVentaDTO.getPrecioTotal());*/
+        validarClienteExistente(docVentaDTO.getCliente().getId());
         validarDetallesVenta(docVentaDTO);
     }
 
@@ -36,9 +38,15 @@ public class DocVentaValidator {
     }
 
 
-    private void validarClienteExistente(String idCliente) {
+    public void validarClienteExistente(String idCliente) {
         if (!clienteRepository.existsById(idCliente)) {
             throw new IllegalArgumentException("El cliente especificado no existe");
+        }
+    }
+
+    public void validarEmpleadoExistente(String idEmpleado) {
+        if (!empleadoRepository.existsById(idEmpleado)) {
+            throw new IllegalArgumentException("El empleado especificado no existe");
         }
     }
 

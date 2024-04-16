@@ -2,6 +2,7 @@ package com.store.dominguez.model;
 
 
 import com.store.dominguez.model.base.BaseEntity;
+import com.store.dominguez.model.enums.EstadoFactura;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -21,27 +22,28 @@ import java.util.List;
 public class FacturaCompraEntity extends BaseEntity {
 
     @Id
-    @Column(name="id_factura_compra", nullable = false, unique = true,length = 20)
+    @Column(name = "id_factura_compra", nullable = false, unique = true, length = 20)
     private String id;
 
-    @Column(name="fecha_compra", nullable = false)
+    @Column(name = "fecha_compra", nullable = false)
     private LocalDate fechaCompra;
 
     @ManyToOne
     @JoinColumn(name = "id_metodo_pago")
     private MetodoPagoEntity metodoPago;
 
-    @Column(name="subtotal", nullable = false)
+    @Column(name = "subtotal", nullable = false)
     private BigDecimal subtotal;
 
-    @Column(name="IGV", nullable = false)
+    @Column(name = "IGV", nullable = false)
     private BigDecimal IGV;
 
-    @Column(name="monto_total", nullable = false)
+    @Column(name = "monto_total", nullable = false)
     private BigDecimal montoTotal;
 
-    @Column(name="estado", nullable = false)
-    private String estado;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "estado", nullable = false)
+    private EstadoFactura estadoFactura;
 
     @ManyToOne
     @JoinColumn(name = "id_order_compra")

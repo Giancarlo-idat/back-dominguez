@@ -27,7 +27,7 @@ public class TipoTransaccionEntity extends BaseEntity {
     @Column(name="estado")
     private Boolean estado = true;
 
-    @OneToMany(mappedBy = "tipoTransaccion", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "tipoTransaccion")
     private List<DocVentaEntity> ventas;
 
 

@@ -23,8 +23,8 @@ public class DetalleFacturaCompraEntity extends BaseEntity {
     private String id;
 
     @ManyToOne
-    @JoinColumn(name = "id_proveedor")
-    private ProveedorEntity proveedor;
+    @JoinColumn(name = "id_producto")
+    private ProductoEntity producto;
 
     @Column(name = "precio")
     private BigDecimal precio;

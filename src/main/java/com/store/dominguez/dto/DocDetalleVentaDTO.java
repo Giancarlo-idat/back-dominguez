@@ -1,5 +1,7 @@
 package com.store.dominguez.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.store.dominguez.dto.base.BaseDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -15,10 +17,10 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class DocDetalleVentaDTO {
 
-    private UUID idDetalleVenta;
-    private DocVentaDTO venta;
+    private UUID id;
     private ProductoDTO productos;
     private int cantidad;
     private BigDecimal precioUnitario;

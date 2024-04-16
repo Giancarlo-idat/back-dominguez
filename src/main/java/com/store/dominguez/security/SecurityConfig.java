@@ -48,8 +48,14 @@ public class SecurityConfig {
                     auth.requestMatchers(HttpMethod.POST,"/clientes").permitAll();
                     auth.requestMatchers(HttpMethod.GET, "/productos/**").permitAll();
                     auth.requestMatchers(HttpMethod.GET, "/categorias").permitAll();
-                    auth.requestMatchers("/stripe/payment/create").permitAll();
+                    auth.requestMatchers("/stripe/payment/create").authenticated();
+                    auth.requestMatchers("/stripe/payment/confirm").authenticated();
+                    auth.requestMatchers("/stripe/payment/cancel").authenticated();
+                    auth.requestMatchers("/stripe/payment/success").authenticated();
+                    auth.requestMatchers("/profile/myorders/client").authenticated();
                     auth.requestMatchers("/tipo-documento-identidad").permitAll();
+                    auth.requestMatchers("/ventas/exportar-listado-ventas-excel").permitAll();
+                    auth.requestMatchers("/ventas/exportar-listado-ventas-pdf").permitAll();
                     auth.anyRequest().authenticated();
                 })
                 .sessionManagement(session -> {

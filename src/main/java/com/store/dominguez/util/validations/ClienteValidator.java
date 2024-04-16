@@ -1,11 +1,8 @@
 package com.store.dominguez.util.validations;
 
 import com.store.dominguez.dto.ClienteDTO;
-import com.store.dominguez.dto.ProveedorDTO;
-import com.store.dominguez.model.ClienteEntity;
-import com.store.dominguez.model.RolEntity;
 import com.store.dominguez.model.TipoDocumentoIdentidadEntity;
-import com.store.dominguez.model.TipoSexo;
+import com.store.dominguez.model.enums.TipoSexo;
 import com.store.dominguez.repository.gestion.RolRepository;
 import com.store.dominguez.repository.gestion.TipoDocumentoIdentidadRepository;
 import org.springframework.beans.factory.annotation.Autowired;

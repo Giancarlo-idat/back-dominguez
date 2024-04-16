@@ -9,6 +9,9 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @SuperBuilder
 @Data
@@ -17,10 +20,15 @@ import java.math.BigDecimal;
 @EqualsAndHashCode(callSuper = false)
 public class OrdenCompraDTO extends BaseDTO {
 
+    private String id;
     private ProveedorDTO proveedor;
-    private String fechaOrden;
+    private LocalDate fechaOrden;
     private String estadoOrden;
     private BigDecimal subtotal;
     private BigDecimal IGV;
+    private List<DetalleOrdenCompraDTO> detalles;
     private BigDecimal montoTotal;
+
+    private LocalDateTime fechaCreacion = LocalDateTime.now();
+    private LocalDateTime fechaActualizacion = LocalDateTime.now();
 }

@@ -18,6 +18,7 @@ import java.time.LocalDate;
 @EqualsAndHashCode(callSuper = false)
 public class FacturaCompraDTO extends BaseDTO {
 
+    private String id;
     private LocalDate fechaCompra;
     private BigDecimal subtotal;
     private BigDecimal IGV;

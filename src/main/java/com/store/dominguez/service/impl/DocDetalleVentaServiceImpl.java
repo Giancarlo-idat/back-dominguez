@@ -36,10 +36,8 @@ public class DocDetalleVentaServiceImpl implements DocDetalleVentaService {
                         DocDetalleVentaDTO docDetalleVentaDTO = new DocDetalleVentaDTO();
                         ProductoEntity productoEntity = docDetalleVentaEntity.getProductos();
                         ProductoDTO productoDTO = new ProductoDTO();
-                        /*
-                         *   Se asigna el valor de los atributos de la entidad a los atributos del DTO
-                         * */
-                        docDetalleVentaDTO.setIdDetalleVenta(docDetalleVentaEntity.getIdDetalleVenta());
+
+                        docDetalleVentaDTO.setId((docDetalleVentaEntity.getId()));
                         docDetalleVentaDTO.setProductos(modelMapper.map(docDetalleVentaEntity.getProductos(), ProductoDTO.class));
                         docDetalleVentaDTO.setCantidad(docDetalleVentaEntity.getCantidad());
                         docDetalleVentaDTO.setPrecioUnitario(docDetalleVentaEntity.getPrecioUnitario());
@@ -58,8 +56,8 @@ public class DocDetalleVentaServiceImpl implements DocDetalleVentaService {
                         if (docVentaEntity != null) {
                             // Crear un nuevo DTO para DocVentaEntity y asignarlo al campo idVenta
                             DocVentaDTO docVentaDTO = new DocVentaDTO();
-                            docVentaDTO.setIdVenta((docVentaEntity.getIdVenta()));
-                            docDetalleVentaDTO.setVenta(docVentaDTO);
+                            docVentaDTO.setId((docVentaEntity.getId()));
+                            // docDetalleVentaDTO.setVenta(docVentaDTO);
                         }
 
                         return docDetalleVentaDTO;
@@ -84,6 +82,7 @@ public class DocDetalleVentaServiceImpl implements DocDetalleVentaService {
     public Optional<DocDetalleVentaDTO> buscarId(String id) {
         return Optional.empty();
     }
+
 
     @Override
     public DocDetalleVentaDTO agregar(DocDetalleVentaDTO docDetalleVentaDTO) {
@@ -111,7 +110,7 @@ public class DocDetalleVentaServiceImpl implements DocDetalleVentaService {
     }
 
     @Override
-    public Optional<DocDetalleVentaDTO> findByDocVentaId(UUID idDocVenta) {
+    public Optional<DocDetalleVentaDTO> findByDocVentaId(String idDocVenta) {
         try {
             Optional<DocDetalleVentaEntity> docDetalleVentaEntity = docDetalleVentaRepository.findByVentaId(idDocVenta);
             return docDetalleVentaEntity.map(docDetalleVentaEntity1 -> modelMapper
@@ -125,5 +124,16 @@ public class DocDetalleVentaServiceImpl implements DocDetalleVentaService {
     @Override
     public List<DocDetalleVentaDTO> findByIdProduct(String idProducto) {
         return null;
+    }
+
+    @Override
+    public Optional<DocDetalleVentaDTO> findById(UUID id) {
+        try {
+            Optional<DocDetalleVentaEntity> docDetalleVentaEntity = docDetalleVentaRepository.findById(id);
+            return docDetalleVentaEntity.map(docDetalleVentaEntity1 -> modelMapper
+                    .map(docDetalleVentaEntity1, DocDetalleVentaDTO.class));
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Error al buscar los detalles de venta");
+        }
     }
 }

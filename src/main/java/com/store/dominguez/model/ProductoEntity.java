@@ -22,7 +22,7 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = true)
 @Entity(name = "ProductoEntity")
 @Table(name = "producto")
 public class ProductoEntity extends BaseEntity {
@@ -55,9 +55,6 @@ public class ProductoEntity extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "id_categoria", nullable = false)
     private CategoriaEntity categoria;
-
-    @OneToMany(mappedBy = "productos", cascade = CascadeType.ALL)
-    private List<DocDetalleVentaEntity> detallesVenta = new ArrayList<>();
 
     @Convert(converter = JsonConverter.class)
     @Column(name = "ficha_tecnica", columnDefinition = "TEXT", nullable = false)

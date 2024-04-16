@@ -42,47 +42,20 @@ public class DocDetalleVentaController {
         }
     }
 
-    @GetMapping("/venta/{idVenta}/detalle/{idDetalle}")
-    public ResponseEntity<?> buscarIdDocDetalleVenta(@PathVariable String idVenta, @PathVariable UUID idDetalle, Authentication authentication) {
+    @GetMapping("/{id}")
+    @PreAuthorize("hasRole('Administrador') or hasRole('Cliente')")
+    public ResponseEntity<?> docDetalleVentaById(@PathVariable UUID id) {
         try {
-
-            // Obtener detalle de la autenticacion
-            String userEmail = authentication.getName();
-
-            // Buscar el documento del detalle de venta por su ID, cargando el cliente asociado
-            Optional<DocVentaDTO> docVentaOptional = docVentaService.buscarIdDocVenta(idVenta);
-
-            if (docVentaOptional.isPresent()) {
-                // Verificar si el cliente asociado a la venta coincide con el usuario autenticado
-                DocVentaDTO docVenta = docVentaOptional.get();
-                String clienteEmail = docVenta.getCliente().getEmail();
-
-                if (!userEmail.equals(clienteEmail)) {
-                    return ResponseEntity.status(HttpStatus.FORBIDDEN).body("No tienes permisos para acceder a este recurso");
-                }
-
-                // Buscar el detalle de venta por su ID
-                Optional<DocDetalleVentaDTO> detalleVentaOptional = docDetalleVentaService.findByDocVentaId(idDetalle);
-
-                if (detalleVentaOptional.isPresent()) {
-                    // Verificar si el detalle de venta pertenece a la venta especificada
-                    DocDetalleVentaDTO detalleVenta = detalleVentaOptional.get();
-                    UUID ventaIdDelDetalle = UUID.fromString(detalleVenta.getVenta().getIdVenta());
-
-                    if (!idVenta.equals(ventaIdDelDetalle)) {
-                        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("El detalle de venta no pertenece a la venta especificada");
-                    }
-
-                    return ResponseEntity.ok(detalleVenta);
-                } else {
-                    return ResponseEntity.notFound().build();
-                }
+            Optional<DocDetalleVentaDTO> docDetalleVenta = docDetalleVentaService.findById(id);
+            if (docDetalleVenta.isPresent()) {
+                return ResponseEntity.ok(docDetalleVenta);
             } else {
-                return ResponseEntity.notFound().build();
+                return ResponseEntity.status(404).body("No se encontró el detalle de venta con el id: " + id);
             }
-
         } catch (Exception e) {
-            return ResponseEntity.status(500).body(Collections.singletonList(e.getMessage()));
+            return ResponseEntity.status(500).body(e.getMessage());
         }
     }
+
+
 }

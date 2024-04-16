@@ -1,14 +1,11 @@
 package com.store.dominguez.service.impl;
 
-import com.store.dominguez.dto.ClienteDTO;
-import com.store.dominguez.dto.DocDetalleVentaDTO;
-import com.store.dominguez.dto.DocVentaDTO;
-import com.store.dominguez.dto.TipoTransaccionDTO;
+import com.store.dominguez.dto.*;
 import com.store.dominguez.model.*;
+import com.store.dominguez.model.enums.EstadoEnvio;
 import com.store.dominguez.repository.gestion.*;
 import com.store.dominguez.service.gestion.DocVentaService;
 import com.store.dominguez.util.generator.IdGenerator;
-import com.store.dominguez.util.generator.NumeroCorrelativoGenerator;
 import com.store.dominguez.util.generator.NumeroGuiaGenerator;
 import com.store.dominguez.util.generator.NumeroSeguimientoGenerator;
 import com.store.dominguez.util.validations.DocVentaValidator;
@@ -35,11 +32,12 @@ public class DocVentaServiceImpl implements DocVentaService {
     private final GuiaSalidaRepository guiaSalidaRepository;
     private final DetalleGuiaSalidaRepository detalleGuiaSalidaRepository;
     private final TipoTransaccionRepository tipoTransaccionRepository;
+    private final EmpleadoRepository empleadoRepository;
     private final ModelMapper modelMapper;
     private final DocVentaValidator docVentaValidator;
 
     @Autowired
-    public DocVentaServiceImpl(DocVentaRepository docVentaRepository, ClienteRepository clienteRepository, ModelMapper modelMapper, DocVentaValidator docVentaValidator, NumeroSeguimientoGenerator numeroSeguimientoGenerator, DocDetalleVentaRepository docDetalleVentaRepository, ProductoRepository productoRepository, GuiaSalidaRepository guiaSalidaRepository, DetalleGuiaSalidaRepository detalleGuiaSalidaRepository, TipoTransaccionRepository tipoTransaccionRepository) {
+    public DocVentaServiceImpl(DocVentaRepository docVentaRepository, ClienteRepository clienteRepository, ModelMapper modelMapper, DocVentaValidator docVentaValidator, NumeroSeguimientoGenerator numeroSeguimientoGenerator, DocDetalleVentaRepository docDetalleVentaRepository, ProductoRepository productoRepository, GuiaSalidaRepository guiaSalidaRepository, DetalleGuiaSalidaRepository detalleGuiaSalidaRepository, TipoTransaccionRepository tipoTransaccionRepository, EmpleadoRepository empleadoRepository) {
         this.docVentaRepository = docVentaRepository;
         this.clienteRepository = clienteRepository;
         this.modelMapper = modelMapper;
@@ -49,6 +47,7 @@ public class DocVentaServiceImpl implements DocVentaService {
         this.guiaSalidaRepository = guiaSalidaRepository;
         this.detalleGuiaSalidaRepository = detalleGuiaSalidaRepository;
         this.tipoTransaccionRepository = tipoTransaccionRepository;
+        this.empleadoRepository = empleadoRepository;
     }
 
     @Override
@@ -61,7 +60,7 @@ public class DocVentaServiceImpl implements DocVentaService {
                         ClienteEntity clienteEntity = docVenta.getCliente();
                         ClienteDTO clienteDTO = new ClienteDTO();
 
-                        docVentaDTO.setIdVenta(((docVenta.getIdVenta())));
+                        docVentaDTO.setId(((docVenta.getId())));
                         docVentaDTO.setFechaEntrega(docVenta.getFechaEntrega());
                         docVentaDTO.setCliente(modelMapper.map(docVenta.getCliente(), ClienteDTO.class));
                         docVentaDTO.setEstadoEnvio(docVenta.getEstadoEnvio());
@@ -73,6 +72,17 @@ public class DocVentaServiceImpl implements DocVentaService {
                         docVentaDTO.setFechaEnvio(docVentaDTO.getFechaEntrega());
                         docVentaDTO.setTipoTransaccion(modelMapper.map(docVenta.getTipoTransaccion(), TipoTransaccionDTO.class));
                         docVentaDTO.setPrecioTotal(docVenta.getPrecioTotal());
+                        docVentaDTO.setDetallesVenta(docVenta.getDetallesVenta().stream()
+                                .map(docDetalleVenta -> {
+                                    DocDetalleVentaDTO docDetalleVentaDTO = new DocDetalleVentaDTO();
+                                    docDetalleVentaDTO.setId((docDetalleVenta.getId()));
+                                    docDetalleVentaDTO.setCantidad(docDetalleVenta.getCantidad());
+                                    docDetalleVentaDTO.setPrecioUnitario(docDetalleVenta.getPrecioUnitario());
+                                    docDetalleVentaDTO.setPrecioTotal(docDetalleVenta.getPrecioTotal());
+                                    docDetalleVentaDTO.setProductos(modelMapper.map(docDetalleVenta.getProductos(), ProductoDTO.class));
+                                    return docDetalleVentaDTO;
+                                })
+                                .collect(Collectors.toList()));
                         return docVentaDTO;
                     })
                     .collect(Collectors.toList());
@@ -103,22 +113,19 @@ public class DocVentaServiceImpl implements DocVentaService {
 
     @Override
     public Optional<DocVentaDTO> buscarId(String id) {
-        return Optional.empty();
-    }
-
-    public Optional<DocVentaDTO> buscarIdDocVenta(String id) {
         try {
-            Optional<DocVentaEntity> docVentaEntity = docVentaRepository.findByIdVenta(id);
+            Optional<DocVentaEntity> docVentaEntity = docVentaRepository.findById(id);
             return docVentaEntity.map(docVenta -> modelMapper.map(docVenta, DocVentaDTO.class));
         } catch (Exception e) {
-            throw new RuntimeException("Error al buscar la categoria" + e.getMessage());
+            throw new RuntimeException("Error al buscar el documento" + e.getMessage());
         }
     }
+
 
     @Override
     public boolean existsByIdAndClienteEmail(String idDocumento, String emailCliente) {
         try {
-            return docVentaRepository.existsByIdVentaAndClienteEmail(idDocumento, emailCliente);
+            return docVentaRepository.existsByIdAndClienteEmail(idDocumento, emailCliente);
         } catch (Exception e) {
             throw new RuntimeException("Error al buscar: " + e.getMessage());
         }
@@ -155,7 +162,6 @@ public class DocVentaServiceImpl implements DocVentaService {
         }
     }
 
-
     private DocVentaEntity guardarVenta(DocVentaDTO docVentaDTO) {
         // Tipo de transacción
         TipoTransaccionEntity tipoTransaccionEntity = tipoTransaccionRepository.findById("TTR-VENTA-TOC201")
@@ -167,8 +173,8 @@ public class DocVentaServiceImpl implements DocVentaService {
 
         // Crear la venta
         DocVentaEntity docVentaEntity = modelMapper.map(docVentaDTO, DocVentaEntity.class);
-        docVentaEntity.setIdVenta(IdGenerator.generarID("BXV-", String.valueOf(UUID.randomUUID())));
-        docVentaEntity.setNumComprobante(NumeroCorrelativoGenerator.generarNumeroCorrelativo());
+        docVentaEntity.setId(IdGenerator.generarID("BXV-", String.valueOf(UUID.randomUUID())));
+        docVentaEntity.setNumComprobante(NumeroSeguimientoGenerator.generarNumeroSeguimiento());
         docVentaEntity.setFechaEnvio(docVentaDTO.getFechaEntrega());
         docVentaEntity.setEstadoEnvio(EstadoEnvio.PENDIENTE);
         docVentaEntity.setTipoTransaccion(tipoTransaccionEntity);
@@ -181,6 +187,13 @@ public class DocVentaServiceImpl implements DocVentaService {
 
         // Itera sobre los detalles de venta
         for (DocDetalleVentaDTO detalle : detallesVenta) {
+
+
+            ProductoEntity producto = obtenerProducto(detalle.getProductos().getId());
+            if(producto.getStock() < detalle.getCantidad()) {
+                throw new RuntimeException("No hay suficiente stock para el producto con ID: " + producto.getId());
+            }
+
             DocDetalleVentaEntity detalleEntity = modelMapper.map(detalle, DocDetalleVentaEntity.class);
 
             // Buscar el precio unitario del producto y calcular el precio total del detalle
@@ -191,7 +204,11 @@ public class DocVentaServiceImpl implements DocVentaService {
             detalleEntity.setPrecioTotal(precioTotalDetalle);
             detalleEntity.setProductos(obtenerProducto(detalle.getProductos().getId()));
 
-            if(detallesVenta.indexOf(detalle) == 0) {
+            // Actualizar el stock del producto
+            producto.setStock(producto.getStock() - detalle.getCantidad());
+            productoRepository.save(producto);
+
+            if (detallesVenta.indexOf(detalle) == 0) {
                 detalleEntity.setVenta(docVentaEntity); // Asignar la venta recién creada al detalle de venta
                 docDetalleVentaRepository.save(detalleEntity);
             } else {

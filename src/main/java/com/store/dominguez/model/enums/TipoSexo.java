@@ -1,4 +1,4 @@
-package com.store.dominguez.model;
+package com.store.dominguez.model.enums;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.store.dominguez.util.json.TipoSexoDeserializer;

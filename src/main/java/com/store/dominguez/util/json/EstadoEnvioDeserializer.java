@@ -5,7 +5,7 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
-import com.store.dominguez.model.EstadoEnvio;
+import com.store.dominguez.model.enums.EstadoEnvio;
 
 import java.io.IOException;
 

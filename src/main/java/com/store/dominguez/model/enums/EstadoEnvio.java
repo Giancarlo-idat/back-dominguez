@@ -1,4 +1,4 @@
-package com.store.dominguez.model;
+package com.store.dominguez.model.enums;
 
 public enum EstadoEnvio {
     PENDIENTE,
