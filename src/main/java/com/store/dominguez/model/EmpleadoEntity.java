@@ -59,11 +59,6 @@ public class EmpleadoEntity  extends BaseEntity implements UserDetails {
     @Column(name="telefono", length = 9, unique = true)
     private String telefono;
 
-    @Column(name="estado", nullable = false)
-    private boolean estado = true;
-
-
-
     @Override
     public String toString() {
         return "EmpleadoEntity{" +
@@ -75,7 +70,6 @@ public class EmpleadoEntity  extends BaseEntity implements UserDetails {
                 ", numeroDocumento='" + numeroDocumento + '\'' +
                 ", sexo=" + sexo +
                 ", telefono='" + telefono + '\'' +
-                ", estado=" + estado +
                 '}';
     }
 

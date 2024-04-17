@@ -1,6 +1,5 @@
 package com.store.dominguez.dto;
 
-
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -17,7 +16,9 @@ public class DetalleGuiaSalidaDTO {
     private String numeroDetalle;
     private ProductoDTO productos;
     private int cantidad;
-    private LocalDateTime fechaCreacion = LocalDateTime.now();
 
+    @Builder.Default
+    private LocalDateTime fechaCreacion = LocalDateTime.now();
+    @Builder.Default
     private LocalDateTime fechaActualizacion = LocalDateTime.now();
 }

@@ -3,7 +3,6 @@ package com.store.dominguez.controller;
 
 import com.store.dominguez.dto.RolDTO;
 import com.store.dominguez.service.gestion.RolService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +15,6 @@ import java.util.List;
 public class RolController {
     private final RolService rolService;
 
-    @Autowired
     public RolController(RolService rolService) {
         this.rolService = rolService;
     }

@@ -4,12 +4,8 @@ import com.store.dominguez.model.base.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 
 @SuperBuilder
@@ -30,9 +26,6 @@ public class RolEntity extends BaseEntity {
     @Column(name = "nombre", nullable = false, unique = true, length = 50)
     private String nombre;
 
-    @Column(name = "estado", nullable = false)
-    private boolean estado = true;
-
     @Column(name = "descripcion", length = 100)
     private String descripcion;
 
@@ -48,7 +41,6 @@ public class RolEntity extends BaseEntity {
         return "RolEntity{" +
                 "id='" + id + '\'' +
                 ", nombre='" + nombre + '\'' +
-                ", estado=" + estado +
                 ", descripcion='" + descripcion + '\'' +
                 '}';
     }

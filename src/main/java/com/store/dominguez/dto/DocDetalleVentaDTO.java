@@ -1,8 +1,8 @@
 package com.store.dominguez.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.store.dominguez.dto.base.BaseDTO;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -26,6 +26,8 @@ public class DocDetalleVentaDTO {
     private BigDecimal precioUnitario;
     private BigDecimal precioTotal;
 
+    @Builder.Default
     private LocalDateTime fechaCreacion = LocalDateTime.now();
+    @Builder.Default
     private LocalDateTime fechaActualizacion = LocalDateTime.now();
 }

@@ -39,8 +39,5 @@ public class ProveedorEntity extends BaseEntity {
     @Column(name="telefono", length = 9)
     private String telefono;
 
-    @Column(name="estado")
-    private boolean estado = true;
-
 
 }

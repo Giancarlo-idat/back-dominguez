@@ -24,9 +24,6 @@ public class TipoTransaccionEntity extends BaseEntity {
     @Column(name = "nombre", unique = true, length = 50, nullable = false)
     private String nombre;
 
-    @Column(name="estado")
-    private Boolean estado = true;
-
     @OneToMany(mappedBy = "tipoTransaccion")
     private List<DocVentaEntity> ventas;
 

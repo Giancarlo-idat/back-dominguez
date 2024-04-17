@@ -11,12 +11,10 @@ import com.store.dominguez.util.validations.ClienteValidator;
 import com.store.dominguez.util.generator.IdGenerator;
 import com.store.dominguez.util.validations.Validations;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -31,7 +29,6 @@ public class ClienteServiceImpl implements ClienteService {
     private final PasswordEncoder passwordEncoder;
     private final RolRepository rolRepository;
 
-    @Autowired
     public ClienteServiceImpl(ClienteRepository clienteRepository, ModelMapper modelMapper, ClienteValidator clienteValidator, PasswordEncoder passwordEncoder, RolRepository rolRepository) {
         this.clienteRepository = clienteRepository;
         this.modelMapper = modelMapper;

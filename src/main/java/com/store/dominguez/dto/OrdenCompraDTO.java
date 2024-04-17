@@ -3,6 +3,7 @@ package com.store.dominguez.dto;
 
 import com.store.dominguez.dto.base.BaseDTO;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -29,6 +30,8 @@ public class OrdenCompraDTO extends BaseDTO {
     private List<DetalleOrdenCompraDTO> detalles;
     private BigDecimal montoTotal;
 
+    @Builder.Default
     private LocalDateTime fechaCreacion = LocalDateTime.now();
+    @Builder.Default
     private LocalDateTime fechaActualizacion = LocalDateTime.now();
 }

@@ -28,9 +28,6 @@ public class CategoriaEntity  extends BaseEntity {
     @Column(name="descripcion")
     private String descripcion;
 
-    @Column(name="estado", nullable = false)
-    private boolean estado = true;
-
     @Column(name="imagen")
     private String imagen;
 

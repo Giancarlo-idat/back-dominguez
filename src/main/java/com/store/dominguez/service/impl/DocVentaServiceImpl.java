@@ -12,7 +12,6 @@ import com.store.dominguez.util.validations.DocVentaValidator;
 import com.store.dominguez.util.validations.Validations;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
@@ -32,11 +31,9 @@ public class DocVentaServiceImpl implements DocVentaService {
     private final GuiaSalidaRepository guiaSalidaRepository;
     private final DetalleGuiaSalidaRepository detalleGuiaSalidaRepository;
     private final TipoTransaccionRepository tipoTransaccionRepository;
-    private final EmpleadoRepository empleadoRepository;
     private final ModelMapper modelMapper;
     private final DocVentaValidator docVentaValidator;
 
-    @Autowired
     public DocVentaServiceImpl(DocVentaRepository docVentaRepository, ClienteRepository clienteRepository, ModelMapper modelMapper, DocVentaValidator docVentaValidator, NumeroSeguimientoGenerator numeroSeguimientoGenerator, DocDetalleVentaRepository docDetalleVentaRepository, ProductoRepository productoRepository, GuiaSalidaRepository guiaSalidaRepository, DetalleGuiaSalidaRepository detalleGuiaSalidaRepository, TipoTransaccionRepository tipoTransaccionRepository, EmpleadoRepository empleadoRepository) {
         this.docVentaRepository = docVentaRepository;
         this.clienteRepository = clienteRepository;
@@ -47,7 +44,6 @@ public class DocVentaServiceImpl implements DocVentaService {
         this.guiaSalidaRepository = guiaSalidaRepository;
         this.detalleGuiaSalidaRepository = detalleGuiaSalidaRepository;
         this.tipoTransaccionRepository = tipoTransaccionRepository;
-        this.empleadoRepository = empleadoRepository;
     }
 
     @Override
@@ -57,8 +53,7 @@ public class DocVentaServiceImpl implements DocVentaService {
             return list.stream()
                     .map(docVenta -> {
                         DocVentaDTO docVentaDTO = new DocVentaDTO();
-                        ClienteEntity clienteEntity = docVenta.getCliente();
-                        ClienteDTO clienteDTO = new ClienteDTO();
+         
 
                         docVentaDTO.setId(((docVenta.getId())));
                         docVentaDTO.setFechaEntrega(docVenta.getFechaEntrega());
@@ -252,7 +247,6 @@ public class DocVentaServiceImpl implements DocVentaService {
 
     @Override
     public DocVentaDTO actualizar(DocVentaDTO docVentaDTO, String id) {
-
         return null;
     }
 

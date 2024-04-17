@@ -1,11 +1,7 @@
 package com.store.dominguez.config;
 
-import com.store.dominguez.dto.DocDetalleVentaDTO;
-import com.store.dominguez.dto.DocVentaDTO;
-import com.store.dominguez.model.DocDetalleVentaEntity;
-import com.store.dominguez.model.DocVentaEntity;
+
 import org.modelmapper.ModelMapper;
-import org.modelmapper.PropertyMap;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

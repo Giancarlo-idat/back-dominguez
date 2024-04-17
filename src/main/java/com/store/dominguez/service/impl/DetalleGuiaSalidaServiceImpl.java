@@ -6,7 +6,6 @@ import com.store.dominguez.repository.gestion.DetalleGuiaSalidaRepository;
 import com.store.dominguez.service.gestion.DetalleGuiaSalidaService;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.ModelMap;
 
 import java.util.List;
 import java.util.Optional;
@@ -47,7 +46,7 @@ public class DetalleGuiaSalidaServiceImpl implements DetalleGuiaSalidaService {
     @Override
     public Optional<DetalleGuiaSalidaDTO> buscarId(String id) {
 
-        Optional<DetalleGuiaSalidaEntity> detalleGuiaSalidaEntity = detalleGuiaSalidaRepository.findById(id);
+        Optional<DetalleGuiaSalidaEntity> detalleGuiaSalidaEntity = detalleGuiaSalidaRepository.findById(UUID.fromString(id));
         try {
             return detalleGuiaSalidaEntity.map(guiaSalidaEntity -> modelMapper.map(guiaSalidaEntity, DetalleGuiaSalidaDTO.class));
         } catch (Exception e) {

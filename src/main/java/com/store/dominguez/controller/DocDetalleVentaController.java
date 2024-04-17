@@ -1,14 +1,9 @@
 package com.store.dominguez.controller;
 
 import com.store.dominguez.dto.DocDetalleVentaDTO;
-import com.store.dominguez.dto.DocVentaDTO;
 import com.store.dominguez.service.gestion.DocDetalleVentaService;
-import com.store.dominguez.service.gestion.DocVentaService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,12 +19,9 @@ import java.util.UUID;
 public class DocDetalleVentaController {
 
     private final DocDetalleVentaService docDetalleVentaService;
-    private final DocVentaService docVentaService;
 
-    @Autowired
-    public DocDetalleVentaController(DocDetalleVentaService docDetalleVentaService, DocVentaService docVentaService) {
+    public DocDetalleVentaController(DocDetalleVentaService docDetalleVentaService) {
         this.docDetalleVentaService = docDetalleVentaService;
-        this.docVentaService = docVentaService;
     }
 
     @GetMapping
@@ -56,6 +48,5 @@ public class DocDetalleVentaController {
             return ResponseEntity.status(500).body(e.getMessage());
         }
     }
-
 
 }

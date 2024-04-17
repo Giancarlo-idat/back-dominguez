@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface DetalleGuiaSalidaRepository extends BaseRepository<DetalleGuiaSalidaEntity, String> {
+public interface DetalleGuiaSalidaRepository extends BaseRepository<DetalleGuiaSalidaEntity, UUID> {
     List<DetalleGuiaSalidaEntity> findByGuiaSalida(GuiaSalidaEntity guiaSalida);
     List<DetalleGuiaSalidaEntity> findByProductos(ProductoEntity productos);
     Optional<DetalleGuiaSalidaEntity> findByIdDetalleGuiaSalida(UUID id);

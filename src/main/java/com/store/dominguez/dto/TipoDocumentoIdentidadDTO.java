@@ -3,6 +3,7 @@ package com.store.dominguez.dto;
 
 import com.store.dominguez.dto.base.BaseDTO;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -16,5 +17,7 @@ import lombok.experimental.SuperBuilder;
 public class TipoDocumentoIdentidadDTO extends BaseDTO {
     private String id;
     private String nombre;
+    
+    @Builder.Default
     private boolean estado = true;
 }

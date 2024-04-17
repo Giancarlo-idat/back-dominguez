@@ -1,8 +1,6 @@
 package com.store.dominguez.repository.gestion;
 
 import com.store.dominguez.model.DocDetalleVentaEntity;
-import com.store.dominguez.model.DocVentaEntity;
-import com.store.dominguez.model.ProductoEntity;
 import com.store.dominguez.repository.base.BaseRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

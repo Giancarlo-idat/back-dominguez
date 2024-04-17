@@ -5,7 +5,6 @@ import com.store.dominguez.dto.DocVentaDTO;
 import com.store.dominguez.dto.ProductoDTO;
 import com.store.dominguez.model.DocDetalleVentaEntity;
 import com.store.dominguez.model.DocVentaEntity;
-import com.store.dominguez.model.ProductoEntity;
 import com.store.dominguez.repository.gestion.DocDetalleVentaRepository;
 import com.store.dominguez.service.gestion.DocDetalleVentaService;
 import org.modelmapper.ModelMapper;
@@ -34,11 +33,10 @@ public class DocDetalleVentaServiceImpl implements DocDetalleVentaService {
             return docDetalleVentaDTOS.stream()
                     .map(docDetalleVentaEntity -> {
                         DocDetalleVentaDTO docDetalleVentaDTO = new DocDetalleVentaDTO();
-                        ProductoEntity productoEntity = docDetalleVentaEntity.getProductos();
-                        ProductoDTO productoDTO = new ProductoDTO();
 
                         docDetalleVentaDTO.setId((docDetalleVentaEntity.getId()));
-                        docDetalleVentaDTO.setProductos(modelMapper.map(docDetalleVentaEntity.getProductos(), ProductoDTO.class));
+                        docDetalleVentaDTO
+                                .setProductos(modelMapper.map(docDetalleVentaEntity.getProductos(), ProductoDTO.class));
                         docDetalleVentaDTO.setCantidad(docDetalleVentaEntity.getCantidad());
                         docDetalleVentaDTO.setPrecioUnitario(docDetalleVentaEntity.getPrecioUnitario());
                         docDetalleVentaDTO.setPrecioTotal(docDetalleVentaEntity.getPrecioTotal());
@@ -47,8 +45,8 @@ public class DocDetalleVentaServiceImpl implements DocDetalleVentaService {
 
                         /*
                          *
-                         * Establecer el ID  de la venta al DTO
-                         * */
+                         * Establecer el ID de la venta al DTO
+                         */
                         // Obtener la entidad DocVentaEntity
                         DocVentaEntity docVentaEntity = docDetalleVentaEntity.getVenta();
 
@@ -82,7 +80,6 @@ public class DocDetalleVentaServiceImpl implements DocDetalleVentaService {
     public Optional<DocDetalleVentaDTO> buscarId(String id) {
         return Optional.empty();
     }
-
 
     @Override
     public DocDetalleVentaDTO agregar(DocDetalleVentaDTO docDetalleVentaDTO) {

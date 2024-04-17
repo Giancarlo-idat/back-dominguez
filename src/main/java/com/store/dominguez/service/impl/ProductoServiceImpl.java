@@ -7,13 +7,10 @@ import com.store.dominguez.service.gestion.ProductoService;
 import com.store.dominguez.util.generator.IdGenerator;
 import com.store.dominguez.util.validations.ProductoValidator;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -25,7 +22,6 @@ public class ProductoServiceImpl implements ProductoService {
     private final ModelMapper modelMapper;
     private final ProductoValidator productoValidator;
 
-    @Autowired
     public ProductoServiceImpl(ProductoRepository productoRepository, ProductoValidator productoValidator, ModelMapper modelMapper) {
         this.productoRepository = productoRepository;
         this.modelMapper = modelMapper;

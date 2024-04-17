@@ -9,11 +9,9 @@ import com.store.dominguez.util.generator.IdGenerator;
 import com.store.dominguez.util.validations.ProveedorValidator;
 import com.store.dominguez.util.validations.Validations;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -25,7 +23,6 @@ public class ProveedorServiceImpl implements ProveedorService {
     private final ModelMapper modelMapper;
     private final ProveedorValidator proveedorValidator;
 
-    @Autowired
     public ProveedorServiceImpl(ProveedorRepository proveedorRepository, ModelMapper modelMapper, ProveedorValidator proveedorValidator) {
         this.proveedorRepository = proveedorRepository;
         this.modelMapper = modelMapper;

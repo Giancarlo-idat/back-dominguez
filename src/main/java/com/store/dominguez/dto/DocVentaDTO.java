@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.store.dominguez.dto.base.BaseDTO;
 import com.store.dominguez.model.enums.EstadoEnvio;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -38,11 +39,12 @@ public class DocVentaDTO extends BaseDTO{
     private BigDecimal opGravadas;
     private EstadoEnvio estadoEnvio;
     private BigDecimal igv;
-    private boolean estado = true;
-
-
     private List<DocDetalleVentaDTO> detallesVenta;
-    private LocalDateTime fechaCreacion = LocalDateTime.now();
 
+    @Builder.Default
+    private boolean estado = true;
+    @Builder.Default
+    private LocalDateTime fechaCreacion = LocalDateTime.now();
+    @Builder.Default
     private LocalDateTime fechaActualizacion = LocalDateTime.now();
 }

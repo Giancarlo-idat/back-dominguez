@@ -55,8 +55,6 @@ public class OrdenCompraServiceImpl implements OrdenCompraService {
             return list.stream()
                     .map(ordenCompra -> {
                         OrdenCompraDTO ordenCompraDTO = new OrdenCompraDTO();
-                        ProveedorEntity proveedor = ordenCompra.getProveedor();
-                        ProveedorDTO proveedorDTO = new ProveedorDTO();
 
                         ordenCompraDTO.setId(ordenCompra.getId());
                         ordenCompraDTO.setProveedor(modelMapper.map(ordenCompra.getProveedor(), ProveedorDTO.class));
@@ -90,8 +88,6 @@ public class OrdenCompraServiceImpl implements OrdenCompraService {
             Optional<OrdenCompraEntity> ordenCompraEntity = ordenCompraRepository.findById(id);
             if (ordenCompraEntity.isPresent()) {
                 OrdenCompraDTO ordenCompraDTO = new OrdenCompraDTO();
-                ProveedorEntity proveedor = ordenCompraEntity.get().getProveedor();
-                ProveedorDTO proveedorDTO = new ProveedorDTO();
 
                 ordenCompraDTO.setId(ordenCompraEntity.get().getId());
                 ordenCompraDTO.setProveedor(modelMapper.map(ordenCompraEntity.get().getProveedor(), ProveedorDTO.class));

@@ -5,9 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
-import java.util.HashSet;
 import java.util.Set;
-
 
 @SuperBuilder
 @Builder
@@ -26,9 +24,6 @@ public class TipoDocumentoIdentidadEntity extends BaseEntity {
     @Column(name = "nombre", nullable = false, unique = true)
     private String nombre;
 
-    @Column(name="estado")
-    private boolean estado = true;
-
     @OneToMany(mappedBy = "tipoDocumento")
-    private Set<EmpleadoEntity> empleados = new HashSet<>();
+    private Set<EmpleadoEntity> empleados;
 }

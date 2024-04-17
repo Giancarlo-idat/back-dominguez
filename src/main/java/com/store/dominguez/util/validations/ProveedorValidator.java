@@ -5,7 +5,6 @@ import com.store.dominguez.dto.ProveedorDTO;
 import com.store.dominguez.model.TipoDocumentoIdentidadEntity;
 import com.store.dominguez.repository.gestion.ProveedorRepository;
 import com.store.dominguez.repository.gestion.TipoDocumentoIdentidadRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
@@ -16,7 +15,6 @@ public class ProveedorValidator {
     private final ProveedorRepository proveedorRepository;
     private final TipoDocumentoIdentidadRepository tipoDocumentoIdentidadRepository;
 
-    @Autowired
     public ProveedorValidator(ProveedorRepository proveedorRepository,
                               TipoDocumentoIdentidadRepository tipoDocumentoIdentidadRepository) {
         this.proveedorRepository = proveedorRepository;

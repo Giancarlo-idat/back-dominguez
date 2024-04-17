@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.store.dominguez.dto.base.BaseDTO;
-import jakarta.persistence.Lob;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 

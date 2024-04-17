@@ -1,7 +1,6 @@
 package com.store.dominguez.model;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.store.dominguez.model.base.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -36,6 +35,6 @@ public class GuiaSalidaEntity extends BaseEntity {
     private String numeroSalida;
 
     @OneToMany(mappedBy = "guiaSalida", cascade = CascadeType.ALL)
-    private List<DetalleGuiaSalidaEntity> detalles = new ArrayList<>();
+    private List<DetalleGuiaSalidaEntity> detalles;
 
 }

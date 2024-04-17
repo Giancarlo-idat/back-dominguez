@@ -51,10 +51,8 @@ public class DocVentaEntity extends BaseEntity {
 
     private EstadoEnvio estadoEnvio;
 
-    private boolean estado = true;
-
     @OneToMany(mappedBy = "venta")
-    private List<DocDetalleVentaEntity> detallesVenta = new ArrayList<>();
+    private List<DocDetalleVentaEntity> detallesVenta;
 
     public void calcularTotales() {
         // Inicializar variables
@@ -75,7 +73,6 @@ public class DocVentaEntity extends BaseEntity {
         this.precioTotal = this.opGravadas.add(this.igv);
     }
 
-
     @Override
     public String toString() {
         return "DocVentaEntity{" +
@@ -86,7 +83,6 @@ public class DocVentaEntity extends BaseEntity {
                 ", impuesto=" + igv +
                 ", precioTotal=" + precioTotal +
                 ", estadoEnvio=" + estadoEnvio +
-                ", estado=" + estado +
                 '}';
     }
 

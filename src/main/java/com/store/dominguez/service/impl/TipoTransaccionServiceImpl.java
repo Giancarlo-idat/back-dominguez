@@ -8,7 +8,6 @@ import com.store.dominguez.util.generator.IdGenerator;
 import com.store.dominguez.util.validations.TipoTransaccionValidator;
 import com.store.dominguez.util.validations.Validations;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -24,7 +23,6 @@ public class TipoTransaccionServiceImpl implements TipoTransaccionService {
     private final ModelMapper modelMapper;
     private final TipoTransaccionValidator tipoTransaccionValidator;
 
-    @Autowired
     public TipoTransaccionServiceImpl(TipoTransaccionRepository tipoTransaccionRepository,  ModelMapper modelMapper, TipoTransaccionValidator tipoTransaccionValidator) {
         this.tipoTransaccionRepository = tipoTransaccionRepository;
         this.modelMapper = modelMapper;

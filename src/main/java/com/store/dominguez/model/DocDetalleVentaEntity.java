@@ -1,9 +1,7 @@
 package com.store.dominguez.model;
 
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import com.store.dominguez.model.base.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;

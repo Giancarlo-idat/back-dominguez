@@ -46,7 +46,6 @@ public class ClienteEntity extends BaseEntity implements UserDetails {
     @JoinColumn(name = "id_rol", nullable = true)
     private RolEntity rol;
 
-
     @ManyToOne
     @JoinColumn(name = "id_tipo_documento_identidad")
     private TipoDocumentoIdentidadEntity tipoDocumento;
@@ -59,9 +58,6 @@ public class ClienteEntity extends BaseEntity implements UserDetails {
 
     @Column(name = "telefono", length = 9, unique = true)
     private String telefono;
-
-    @Column(name = "estado", nullable = false)
-    private boolean estado = true;
 
     @OneToMany(mappedBy = "cliente")
     private List<DocVentaEntity> ventas;
@@ -106,7 +102,6 @@ public class ClienteEntity extends BaseEntity implements UserDetails {
                 ", email='" + email + '\'' +
                 ", numeroDocumento='" + numeroDocumento + '\'' +
                 ", telefono='" + telefono + '\'' +
-                ", estado=" + estado +
                 '}';
     }
 }

@@ -6,7 +6,6 @@ import com.store.dominguez.model.TipoDocumentoIdentidadEntity;
 import com.store.dominguez.model.enums.TipoSexo;
 import com.store.dominguez.repository.gestion.RolRepository;
 import com.store.dominguez.repository.gestion.TipoDocumentoIdentidadRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
@@ -17,7 +16,6 @@ public class EmpleadoValidator {
     private final TipoDocumentoIdentidadRepository tipoDocumentoIdentidadRepository;
     private final RolRepository rolRepository;
 
-    @Autowired
     public EmpleadoValidator(TipoDocumentoIdentidadRepository tipoDocumentoIdentidadRepository, RolRepository rolRepository) {
         this.tipoDocumentoIdentidadRepository = tipoDocumentoIdentidadRepository;
         this.rolRepository = rolRepository;

@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.store.dominguez.model.*;
 import com.store.dominguez.model.enums.TipoSexo;
 import com.store.dominguez.repository.gestion.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 
 import java.math.BigDecimal;
@@ -29,7 +28,6 @@ public class MockDataConfig implements CommandLineRunner {
     private final TipoTransaccionRepository tipoTransaccionRepository;
     private final PasswordEncoder passwordEncoder;
 
-    @Autowired
     public MockDataConfig(ProductoRepository productoRepository, ClienteRepository clienteRepository, RolRepository rolRepository, EmpleadoRepository empleadoRepository, CategoriaRepository categoriaRepository, ProveedorRepository proveedorRepository, TipoDocumentoIdentidadRepository tipoDocumentoIdentidadRepository, TipoTransaccionRepository tipoTransaccionRepository, PasswordEncoder passwordEncoder) {
         this.productoRepository = productoRepository;
         this.clienteRepository = clienteRepository;
@@ -118,16 +116,16 @@ public class MockDataConfig implements CommandLineRunner {
 
     public static List<CategoriaEntity> initCategorias() {
         List<CategoriaEntity> categorias = new ArrayList<>();
-        categorias.add(new CategoriaEntity("CAT-POC-AS120K", "Procesadores", "Unidad central de procesamiento (CPU) que ejecuta las instrucciones de un programa y realiza cálculos.", true, "https://i.blogs.es/9862e7/intel/450_1000.jpeg"));
-        categorias.add(new CategoriaEntity("CAT-TJG-ZX321F", "Tarjetas gráficas", "Componente que procesa y genera imágenes para ser mostradas en la pantalla.", true, "https://sc04.alicdn.com/kf/H6e3a33d7fde242709f5803ed816ac8fbD.jpg"));
-        categorias.add(new CategoriaEntity("CAT-PAC-YH874B", "Placas base", "Placa de circuito impreso que conecta todos los componentes de hardware de una computadora.", true, "https://www.asus.com/media/Odin/websites/global/ProductLine/20200819054034.png"));
-        categorias.add(new CategoriaEntity("CAT-AMA-ALM421", "Almacenamiento", "Categoría que engloba dispositivos utilizados para guardar y gestionar datos de manera permanente o temporal en sistemas informáticos. Incluye dispositivos como discos duros, unidades de estado sólido (SSD), tarjetas de memoria, entre otros.", true, "https://newsbook.es/wp-content/uploads/2013/09/1foto11406.jpg"));
-        categorias.add(new CategoriaEntity("CAT-AUD-ADI921", "Audifonos", "Dispositivo de audio que se colocan sobre las orejas para escuchar sonidos provenientes de una computadora u otro dispositivo electrónico.", true, "https://http2.mlstatic.com/D_NQ_NP_760857-MLA44771394445_022021-O.webp"));
-        categorias.add(new CategoriaEntity("CAT-MON-HG432Z", "Monitores", "Pantalla de visualización utilizada para mostrar imágenes generadas por la computadora.", true, "https://consumer.huawei.com/content/dam/huawei-cbg-site/latam/latin/mkt/plp/monitors/mateview-gt-series/mateview-gt-series-1.jpg"));
-        categorias.add(new CategoriaEntity("CAT-COO-BC123W", "Coolers de Refrigeración", "Dispositivo de hardware diseñado para disipar el calor generado por componentes internos de una computadora, como el procesador (CPU) o la tarjeta gráfica (GPU), manteniendo así una temperatura óptima de funcionamiento.", true, "https://http2.mlstatic.com/D_NQ_NP_601302-MLM48393265754_112021-O.webp"));
-        categorias.add(new CategoriaEntity("CAT-PSU-VN876P", "Fuentes de alimentación", "Componente que suministra energía eléctrica a los componentes de una computadora.", true, "https://m.media-amazon.com/images/I/41CeZQLDl-S._SL500_.jpg"));
-        categorias.add(new CategoriaEntity("CAT-CAE-LM435R", "Cases", "Estructura que aloja y protege los componentes de una computadora.", true, "https://mipclista.com/3173-large_default/case-gamer-1st-player-zx7.jpg"));
-        categorias.add(new CategoriaEntity("CAT-SLL-PL678E", "Sillas Gamer", "Sillas ergonómicas diseñadas para proporcionar comodidad y soporte durante largas. Estas sillas suelen tienen la características de soporte lumbar ajustable, reposabrazos acolchados y reclinación ajustable para una experiencia de juego cómoda..", true, "https://thumb.pccomponentes.com/w-530-530/articles/18/180612/1.jpg"));
+        categorias.add(new CategoriaEntity("CAT-POC-AS120K", "Procesadores", "Unidad central de procesamiento (CPU) que ejecuta las instrucciones de un programa y realiza cálculos.", "https://i.blogs.es/9862e7/intel/450_1000.jpeg"));
+        categorias.add(new CategoriaEntity("CAT-TJG-ZX321F", "Tarjetas gráficas", "Componente que procesa y genera imágenes para ser mostradas en la pantalla.", "https://sc04.alicdn.com/kf/H6e3a33d7fde242709f5803ed816ac8fbD.jpg"));
+        categorias.add(new CategoriaEntity("CAT-PAC-YH874B", "Placas base", "Placa de circuito impreso que conecta todos los componentes de hardware de una computadora.", "https://www.asus.com/media/Odin/websites/global/ProductLine/20200819054034.png"));
+        categorias.add(new CategoriaEntity("CAT-AMA-ALM421", "Almacenamiento", "Categoría que engloba dispositivos utilizados para guardar y gestionar datos de manera permanente o temporal en sistemas informáticos. Incluye dispositivos como discos duros, unidades de estado sólido (SSD), tarjetas de memoria, entre otros.", "https://newsbook.es/wp-content/uploads/2013/09/1foto11406.jpg"));
+        categorias.add(new CategoriaEntity("CAT-AUD-ADI921", "Audifonos", "Dispositivo de audio que se colocan sobre las orejas para escuchar sonidos provenientes de una computadora u otro dispositivo electrónico.", "https://http2.mlstatic.com/D_NQ_NP_760857-MLA44771394445_022021-O.webp"));
+        categorias.add(new CategoriaEntity("CAT-MON-HG432Z", "Monitores", "Pantalla de visualización utilizada para mostrar imágenes generadas por la computadora.", "https://consumer.huawei.com/content/dam/huawei-cbg-site/latam/latin/mkt/plp/monitors/mateview-gt-series/mateview-gt-series-1.jpg"));
+        categorias.add(new CategoriaEntity("CAT-COO-BC123W", "Coolers de Refrigeración", "Dispositivo de hardware diseñado para disipar el calor generado por componentes internos de una computadora, como el procesador (CPU) o la tarjeta gráfica (GPU), manteniendo así una temperatura óptima de funcionamiento.", "https://http2.mlstatic.com/D_NQ_NP_601302-MLM48393265754_112021-O.webp"));
+        categorias.add(new CategoriaEntity("CAT-PSU-VN876P", "Fuentes de alimentación", "Componente que suministra energía eléctrica a los componentes de una computadora.", "https://m.media-amazon.com/images/I/41CeZQLDl-S._SL500_.jpg"));
+        categorias.add(new CategoriaEntity("CAT-CAE-LM435R", "Cases", "Estructura que aloja y protege los componentes de una computadora.", "https://mipclista.com/3173-large_default/case-gamer-1st-player-zx7.jpg"));
+        categorias.add(new CategoriaEntity("CAT-SLL-PL678E", "Sillas Gamer", "Sillas ergonómicas diseñadas para proporcionar comodidad y soporte durante largas. Estas sillas suelen tienen la características de soporte lumbar ajustable, reposabrazos acolchados y reclinación ajustable para una experiencia de juego cómoda..", "https://thumb.pccomponentes.com/w-530-530/articles/18/180612/1.jpg"));
 
         return categorias;
     }
@@ -234,7 +232,6 @@ public class MockDataConfig implements CommandLineRunner {
 
     public List<EmpleadoEntity> initEmpleados(List<RolEntity> roles, List<TipoDocumentoIdentidadEntity> tipoDocumentos) {
         List<EmpleadoEntity> empleados = new ArrayList<>();
-        String passwordAdmin = passwordEncoder.encode("Superadmin123");
 
         // Rol Admin
         empleados.add(crearEmpleado("EMP-ADM-1K001", "Admin", "Admin", "Calle 123, Ciudad", "923456789", "importacionesDominguez2024@gmail.com", (passwordEncoder.encode("Superadmin123")), findTipoDocumentoById(tipoDocumentos, "TID-DNI-AMO001"), TipoSexo.valueOf("MASCULINO"), "87654372", findRolById(roles, "ROL-ADM-PUT001"), true));

@@ -12,10 +12,6 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 @SuperBuilder
 @Builder
@@ -49,8 +45,6 @@ public class ProductoEntity extends BaseEntity {
     @Column(name = "imagen")
     private String imagen;
 
-    @Column(name = "estado", nullable = false)
-    private boolean estado = true;
 
     @ManyToOne
     @JoinColumn(name = "id_categoria", nullable = false)

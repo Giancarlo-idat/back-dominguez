@@ -52,7 +52,6 @@ public class OrdenCompraEntity extends BaseEntity {
     public void calcularTotales(BigDecimal subtotal) {
         // Inicializar variables
         BigDecimal igv = BigDecimal.ZERO;
-        BigDecimal montoTotal = BigDecimal.ZERO;
         BigDecimal subTotal = BigDecimal.ZERO;
 
         // Calcular IGV

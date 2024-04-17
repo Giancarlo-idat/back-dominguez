@@ -2,8 +2,6 @@ package com.store.dominguez.util.backup;
 
 import com.smattme.MysqlExportService;
 import com.smattme.MysqlImportService;
-
-import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Properties;

@@ -4,7 +4,6 @@ import com.store.dominguez.dto.DocVentaDTO;
 import com.store.dominguez.service.gestion.DocVentaService;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -20,7 +19,6 @@ import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/reports")
@@ -28,7 +26,6 @@ public class ReporteController {
 
     private final DocVentaService docVentaService;
 
-    @Autowired
     public ReporteController(DocVentaService docVentaService) {
         this.docVentaService = docVentaService;
     }

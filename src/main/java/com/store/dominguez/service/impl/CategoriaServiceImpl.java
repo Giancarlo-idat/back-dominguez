@@ -8,7 +8,6 @@ import com.store.dominguez.util.generator.IdGenerator;
 import com.store.dominguez.util.validations.CategoriaValidator;
 import com.store.dominguez.util.validations.Validations;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -24,7 +23,6 @@ public class CategoriaServiceImpl implements CategoriaService {
 
     private final CategoriaValidator categoriaValidator;
 
-    @Autowired
     public CategoriaServiceImpl(CategoriaRepository categoriaRepository, ModelMapper modelMapper, CategoriaValidator categoriaValidator) {
         this.categoriaRepository = categoriaRepository;
         this.modelMapper = modelMapper;

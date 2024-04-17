@@ -5,21 +5,17 @@ import com.store.dominguez.model.enums.EstadoEnvio;
 import com.store.dominguez.repository.gestion.ClienteRepository;
 import com.store.dominguez.repository.gestion.DocVentaRepository;
 import com.store.dominguez.repository.gestion.EmpleadoRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.math.BigDecimal;
 
 @Component
 public class DocVentaValidator {
 
-    private final DocVentaRepository docVentaRepository;
     private final ClienteRepository clienteRepository;
     private final EmpleadoRepository empleadoRepository;
 
-    @Autowired
-    public DocVentaValidator(DocVentaRepository docVentaRepository, ClienteRepository clienteRepository, EmpleadoRepository empleadoRepository) {
-        this.docVentaRepository = docVentaRepository;
+    public DocVentaValidator(DocVentaRepository docVentaRepository, ClienteRepository clienteRepository,
+            EmpleadoRepository empleadoRepository) {
         this.clienteRepository = clienteRepository;
         this.empleadoRepository = empleadoRepository;
     }
@@ -36,7 +32,6 @@ public class DocVentaValidator {
             throw new IllegalArgumentException("Todos los campos son obligatorios para crear una venta");
         }
     }
-
 
     public void validarClienteExistente(String idCliente) {
         if (!clienteRepository.existsById(idCliente)) {
@@ -58,12 +53,14 @@ public class DocVentaValidator {
         }
     }
 
-    private void validarPrecioTotal(BigDecimal precioTotal) {
-        if (precioTotal == null || precioTotal.compareTo(BigDecimal.ZERO) <= 0) {
-            throw new IllegalArgumentException("El precio total debe ser un número positivo");
-        }
-    }
-
+    /*
+     * private void validarPrecioTotal(BigDecimal precioTotal) {
+     * if (precioTotal == null || precioTotal.compareTo(BigDecimal.ZERO) <= 0) {
+     * throw new
+     * IllegalArgumentException("El precio total debe ser un número positivo");
+     * }
+     * }
+     */
     private void validarDetallesVenta(DocVentaDTO docVentaDTO) {
         if (docVentaDTO.getDetallesVenta() == null || docVentaDTO.getDetallesVenta().isEmpty()) {
             throw new IllegalArgumentException("Debe haber al menos un detalle de venta asociado");

@@ -1,6 +1,5 @@
 package com.store.dominguez.repository.gestion;
 
-import com.store.dominguez.dto.EmpleadoDTO;
 import com.store.dominguez.model.EmpleadoEntity;
 import com.store.dominguez.repository.base.BaseRepository;
 import org.springframework.data.jpa.repository.Query;

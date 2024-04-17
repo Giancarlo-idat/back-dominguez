@@ -3,7 +3,6 @@ package com.store.dominguez.controller;
 import com.store.dominguez.dto.*;
 import com.store.dominguez.model.*;
 import com.store.dominguez.repository.gestion.*;
-import com.store.dominguez.service.gestion.DocVentaService;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,7 +30,10 @@ public class ProfileController {
     private final DocDetalleVentaRepository docDetalleVentaRepository;
     private final ModelMapper modelMapper;
 
-    public ProfileController(ClienteRepository clienteRepository, EmpleadoRepository empleadoRepository, RolRepository rolRepository, TipoDocumentoIdentidadRepository tipoDocumentoIdentidadRepository, DocVentaRepository docVentaRepository, DocDetalleVentaRepository docDetalleVentaRepository, ModelMapper modelMapper) {
+    public ProfileController(ClienteRepository clienteRepository, EmpleadoRepository empleadoRepository,
+            RolRepository rolRepository, TipoDocumentoIdentidadRepository tipoDocumentoIdentidadRepository,
+            DocVentaRepository docVentaRepository, DocDetalleVentaRepository docDetalleVentaRepository,
+            ModelMapper modelMapper) {
         this.clienteRepository = clienteRepository;
         this.empleadoRepository = empleadoRepository;
         this.rolRepository = rolRepository;
@@ -52,7 +54,8 @@ public class ProfileController {
             List<DocVentaEntity> docVentas = docVentaRepository.findByClienteId(cliente.getId());
 
             if (docVentas.isEmpty()) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.singletonList("No se encontraron ventas para el cliente con ID: " + cliente.getId()));
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections
+                        .singletonList("No se encontraron ventas para el cliente con ID: " + cliente.getId()));
             }
 
             // Ordenar la lista por fecha de creación más reciente
@@ -86,7 +89,8 @@ public class ProfileController {
         } catch (UsernameNotFoundException ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.singletonList(ex.getMessage()));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Collections.singletonList(e.getMessage()));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Collections.singletonList(e.getMessage()));
         }
     }
 
@@ -98,8 +102,14 @@ public class ProfileController {
                 .orElseThrow(() -> new UsernameNotFoundException("Cliente no encontrado con email: " + email));
         List<DocDetalleVentaEntity> detalleVentas = docDetalleVentaRepository.findAll();
 
+        if (cliente == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(Collections.singletonList("No se encontró el cliente con email: " + email));
+        }
+
         if (detalleVentas.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.singletonList("No se encontraron detalles de venta"));
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(Collections.singletonList("No se encontraron detalles de venta"));
         }
 
         detalleVentas.sort(Comparator.comparing(DocDetalleVentaEntity::getFechaCreacion).reversed());
@@ -115,17 +125,18 @@ public class ProfileController {
     public ResponseEntity<?> getOrderDetails(@PathVariable("orderId") String orderId) {
         try {
 
-
             // Buscar la venta por su ID
             Optional<DocVentaEntity> optionalDocVenta = docVentaRepository.findById(orderId);
             if (optionalDocVenta.isEmpty()) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se encontró la venta con el ID: " + orderId);
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body("No se encontró la venta con el ID: " + orderId);
             }
 
             // Recuperar los detalles de venta asociados a la venta
             List<DocDetalleVentaEntity> detallesVenta = optionalDocVenta.get().getDetallesVenta();
             if (detallesVenta.isEmpty()) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se encontraron detalles de venta para la venta con el ID: " + orderId);
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body("No se encontraron detalles de venta para la venta con el ID: " + orderId);
             }
 
             // Mapear los detalles de venta a DTOs
@@ -135,10 +146,10 @@ public class ProfileController {
 
             return ResponseEntity.status(HttpStatus.OK).body(detallesVentaDTO);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al recuperar los detalles de venta: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error al recuperar los detalles de venta: " + e.getMessage());
         }
     }
-
 
     @GetMapping("/info/client")
     public ClienteDTO getUserProfile(@AuthenticationPrincipal UserDetails userDetails) {
@@ -147,7 +158,6 @@ public class ProfileController {
                 .orElseThrow(() -> new UsernameNotFoundException("Cliente no encontrado con email: " + email));
         System.out.println("Cliente: " + cliente);
         ClienteDTO clienteDTO = new ClienteDTO();
-        ClienteEntity clientFor = new ClienteEntity();
         TipoDocumentoIdentidadDTO tipoDocumentoIdentidadDTO = new TipoDocumentoIdentidadDTO();
 
         clienteDTO.setId(cliente.getId());
@@ -196,7 +206,6 @@ public class ProfileController {
                 .orElseThrow(() -> new UsernameNotFoundException("Empleado no encontrado con email: " + email));
 
         EmpleadoDTO empleadoDTO = new EmpleadoDTO();
-        EmpleadoEntity empleadoFor = new EmpleadoEntity();
         TipoDocumentoIdentidadDTO tipoDocumentoIdentidadDTO = new TipoDocumentoIdentidadDTO();
 
         empleadoDTO.setId(empleado.getId());
@@ -233,11 +242,9 @@ public class ProfileController {
             throw new RuntimeException("Tipo de documento no especificado para el empleado");
         }
 
-
         empleadoDTO.setSexo(empleado.getSexo());
 
         return empleadoDTO;
     }
-
 
 }

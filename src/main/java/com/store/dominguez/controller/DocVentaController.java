@@ -3,10 +3,8 @@ package com.store.dominguez.controller;
 
 import com.store.dominguez.dto.DocVentaDTO;
 import com.store.dominguez.service.gestion.DocVentaService;
-import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,7 +20,7 @@ public class DocVentaController {
 
 
     @GetMapping
-    @PreAuthorize("hasRole('Administrador') or hasRole('Cliente)")
+    @PreAuthorize("hasRole('Administrador') or hasRole('Cliente')")
     public ResponseEntity<List<?>> obtenerDocumentos() {
         try {
             return ResponseEntity.ok(docVentaService.buscarTodos());
@@ -33,7 +31,7 @@ public class DocVentaController {
 
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('Administrador') or hasRole('Cliente)")
+    @PreAuthorize("hasRole('Administrador') or hasRole('Cliente')")
     public ResponseEntity<?> obtenerDocVenta(@PathVariable String id) {
         try {
             return ResponseEntity.ok(docVentaService.buscarId(id));

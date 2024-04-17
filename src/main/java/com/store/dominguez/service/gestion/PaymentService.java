@@ -1,7 +1,6 @@
 package com.store.dominguez.service.gestion;
 
 import com.store.dominguez.http.PaymentIntentDTO;
-import com.store.dominguez.model.DocVentaEntity;
 import com.store.dominguez.response.PaymentResponse;
 import com.stripe.exception.StripeException;
 

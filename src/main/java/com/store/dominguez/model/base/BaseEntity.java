@@ -1,6 +1,5 @@
 package com.store.dominguez.model.base;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.store.dominguez.util.json.JsonLocalDateTimeSerializer;
 import jakarta.persistence.*;
@@ -9,7 +8,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
-import org.modelmapper.internal.bytebuddy.implementation.bind.annotation.Super;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -26,10 +24,12 @@ public class BaseEntity implements Serializable {
 
     @JsonSerialize(using = JsonLocalDateTimeSerializer.class)
     @Column(name = "fecha_creacion")
+    @Builder.Default
     private LocalDateTime fechaCreacion = LocalDateTime.now();
 
     @JsonSerialize(using = JsonLocalDateTimeSerializer.class)
     @Column(name = "fecha_actualizacion")
+    @Builder.Default
     private LocalDateTime fechaActualizacion = LocalDateTime.now();
 
     public String getFormattedFechaCreacion() {
@@ -39,6 +39,10 @@ public class BaseEntity implements Serializable {
     public String getFormattedFechaActualizacion() {
         return fechaActualizacion.format(formatter);
     }
+
+    @Builder.Default
+    @Column(name = "estado")
+    private boolean estado = true;
 
 
     @PrePersist

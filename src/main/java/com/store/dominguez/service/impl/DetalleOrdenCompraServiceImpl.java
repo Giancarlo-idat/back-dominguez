@@ -3,13 +3,13 @@ package com.store.dominguez.service.impl;
 import com.store.dominguez.dto.DetalleOrdenCompraDTO;
 import com.store.dominguez.model.DetalleOrdenCompraEntity;
 import com.store.dominguez.repository.gestion.DetalleOrdenCompraRepository;
-import com.store.dominguez.repository.gestion.FacturaCompraRepository;
 import com.store.dominguez.service.gestion.DetalleOrdenCompraService;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -48,7 +48,7 @@ public class DetalleOrdenCompraServiceImpl implements DetalleOrdenCompraService 
     public Optional<DetalleOrdenCompraDTO> buscarId(String id) {
 
         try {
-            Optional<DetalleOrdenCompraEntity> detalleOrdenCompraEntity = detalleOrdenCompraRepository.findById(id);
+            Optional<DetalleOrdenCompraEntity> detalleOrdenCompraEntity = detalleOrdenCompraRepository.findById(UUID.fromString(id));
             return detalleOrdenCompraEntity.map(value -> modelMapper.map(value, DetalleOrdenCompraDTO.class));
         } catch (Exception e) {
             throw new RuntimeException("Error al buscar el detalle de la orden de compra" + e.getMessage());

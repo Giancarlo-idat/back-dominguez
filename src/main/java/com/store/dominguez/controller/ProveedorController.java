@@ -3,7 +3,6 @@ package com.store.dominguez.controller;
 
 import com.store.dominguez.dto.ProveedorDTO;
 import com.store.dominguez.service.gestion.ProveedorService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +17,6 @@ public class ProveedorController {
 
     private final ProveedorService proveedorService;
 
-    @Autowired
     public ProveedorController(ProveedorService proveedorService) {
         this.proveedorService = proveedorService;
     }

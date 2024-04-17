@@ -4,7 +4,6 @@ import com.store.dominguez.model.ClienteEntity;
 import com.store.dominguez.model.EmpleadoEntity;
 import com.store.dominguez.repository.gestion.ClienteRepository;
 import com.store.dominguez.repository.gestion.EmpleadoRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -21,7 +20,6 @@ public class UserDetailServiceImpl implements UserDetailsService {
     private final ClienteRepository clienteRepository;
     private final EmpleadoRepository empleadoRepository;
 
-    @Autowired
     public UserDetailServiceImpl(ClienteRepository clienteRepository, EmpleadoRepository empleadoRepository) {
         this.clienteRepository = clienteRepository;
         this.empleadoRepository = empleadoRepository;

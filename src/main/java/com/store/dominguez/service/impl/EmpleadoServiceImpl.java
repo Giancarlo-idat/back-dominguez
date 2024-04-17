@@ -9,12 +9,10 @@ import com.store.dominguez.util.validations.EmpleadoValidator;
 import com.store.dominguez.util.generator.IdGenerator;
 import com.store.dominguez.util.validations.Validations;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -27,7 +25,6 @@ public class EmpleadoServiceImpl implements EmpleadoService {
     private final EmpleadoValidator empleadoValidator;
     private final PasswordEncoder passwordEncoder;
 
-    @Autowired
     public EmpleadoServiceImpl(EmpleadoRepository empleadoRepository, ModelMapper modelMapper, EmpleadoValidator empleadoValidator, PasswordEncoder passwordEncoder) {
         this.empleadoRepository = empleadoRepository;
         this.modelMapper = modelMapper;
